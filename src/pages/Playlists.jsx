@@ -38,7 +38,9 @@ export default function Playlists() {
         name: data.name,
         description: data.description,
         theme: data.theme,
-        cover_color: data.cover_color
+        cover_color: data.cover_color,
+        cover_image_url: data.cover_image_url,
+        target_duration: data.target_duration
       });
 
       const trackRecords = data.track_ids.map((trackId, index) => ({

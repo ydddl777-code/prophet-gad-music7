@@ -48,13 +48,17 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import MusicLibrary from './pages/MusicLibrary';
+import Playlists from './pages/Playlists';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "MusicLibrary": MusicLibrary,
+    "Playlists": Playlists,
 }
 
 export const pagesConfig = {
     mainPage: "MusicLibrary",
     Pages: PAGES,
+    Layout: __Layout,
 };

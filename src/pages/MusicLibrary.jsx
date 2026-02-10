@@ -5,6 +5,7 @@ import { Music2, Disc3 } from 'lucide-react';
 import UploadSection from '../components/music/UploadSection';
 import TrackCard from '../components/music/TrackCard';
 import FilterBar from '../components/music/FilterBar';
+import VersionGroupCard from '../components/music/VersionGroupCard';
 
 export default function MusicLibrary() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,6 +62,25 @@ export default function MusicLibrary() {
     return acc;
   }, {});
 
+  // Group tracks by version_group within each language
+  const groupTracksByVersion = (tracks) => {
+    const versionGroups = {};
+    const standaloneTracksArray = [];
+
+    tracks.forEach(track => {
+      if (track.version_group) {
+        if (!versionGroups[track.version_group]) {
+          versionGroups[track.version_group] = [];
+        }
+        versionGroups[track.version_group].push(track);
+      } else {
+        standaloneTracksArray.push(track);
+      }
+    });
+
+    return { versionGroups, standaloneTracksArray };
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
@@ -114,28 +134,47 @@ export default function MusicLibrary() {
             </p>
           </div>
         ) : selectedGenre === 'all' ? (
-          // Grouped by language
-          Object.entries(tracksByLanguage).map(([language, languageTracks]) => (
-            <div key={language} className="bg-white rounded-xl p-6 shadow-sm mb-8">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <Music2 className="w-6 h-6 text-white" />
+          // Grouped by language with version grouping
+          Object.entries(tracksByLanguage).map(([language, languageTracks]) => {
+            const { versionGroups, standaloneTracksArray } = groupTracksByVersion(languageTracks);
+            
+            return (
+              <div key={language} className="bg-white rounded-xl p-6 shadow-sm mb-8">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <Music2 className="w-6 h-6 text-white" />
+                  </div>
+                  {language}
+                  <span className="text-sm font-normal text-slate-500">({languageTracks.length} tracks)</span>
+                </h2>
+                
+                <div className="space-y-4">
+                  {/* Version Groups */}
+                  {Object.entries(versionGroups).map(([groupName, groupTracks]) => (
+                    <VersionGroupCard
+                      key={groupName}
+                      groupName={groupName}
+                      tracks={groupTracks}
+                      onUpdate={handleUpdate}
+                      onDelete={handleDelete}
+                    />
+                  ))}
+                  
+                  {/* Standalone Tracks */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {standaloneTracksArray.map((track) => (
+                      <TrackCard
+                        key={track.id}
+                        track={track}
+                        onUpdate={handleUpdate}
+                        onDelete={handleDelete}
+                      />
+                    ))}
+                  </div>
                 </div>
-                {language}
-                <span className="text-sm font-normal text-slate-500">({languageTracks.length} tracks)</span>
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {languageTracks.map((track) => (
-                  <TrackCard
-                    key={track.id}
-                    track={track}
-                    onUpdate={handleUpdate}
-                    onDelete={handleDelete}
-                  />
-                ))}
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           // Single genre or search results
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

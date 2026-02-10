@@ -14,6 +14,8 @@ export default function UploadSection({ onUploadComplete }) {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
 
+    console.log(`Starting upload of ${files.length} files...`);
+
     setUploading(true);
     setProgress({ current: 0, total: files.length });
     
@@ -23,71 +25,96 @@ export default function UploadSection({ onUploadComplete }) {
       
       const uploadedTracks = [];
       const skippedTracks = [];
+      const failedTracks = [];
       
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         setProgress({ current: i + 1, total: files.length });
         
-        // Upload file first to get URL
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
-        
-        // Extract metadata using LLM
-        setExtracting(true);
-        const metadata = await base44.integrations.Core.InvokeLLM({
-          prompt: `Extract metadata from this music file: ${file.name}. 
-          Parse the filename and return structured data.
-          If the filename has format like "Artist - Title.mp3" or "Artist - Album - Title.mp3", extract those parts.
-          Make reasonable guesses for genre based on the artist/title if you know them.
-          IMPORTANT: Detect the language of the song. It should be one of: "English", "Dominican Spanish", or "Haitian Creole". 
-          Use the artist name, title, and any context clues to determine the language.`,
-          response_json_schema: {
-            type: "object",
-            properties: {
-              title: { type: "string" },
-              artist: { type: "string" },
-              album: { type: "string" },
-              genre: { type: "string" },
-              language: { type: "string", enum: ["English", "Dominican Spanish", "Haitian Creole"] },
-              year: { type: "number" }
-            }
-          }
-        });
-
-        // Check for duplicates by metadata (title + artist + album)
-        const isDuplicate = existingTracks.some(existing => {
-          const titleMatch = existing.title?.toLowerCase() === metadata.title?.toLowerCase();
-          const artistMatch = existing.artist?.toLowerCase() === metadata.artist?.toLowerCase();
-          const albumMatch = existing.album?.toLowerCase() === metadata.album?.toLowerCase();
+        try {
+          console.log(`Processing file ${i + 1}/${files.length}: ${file.name}`);
           
-          // If title, artist, and album all match, it's a duplicate
-          return titleMatch && artistMatch && albumMatch;
-        });
+          // Upload file first to get URL
+          const { file_url } = await base44.integrations.Core.UploadFile({ file });
+          console.log(`File uploaded: ${file_url}`);
+          
+          // Extract metadata using LLM
+          setExtracting(true);
+          const metadata = await base44.integrations.Core.InvokeLLM({
+            prompt: `Extract metadata from this music file: ${file.name}. 
+            Parse the filename and return structured data.
+            If the filename has format like "Artist - Title.mp3" or "Artist - Album - Title.mp3", extract those parts.
+            Make reasonable guesses for genre based on the artist/title if you know them.
+            IMPORTANT: Detect the language of the song. It should be one of: "English", "Dominican Spanish", or "Haitian Creole". 
+            Use the artist name, title, and any context clues to determine the language.
+            If you cannot determine the language, default to "English".`,
+            response_json_schema: {
+              type: "object",
+              properties: {
+                title: { type: "string" },
+                artist: { type: "string" },
+                album: { type: "string" },
+                genre: { type: "string" },
+                language: { type: "string", enum: ["English", "Dominican Spanish", "Haitian Creole"] },
+                year: { type: "number" }
+              }
+            }
+          });
+          console.log(`Metadata extracted:`, metadata);
 
-        if (isDuplicate) {
-          skippedTracks.push(metadata.title || file.name);
-          continue;
+          // Check for duplicates by metadata (title + artist + album)
+          const isDuplicate = existingTracks.some(existing => {
+            const titleMatch = existing.title?.toLowerCase() === metadata.title?.toLowerCase();
+            const artistMatch = existing.artist?.toLowerCase() === metadata.artist?.toLowerCase();
+            const albumMatch = existing.album?.toLowerCase() === metadata.album?.toLowerCase();
+            
+            // If title, artist, and album all match, it's a duplicate
+            return titleMatch && artistMatch && albumMatch;
+          });
+
+          if (isDuplicate) {
+            console.log(`Skipping duplicate: ${metadata.title}`);
+            skippedTracks.push(metadata.title || file.name);
+            continue;
+          }
+
+          // Create track record
+          const track = await base44.entities.MusicTrack.create({
+            title: metadata.title || file.name.replace(/\.[^/.]+$/, ""),
+            artist: metadata.artist || "Unknown Artist",
+            album: metadata.album,
+            genre: metadata.genre,
+            language: metadata.language || "English",
+            year: metadata.year,
+            file_url,
+            file_size: file.size,
+            duration: "Unknown"
+          });
+          console.log(`Track created:`, track);
+          
+          uploadedTracks.push(track);
+        } catch (fileError) {
+          console.error(`Failed to process ${file.name}:`, fileError);
+          failedTracks.push(file.name);
         }
-
-        // Create track record
-        const track = await base44.entities.MusicTrack.create({
-          ...metadata,
-          file_url,
-          file_size: file.size,
-          duration: "Unknown"
-        });
-        
-        uploadedTracks.push(track);
       }
       
       if (uploadedTracks.length > 0) {
         toast.success(`Successfully uploaded ${uploadedTracks.length} track(s)`);
       }
       if (skippedTracks.length > 0) {
-        toast.warning(`Skipped ${skippedTracks.length} duplicate(s): ${skippedTracks.slice(0, 3).join(', ')}${skippedTracks.length > 3 ? '...' : ''}`);
+        toast.warning(`Skipped ${skippedTracks.length} duplicate(s)`);
+      }
+      if (failedTracks.length > 0) {
+        toast.error(`Failed to upload ${failedTracks.length} file(s): ${failedTracks.slice(0, 2).join(', ')}${failedTracks.length > 2 ? '...' : ''}`);
+      }
+      if (uploadedTracks.length === 0 && skippedTracks.length === 0 && failedTracks.length === 0) {
+        toast.error("No files were uploaded. Check console for errors.");
       }
       
       onUploadComplete(uploadedTracks);
     } catch (error) {
+      console.error("Upload error:", error);
       toast.error("Upload failed: " + error.message);
     } finally {
       setUploading(false);

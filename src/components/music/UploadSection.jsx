@@ -37,7 +37,9 @@ export default function UploadSection({ onUploadComplete }) {
           prompt: `Extract metadata from this music file: ${file.name}. 
           Parse the filename and return structured data.
           If the filename has format like "Artist - Title.mp3" or "Artist - Album - Title.mp3", extract those parts.
-          Make reasonable guesses for genre based on the artist/title if you know them.`,
+          Make reasonable guesses for genre based on the artist/title if you know them.
+          IMPORTANT: Detect the language of the song. It should be one of: "English", "Dominican Spanish", or "Haitian Creole". 
+          Use the artist name, title, and any context clues to determine the language.`,
           response_json_schema: {
             type: "object",
             properties: {
@@ -45,6 +47,7 @@ export default function UploadSection({ onUploadComplete }) {
               artist: { type: "string" },
               album: { type: "string" },
               genre: { type: "string" },
+              language: { type: "string", enum: ["English", "Dominican Spanish", "Haitian Creole"] },
               year: { type: "number" }
             }
           }

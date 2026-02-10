@@ -18,13 +18,17 @@ export default function UploadSection({ onUploadComplete }) {
     setProgress({ current: 0, total: files.length });
     
     try {
+      // Fetch existing tracks to check for duplicates
+      const existingTracks = await base44.entities.MusicTrack.list('-created_date', 10000);
+      
       const uploadedTracks = [];
+      const skippedTracks = [];
       
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         setProgress({ current: i + 1, total: files.length });
         
-        // Upload file
+        // Upload file first to get URL
         const { file_url } = await base44.integrations.Core.UploadFile({ file });
         
         // Extract metadata using LLM
@@ -46,6 +50,21 @@ export default function UploadSection({ onUploadComplete }) {
           }
         });
 
+        // Check for duplicates by metadata (title + artist + album)
+        const isDuplicate = existingTracks.some(existing => {
+          const titleMatch = existing.title?.toLowerCase() === metadata.title?.toLowerCase();
+          const artistMatch = existing.artist?.toLowerCase() === metadata.artist?.toLowerCase();
+          const albumMatch = existing.album?.toLowerCase() === metadata.album?.toLowerCase();
+          
+          // If title, artist, and album all match, it's a duplicate
+          return titleMatch && artistMatch && albumMatch;
+        });
+
+        if (isDuplicate) {
+          skippedTracks.push(metadata.title || file.name);
+          continue;
+        }
+
         // Create track record
         const track = await base44.entities.MusicTrack.create({
           ...metadata,
@@ -57,7 +76,13 @@ export default function UploadSection({ onUploadComplete }) {
         uploadedTracks.push(track);
       }
       
-      toast.success(`Successfully uploaded ${uploadedTracks.length} track(s)`);
+      if (uploadedTracks.length > 0) {
+        toast.success(`Successfully uploaded ${uploadedTracks.length} track(s)`);
+      }
+      if (skippedTracks.length > 0) {
+        toast.warning(`Skipped ${skippedTracks.length} duplicate(s): ${skippedTracks.slice(0, 3).join(', ')}${skippedTracks.length > 3 ? '...' : ''}`);
+      }
+      
       onUploadComplete(uploadedTracks);
     } catch (error) {
       toast.error("Upload failed: " + error.message);

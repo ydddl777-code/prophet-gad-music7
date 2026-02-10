@@ -97,6 +97,14 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
             <Button
               size="icon"
               variant="ghost"
+              onClick={() => setShowLyrics(true)}
+              title="Extract Lyrics"
+            >
+              <FileText className="w-4 h-4" />
+            </Button>
+            <Button
+              size="icon"
+              variant="ghost"
               asChild
             >
               <a href={track.file_url} download>

@@ -24,6 +24,18 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
     }
   };
 
+  const toggleBestVersion = async () => {
+    try {
+      await base44.entities.MusicTrack.update(track.id, { 
+        is_best_version: !track.is_best_version 
+      });
+      toast.success(track.is_best_version ? "Unmarked as best" : "Marked as best version");
+      onUpdate();
+    } catch (error) {
+      toast.error("Update failed");
+    }
+  };
+
   return (
     <>
       {editing && (
@@ -44,27 +56,38 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
           onSave={onUpdate}
         />
       )}
-    <Card className="bg-white hover:shadow-lg transition-shadow">
-      <CardContent className="p-4">
-        <div className="flex items-start gap-3">
-          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-            <Music className="w-6 h-6 text-white" />
-          </div>
-          
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-lg truncate">{track.title}</h3>
-              {track.rating && (
-                <Badge variant="outline" className="flex items-center gap-1 bg-yellow-50 border-yellow-300 text-yellow-700">
-                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  {track.rating}/10
-                </Badge>
-              )}
-            </div>
+    <Card className={`hover:shadow-lg transition-shadow ${track.is_best_version ? 'bg-gradient-to-br from-amber-50 to-white border-2 border-amber-400' : 'bg-white'}`}>
+     <CardContent className="p-4">
+       <div className="flex items-start gap-3">
+         <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${track.is_best_version ? 'bg-gradient-to-br from-amber-400 to-amber-600' : 'bg-gradient-to-br from-blue-500 to-purple-600'}`}>
+           <Music className="w-6 h-6 text-white" />
+         </div>
+
+         <div className="flex-1 min-w-0">
+           <div className="flex items-center gap-2">
+             <h3 className="font-semibold text-lg truncate">{track.title}</h3>
+             {track.is_best_version && (
+               <Badge className="bg-amber-500 hover:bg-amber-600 text-white">
+                 <Star className="w-3 h-3 fill-white mr-1" />
+                 Best
+               </Badge>
+             )}
+             {track.rating && (
+               <Badge variant="outline" className="flex items-center gap-1 bg-yellow-50 border-yellow-300 text-yellow-700">
+                 <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                 {track.rating}/10
+               </Badge>
+             )}
+           </div>
             <p className="text-sm text-slate-600 truncate">{track.artist || "Unknown Artist"}</p>
             <p className="text-xs text-slate-500 truncate">{track.album || "Unknown Album"}</p>
             
             <div className="flex gap-2 mt-2 flex-wrap">
+              {track.version_group && (
+                <Badge variant="outline" className="bg-slate-100 text-slate-700">
+                  v: {track.version_group}
+                </Badge>
+              )}
               {track.genre && (
                 <Badge variant="secondary" className="bg-purple-100 text-purple-800">
                   {track.genre}
@@ -87,6 +110,17 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
           </div>
 
           <div className="flex gap-1">
+            {track.version_group && (
+              <Button
+                size="icon"
+                variant={track.is_best_version ? "default" : "ghost"}
+                onClick={toggleBestVersion}
+                className={track.is_best_version ? "bg-amber-500 hover:bg-amber-600" : ""}
+                title={track.is_best_version ? "Unmark as best" : "Mark as best version"}
+              >
+                <Star className={`w-4 h-4 ${track.is_best_version ? 'fill-white' : ''}`} />
+              </Button>
+            )}
             <Button
               size="icon"
               variant="ghost"

@@ -8,17 +8,22 @@ import { toast } from "sonner";
 export default function UploadSection({ onUploadComplete }) {
   const [uploading, setUploading] = useState(false);
   const [extracting, setExtracting] = useState(false);
+  const [progress, setProgress] = useState({ current: 0, total: 0 });
 
   const handleFileUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
 
     setUploading(true);
+    setProgress({ current: 0, total: files.length });
     
     try {
       const uploadedTracks = [];
       
-      for (const file of files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        setProgress({ current: i + 1, total: files.length });
+        
         // Upload file
         const { file_url } = await base44.integrations.Core.UploadFile({ file });
         
@@ -59,6 +64,7 @@ export default function UploadSection({ onUploadComplete }) {
     } finally {
       setUploading(false);
       setExtracting(false);
+      setProgress({ current: 0, total: 0 });
       e.target.value = '';
     }
   };
@@ -76,22 +82,32 @@ export default function UploadSection({ onUploadComplete }) {
           </div>
           
           <h3 className="text-lg font-semibold mb-2">
-            {uploading ? "Uploading..." : extracting ? "Analyzing metadata..." : "Upload Music Files"}
+            {uploading || extracting ? `Processing ${progress.current}/${progress.total}...` : "Bulk Upload Music Files"}
           </h3>
           <p className="text-sm text-slate-600 mb-4">
             {uploading || extracting ? 
-              "Please wait while we process your files" : 
-              "Drag and drop or click to browse. Metadata will be extracted automatically."}
+              `Uploading and extracting metadata for track ${progress.current} of ${progress.total}` : 
+              "Select multiple files from your desktop. Metadata will be extracted automatically."}
           </p>
           
           <label htmlFor="file-upload">
             <Button disabled={uploading || extracting} asChild>
               <span className="cursor-pointer">
                 <Upload className="w-4 h-4 mr-2" />
-                Choose Files
+                Choose Multiple Files
               </span>
             </Button>
           </label>
+          {progress.total > 0 && (
+            <div className="w-full max-w-xs mt-4">
+              <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-blue-600 transition-all duration-300"
+                  style={{ width: `${(progress.current / progress.total) * 100}%` }}
+                />
+              </div>
+            </div>
+          )}
           <input
             id="file-upload"
             type="file"

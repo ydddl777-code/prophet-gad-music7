@@ -178,6 +178,18 @@ Return enhanced metadata.`,
             </div>
           </div>
 
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Version Group (Optional)</label>
+            <Input
+              value={editData.version_group || ''}
+              onChange={(e) => setEditData({...editData, version_group: e.target.value})}
+              placeholder="e.g., 'Amazing Grace' - groups different versions together"
+            />
+            <p className="text-xs text-slate-500">
+              Use the same name for different versions of the same song to group them
+            </p>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Year</label>

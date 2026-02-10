@@ -6,6 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Save, X, Sparkles, Loader2, Plus, XCircle } from 'lucide-react';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function MetadataEditor({ track, onSave, onCancel }) {
   const [editData, setEditData] = useState(track);
@@ -144,7 +151,7 @@ Return enhanced metadata.`,
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Genre</label>
               <Input
@@ -153,6 +160,25 @@ Return enhanced metadata.`,
                 placeholder="Music genre"
               />
             </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Language</label>
+              <Select 
+                value={editData.language || ''} 
+                onValueChange={(value) => setEditData({...editData, language: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="English">English</SelectItem>
+                  <SelectItem value="Dominican Spanish">Dominican Spanish</SelectItem>
+                  <SelectItem value="Haitian Creole">Haitian Creole</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Year</label>
               <Input

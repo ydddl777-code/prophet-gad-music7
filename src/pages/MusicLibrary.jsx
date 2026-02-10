@@ -53,11 +53,11 @@ export default function MusicLibrary() {
     return matchesSearch && matchesGenre;
   });
 
-  // Group by genre
-  const tracksByGenre = filteredTracks.reduce((acc, track) => {
-    const genre = track.genre || 'Uncategorized';
-    if (!acc[genre]) acc[genre] = [];
-    acc[genre].push(track);
+  // Group by language
+  const tracksByLanguage = filteredTracks.reduce((acc, track) => {
+    const language = track.language || 'Unknown Language';
+    if (!acc[language]) acc[language] = [];
+    acc[language].push(track);
     return acc;
   }, {});
 
@@ -114,16 +114,18 @@ export default function MusicLibrary() {
             </p>
           </div>
         ) : selectedGenre === 'all' ? (
-          // Grouped by genre
-          Object.entries(tracksByGenre).map(([genre, genreTracks]) => (
-            <div key={genre}>
-              <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <div className="w-1 h-6 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full" />
-                {genre}
-                <span className="text-sm font-normal text-slate-500">({genreTracks.length})</span>
+          // Grouped by language
+          Object.entries(tracksByLanguage).map(([language, languageTracks]) => (
+            <div key={language} className="bg-white rounded-xl p-6 shadow-sm mb-8">
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <Music2 className="w-6 h-6 text-white" />
+                </div>
+                {language}
+                <span className="text-sm font-normal text-slate-500">({languageTracks.length} tracks)</span>
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {genreTracks.map((track) => (
+                {languageTracks.map((track) => (
                   <TrackCard
                     key={track.id}
                     track={track}

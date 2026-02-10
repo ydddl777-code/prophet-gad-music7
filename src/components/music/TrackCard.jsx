@@ -1,26 +1,14 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Music, Pencil, Save, X, Download, Trash2 } from 'lucide-react';
+import { Music, Pencil, Download, Trash2 } from 'lucide-react';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
+import MetadataEditor from './MetadataEditor';
 
 export default function TrackCard({ track, onUpdate, onDelete }) {
   const [editing, setEditing] = useState(false);
-  const [editData, setEditData] = useState(track);
-
-  const handleSave = async () => {
-    try {
-      await base44.entities.MusicTrack.update(track.id, editData);
-      onUpdate(editData);
-      setEditing(false);
-      toast.success("Track updated");
-    } catch (error) {
-      toast.error("Update failed");
-    }
-  };
 
   const handleDelete = async () => {
     if (confirm("Delete this track?")) {
@@ -34,55 +22,18 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
     }
   };
 
-  if (editing) {
-    return (
-      <Card className="bg-white border-blue-300 border-2">
-        <CardContent className="p-4 space-y-3">
-          <Input
-            value={editData.title || ''}
-            onChange={(e) => setEditData({...editData, title: e.target.value})}
-            placeholder="Title"
-            className="font-semibold"
-          />
-          <Input
-            value={editData.artist || ''}
-            onChange={(e) => setEditData({...editData, artist: e.target.value})}
-            placeholder="Artist"
-          />
-          <Input
-            value={editData.album || ''}
-            onChange={(e) => setEditData({...editData, album: e.target.value})}
-            placeholder="Album"
-          />
-          <div className="flex gap-2">
-            <Input
-              value={editData.genre || ''}
-              onChange={(e) => setEditData({...editData, genre: e.target.value})}
-              placeholder="Genre"
-              className="flex-1"
-            />
-            <Input
-              type="number"
-              value={editData.year || ''}
-              onChange={(e) => setEditData({...editData, year: parseInt(e.target.value)})}
-              placeholder="Year"
-              className="w-24"
-            />
-          </div>
-          <div className="flex gap-2">
-            <Button onClick={handleSave} size="sm" className="flex-1">
-              <Save className="w-4 h-4 mr-2" /> Save
-            </Button>
-            <Button onClick={() => setEditing(false)} size="sm" variant="outline">
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
+    <>
+      {editing && (
+        <MetadataEditor
+          track={track}
+          onSave={(updatedTrack) => {
+            onUpdate(updatedTrack);
+            setEditing(false);
+          }}
+          onCancel={() => setEditing(false)}
+        />
+      )}
     <Card className="bg-white hover:shadow-lg transition-shadow">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
@@ -103,6 +54,16 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
               )}
               {track.year && (
                 <Badge variant="outline">{track.year}</Badge>
+              )}
+              {track.tags && track.tags.slice(0, 2).map((tag, i) => (
+                <Badge key={i} variant="secondary" className="bg-blue-50 text-blue-700">
+                  {tag}
+                </Badge>
+              ))}
+              {track.tags && track.tags.length > 2 && (
+                <Badge variant="secondary" className="bg-slate-100 text-slate-600">
+                  +{track.tags.length - 2}
+                </Badge>
               )}
             </div>
           </div>
@@ -136,5 +97,6 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
         </div>
       </CardContent>
     </Card>
+    </>
   );
 }

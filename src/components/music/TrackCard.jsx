@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Music, Pencil, Download, Trash2, Star } from 'lucide-react';
+import { Music, Pencil, Download, Trash2, Star, FileText } from 'lucide-react';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
 import MetadataEditor from './MetadataEditor';
+import LyricsExtractor from './LyricsExtractor';
 
 export default function TrackCard({ track, onUpdate, onDelete }) {
   const [editing, setEditing] = useState(false);
+  const [showLyrics, setShowLyrics] = useState(false);
 
   const handleDelete = async () => {
     if (confirm("Delete this track?")) {
@@ -32,6 +34,14 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
             setEditing(false);
           }}
           onCancel={() => setEditing(false)}
+        />
+      )}
+      
+      {showLyrics && (
+        <LyricsExtractor
+          track={track}
+          onClose={() => setShowLyrics(false)}
+          onSave={onUpdate}
         />
       )}
     <Card className="bg-white hover:shadow-lg transition-shadow">

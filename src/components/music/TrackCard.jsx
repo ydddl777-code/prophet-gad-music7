@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Music, Pencil, Download, Trash2 } from 'lucide-react';
+import { Music, Pencil, Download, Trash2, Star } from 'lucide-react';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
 import MetadataEditor from './MetadataEditor';
@@ -42,7 +42,15 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
           </div>
           
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-lg truncate">{track.title}</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-lg truncate">{track.title}</h3>
+              {track.rating && (
+                <Badge variant="outline" className="flex items-center gap-1 bg-yellow-50 border-yellow-300 text-yellow-700">
+                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  {track.rating}/10
+                </Badge>
+              )}
+            </div>
             <p className="text-sm text-slate-600 truncate">{track.artist || "Unknown Artist"}</p>
             <p className="text-xs text-slate-500 truncate">{track.album || "Unknown Album"}</p>
             

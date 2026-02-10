@@ -32,19 +32,20 @@ export default function PlaylistGenerator({ tracks, onGenerate }) {
         artist: t.artist,
         album: t.album,
         genre: t.genre,
-        year: t.year
+        year: t.year,
+        rating: t.rating
       }));
 
       // Use AI to select tracks
       const result = await base44.integrations.Core.InvokeLLM({
         prompt: `Given this theme/mood: "${theme}"
         
-Select 8-15 tracks from the following library that best match this theme. Consider the genre, artist style, song titles, and overall vibe.
+Select 8-15 tracks from the following library that best match this theme. Consider the genre, artist style, song titles, overall vibe, and user ratings (if available - prioritize higher rated tracks).
 
 Available tracks:
 ${JSON.stringify(tracksList, null, 2)}
 
-Return a curated playlist with a creative name and description.`,
+Return a curated playlist with a creative name and description. Prefer tracks with higher ratings when multiple tracks fit the theme equally well.`,
         response_json_schema: {
           type: "object",
           properties: {

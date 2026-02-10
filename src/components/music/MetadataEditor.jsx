@@ -144,7 +144,7 @@ Return enhanced metadata.`,
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Genre</label>
               <Input
@@ -160,6 +160,24 @@ Return enhanced metadata.`,
                 value={editData.year || ''}
                 onChange={(e) => setEditData({...editData, year: parseInt(e.target.value) || ''})}
                 placeholder="Release year"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Rating (1-10)</label>
+              <Input
+                type="number"
+                min="1"
+                max="10"
+                value={editData.rating || ''}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value);
+                  if (val >= 1 && val <= 10) {
+                    setEditData({...editData, rating: val});
+                  } else if (e.target.value === '') {
+                    setEditData({...editData, rating: null});
+                  }
+                }}
+                placeholder="Rate 1-10"
               />
             </div>
           </div>

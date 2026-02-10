@@ -3,12 +3,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, Loader2 } from 'lucide-react';
+import { Sparkles, Loader2, Clock, Users, Music2, Image } from 'lucide-react';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function PlaylistGenerator({ tracks, onGenerate }) {
   const [theme, setTheme] = useState('');
+  const [duration, setDuration] = useState(60);
+  const [includeArtists, setIncludeArtists] = useState('');
+  const [excludeArtists, setExcludeArtists] = useState('');
+  const [includeGenres, setIncludeGenres] = useState('');
+  const [excludeGenres, setExcludeGenres] = useState('');
+  const [generateCoverArt, setGenerateCoverArt] = useState(true);
   const [generating, setGenerating] = useState(false);
 
   const handleGenerate = async () => {
@@ -25,7 +39,7 @@ export default function PlaylistGenerator({ tracks, onGenerate }) {
     setGenerating(true);
     
     try {
-      // Prepare track list for AI
+      // Prepare track list for AI with duration estimates (avg 3.5 min per track)
       const tracksList = tracks.map(t => ({
         id: t.id,
         title: t.title,
@@ -33,19 +47,37 @@ export default function PlaylistGenerator({ tracks, onGenerate }) {
         album: t.album,
         genre: t.genre,
         year: t.year,
-        rating: t.rating
+        rating: t.rating,
+        duration_estimate: "~3.5min"
       }));
 
-      // Use AI to select tracks
+      // Build constraints
+      const constraints = [];
+      if (includeArtists) constraints.push(`MUST include artists: ${includeArtists}`);
+      if (excludeArtists) constraints.push(`MUST exclude artists: ${excludeArtists}`);
+      if (includeGenres) constraints.push(`MUST include genres: ${includeGenres}`);
+      if (excludeGenres) constraints.push(`MUST exclude genres: ${excludeGenres}`);
+      constraints.push(`Target duration: approximately ${duration} minutes (estimate ~3.5min per track, so aim for ${Math.floor(duration/3.5)} tracks)`);
+
+      // Use AI to select and order tracks
       const result = await base44.integrations.Core.InvokeLLM({
         prompt: `Given this theme/mood: "${theme}"
-        
-Select 8-15 tracks from the following library that best match this theme. Consider the genre, artist style, song titles, overall vibe, and user ratings (if available - prioritize higher rated tracks).
+
+Create a curated playlist from the available tracks. 
+
+CONSTRAINTS:
+${constraints.join('\n')}
+
+REQUIREMENTS:
+1. Select tracks that match the theme and respect all constraints
+2. Prioritize tracks with higher ratings when available
+3. Order tracks for optimal flow (energy, tempo, mood transitions)
+4. Aim for approximately ${duration} minutes total duration
 
 Available tracks:
 ${JSON.stringify(tracksList, null, 2)}
 
-Return a curated playlist with a creative name and description. Prefer tracks with higher ratings when multiple tracks fit the theme equally well.`,
+Return a playlist with creative name, description, and track IDs in optimal play order.`,
         response_json_schema: {
           type: "object",
           properties: {
@@ -60,12 +92,27 @@ Return a curated playlist with a creative name and description. Prefer tracks wi
         }
       });
 
+      // Generate cover art if requested
+      let coverImageUrl = null;
+      if (generateCoverArt) {
+        try {
+          const coverResult = await base44.integrations.Core.GenerateImage({
+            prompt: `Album cover art for a music playlist. Theme: ${theme}. Style: modern, vibrant, abstract, visually striking. No text or words.`
+          });
+          coverImageUrl = coverResult.url;
+        } catch (error) {
+          console.error("Cover art generation failed:", error);
+        }
+      }
+
       onGenerate({
         name: result.playlist_name,
         description: result.description,
         theme: theme,
         track_ids: result.selected_track_ids,
-        cover_color: result.cover_color || "#3b82f6"
+        cover_color: result.cover_color || "#3b82f6",
+        cover_image_url: coverImageUrl,
+        target_duration: duration
       });
 
       setTheme('');
@@ -87,16 +134,93 @@ Return a curated playlist with a creative name and description. Prefer tracks wi
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
+          <label className="text-sm font-medium mb-2 block">Theme / Mood</label>
           <Input
             placeholder="e.g., Workout energy, Rainy day vibes, 90s nostalgia..."
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleGenerate()}
             className="bg-white"
           />
-          <p className="text-xs text-slate-600 mt-2">
-            Describe a mood, theme, genre, or activity
-          </p>
+        </div>
+
+        <div>
+          <label className="text-sm font-medium mb-2 flex items-center gap-2">
+            <Clock className="w-4 h-4" />
+            Target Duration
+          </label>
+          <Select value={duration.toString()} onValueChange={(val) => setDuration(parseInt(val))}>
+            <SelectTrigger className="bg-white">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="30">30 minutes</SelectItem>
+              <SelectItem value="60">1 hour</SelectItem>
+              <SelectItem value="90">1.5 hours</SelectItem>
+              <SelectItem value="120">2 hours</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="text-sm font-medium mb-2 flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Include Artists
+            </label>
+            <Input
+              placeholder="e.g., Beatles, Queen"
+              value={includeArtists}
+              onChange={(e) => setIncludeArtists(e.target.value)}
+              className="bg-white"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-2 flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Exclude Artists
+            </label>
+            <Input
+              placeholder="e.g., Taylor Swift"
+              value={excludeArtists}
+              onChange={(e) => setExcludeArtists(e.target.value)}
+              className="bg-white"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="text-sm font-medium mb-2 flex items-center gap-2">
+              <Music2 className="w-4 h-4" />
+              Include Genres
+            </label>
+            <Input
+              placeholder="e.g., Rock, Pop"
+              value={includeGenres}
+              onChange={(e) => setIncludeGenres(e.target.value)}
+              className="bg-white"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-2 flex items-center gap-2">
+              <Music2 className="w-4 h-4" />
+              Exclude Genres
+            </label>
+            <Input
+              placeholder="e.g., Country"
+              value={excludeGenres}
+              onChange={(e) => setExcludeGenres(e.target.value)}
+              className="bg-white"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between bg-white p-3 rounded-lg">
+          <label className="text-sm font-medium flex items-center gap-2">
+            <Image className="w-4 h-4" />
+            Generate Cover Art
+          </label>
+          <Switch checked={generateCoverArt} onCheckedChange={setGenerateCoverArt} />
         </div>
 
         <Button 

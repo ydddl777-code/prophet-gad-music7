@@ -8,6 +8,7 @@ import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
 import MetadataEditor from './MetadataEditor';
 import LyricsExtractor from './LyricsExtractor';
+import BpmMeter from './BpmMeter';
 
 export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin = false }) {
   const player = usePlayer();
@@ -74,8 +75,10 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
     <Card className={`hover:shadow-lg transition-shadow ${track.is_best_version ? 'bg-gradient-to-br from-amber-50 to-white border-2 border-amber-400' : 'bg-white'}`}>
      <CardContent className="p-4">
        <div className="flex items-start gap-3">
-         <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${track.is_best_version ? 'bg-gradient-to-br from-amber-400 to-amber-600' : 'bg-gradient-to-br from-blue-500 to-purple-600'}`}>
-           <Music className="w-6 h-6 text-white" />
+         <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden ${track.is_best_version ? 'bg-gradient-to-br from-amber-400 to-amber-600' : 'bg-gradient-to-br from-blue-500 to-purple-600'}`}>
+           {track.cover_art_url
+             ? <img src={track.cover_art_url} alt="cover" className="w-full h-full object-cover" />
+             : <Music className="w-6 h-6 text-white" />}
          </div>
 
          <div className="flex-1 min-w-0">
@@ -97,6 +100,9 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
             <p className="text-sm text-slate-600 truncate">{track.artist || "Unknown Artist"}</p>
             <p className="text-xs text-slate-500 truncate">{track.album || "Unknown Album"}</p>
             
+            <div className="mt-1.5 mb-1">
+              <BpmMeter bpm={track.bpm} rhythmStyle={track.rhythm_style} compact />
+            </div>
             <div className="flex gap-2 mt-2 flex-wrap">
               {track.version_group && (
                 <Badge variant="outline" className="bg-slate-100 text-slate-700">

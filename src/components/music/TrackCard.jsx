@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import MetadataEditor from './MetadataEditor';
 import LyricsExtractor from './LyricsExtractor';
 
-export default function TrackCard({ track, onUpdate, onDelete, onPlay }) {
+export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin = false }) {
   const player = usePlayer();
   const isCurrentTrack = player?.currentTrack?.id === track.id;
   const isTrackPlaying = isCurrentTrack && player?.isPlaying;
@@ -134,7 +134,7 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay }) {
             >
               {isTrackPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
             </Button>
-            {track.version_group && (
+            {isAdmin && track.version_group && (
               <Button
                 size="icon"
                 variant={track.is_best_version ? "default" : "ghost"}
@@ -145,21 +145,25 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay }) {
                 <Star className={`w-4 h-4 ${track.is_best_version ? 'fill-white' : ''}`} />
               </Button>
             )}
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => setEditing(true)}
-            >
-              <Pencil className="w-4 h-4" />
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => setShowLyrics(true)}
-              title="Extract Lyrics"
-            >
-              <FileText className="w-4 h-4" />
-            </Button>
+            {isAdmin && (
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => setEditing(true)}
+              >
+                <Pencil className="w-4 h-4" />
+              </Button>
+            )}
+            {isAdmin && (
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => setShowLyrics(true)}
+                title="Extract Lyrics"
+              >
+                <FileText className="w-4 h-4" />
+              </Button>
+            )}
             <Button
               size="icon"
               variant="ghost"
@@ -169,14 +173,16 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay }) {
                 <Download className="w-4 h-4" />
               </a>
             </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={handleDelete}
-              className="text-red-600 hover:text-red-700"
-            >
-              <Trash2 className="w-4 h-4" />
-            </Button>
+            {isAdmin && (
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={handleDelete}
+                className="text-red-600 hover:text-red-700"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            )}
           </div>
         </div>
       </CardContent>

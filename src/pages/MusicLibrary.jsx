@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from "@/api/base44Client";
-import { Music2, Disc3 } from 'lucide-react';
+import { Music2, Disc3, LogIn } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 import UploadSection from '../components/music/UploadSection';
 import TrackCard from '../components/music/TrackCard';
 import FilterBar from '../components/music/FilterBar';
@@ -12,9 +13,16 @@ export default function MusicLibrary() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [sortBy, setSortBy] = useState('-created_date');
-  
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const queryClient = useQueryClient();
   const { play } = usePlayer();
+
+  useEffect(() => {
+    base44.auth.me()
+      .then(user => setIsAdmin(user?.role === 'admin'))
+      .catch(() => setIsAdmin(false));
+  }, []);
 
   const { data: tracks = [], isLoading } = useQuery({
     queryKey: ['music-tracks', sortBy],
@@ -99,20 +107,33 @@ export default function MusicLibrary() {
               <p className="text-slate-600">Organize and manage your music collection</p>
             </div>
           </div>
-          <div className="flex gap-6 text-sm text-slate-600 mt-4">
-            <div>
-              <span className="font-semibold text-slate-900">{tracks.length}</span> tracks
+          <div className="flex items-center justify-between mt-4">
+            <div className="flex gap-6 text-sm text-slate-600">
+              <div>
+                <span className="font-semibold text-slate-900">{tracks.length}</span> tracks
+              </div>
+              <div>
+                <span className="font-semibold text-slate-900">{genres.length}</span> genres
+              </div>
             </div>
-            <div>
-              <span className="font-semibold text-slate-900">{genres.length}</span> genres
-            </div>
+            {!isAdmin && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2"
+                onClick={() => base44.auth.redirectToLogin()}
+              >
+                <LogIn className="w-4 h-4" />
+                Admin Login
+              </Button>
+            )}
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        {/* Upload Section */}
-        <UploadSection onUploadComplete={handleUploadComplete} />
+        {/* Upload Section - Admin only */}
+        {isAdmin && <UploadSection onUploadComplete={handleUploadComplete} />}
 
         {/* Filters */}
         {tracks.length > 0 && (
@@ -162,6 +183,7 @@ export default function MusicLibrary() {
                       onUpdate={handleUpdate}
                       onDelete={handleDelete}
                       onPlay={handlePlay}
+                      isAdmin={isAdmin}
                     />
                   ))}
                   
@@ -174,6 +196,7 @@ export default function MusicLibrary() {
                         onUpdate={handleUpdate}
                         onDelete={handleDelete}
                         onPlay={handlePlay}
+                        isAdmin={isAdmin}
                       />
                     ))}
                   </div>
@@ -191,6 +214,7 @@ export default function MusicLibrary() {
                 onUpdate={handleUpdate}
                 onDelete={handleDelete}
                 onPlay={handlePlay}
+                isAdmin={isAdmin}
               />
             ))}
           </div>

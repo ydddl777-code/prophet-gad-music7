@@ -2,8 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from './utils';
 import { Music2, ListMusic } from 'lucide-react';
+import { PlayerProvider, usePlayer } from './components/music/PlayerContext';
+import MusicPlayer from './components/music/MusicPlayer';
 
-export default function Layout({ children, currentPageName }) {
+function LayoutContent({ children, currentPageName }) {
+  const { currentTrack } = usePlayer();
+
   const navItems = [
     { name: 'MusicLibrary', label: 'Library', icon: Music2 },
     { name: 'Playlists', label: 'Playlists', icon: ListMusic },
@@ -22,7 +26,7 @@ export default function Layout({ children, currentPageName }) {
                 MusicHub
               </span>
             </div>
-            
+
             <div className="flex gap-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -46,8 +50,19 @@ export default function Layout({ children, currentPageName }) {
           </div>
         </div>
       </nav>
-      
-      <main>{children}</main>
+
+      <main className={currentTrack ? 'pb-24' : ''}>{children}</main>
+      <MusicPlayer />
     </div>
+  );
+}
+
+export default function Layout({ children, currentPageName }) {
+  return (
+    <PlayerProvider>
+      <LayoutContent currentPageName={currentPageName}>
+        {children}
+      </LayoutContent>
+    </PlayerProvider>
   );
 }

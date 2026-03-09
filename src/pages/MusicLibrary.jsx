@@ -6,6 +6,7 @@ import UploadSection from '../components/music/UploadSection';
 import TrackCard from '../components/music/TrackCard';
 import FilterBar from '../components/music/FilterBar';
 import VersionGroupCard from '../components/music/VersionGroupCard';
+import { usePlayer } from '../components/music/PlayerContext';
 
 export default function MusicLibrary() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +14,7 @@ export default function MusicLibrary() {
   const [sortBy, setSortBy] = useState('-created_date');
   
   const queryClient = useQueryClient();
+  const { play } = usePlayer();
 
   const { data: tracks = [], isLoading } = useQuery({
     queryKey: ['music-tracks', sortBy],
@@ -53,6 +55,8 @@ export default function MusicLibrary() {
     
     return matchesSearch && matchesGenre;
   });
+
+  const handlePlay = (track) => play(track, filteredTracks);
 
   // Group by language
   const tracksByLanguage = filteredTracks.reduce((acc, track) => {
@@ -157,6 +161,7 @@ export default function MusicLibrary() {
                       tracks={groupTracks}
                       onUpdate={handleUpdate}
                       onDelete={handleDelete}
+                      onPlay={handlePlay}
                     />
                   ))}
                   
@@ -168,6 +173,7 @@ export default function MusicLibrary() {
                         track={track}
                         onUpdate={handleUpdate}
                         onDelete={handleDelete}
+                        onPlay={handlePlay}
                       />
                     ))}
                   </div>
@@ -184,6 +190,7 @@ export default function MusicLibrary() {
                 track={track}
                 onUpdate={handleUpdate}
                 onDelete={handleDelete}
+                onPlay={handlePlay}
               />
             ))}
           </div>

@@ -2,13 +2,28 @@ import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Music, Pencil, Download, Trash2, Star, FileText } from 'lucide-react';
+import { Music, Pencil, Download, Trash2, Star, FileText, Play, Pause } from 'lucide-react';
+import { usePlayer } from './PlayerContext';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
 import MetadataEditor from './MetadataEditor';
 import LyricsExtractor from './LyricsExtractor';
 
-export default function TrackCard({ track, onUpdate, onDelete }) {
+export default function TrackCard({ track, onUpdate, onDelete, onPlay }) {
+  const player = usePlayer();
+  const isCurrentTrack = player?.currentTrack?.id === track.id;
+  const isTrackPlaying = isCurrentTrack && player?.isPlaying;
+
+  const handlePlay = () => {
+    if (isCurrentTrack) {
+      player.togglePlayPause();
+    } else if (onPlay) {
+      onPlay(track);
+    } else {
+      player?.play(track, [track]);
+    }
+  };
+
   const [editing, setEditing] = useState(false);
   const [showLyrics, setShowLyrics] = useState(false);
 
@@ -110,6 +125,15 @@ export default function TrackCard({ track, onUpdate, onDelete }) {
           </div>
 
           <div className="flex gap-1">
+            <Button
+              size="icon"
+              variant={isCurrentTrack ? "default" : "ghost"}
+              onClick={handlePlay}
+              className={isCurrentTrack ? "bg-blue-600 hover:bg-blue-700 text-white" : ""}
+              title={isTrackPlaying ? "Pause" : "Play"}
+            >
+              {isTrackPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            </Button>
             {track.version_group && (
               <Button
                 size="icon"

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Music, Pencil, Download, Trash2, Star, FileText, Play, Pause } from 'lucide-react';
+import { Music, Pencil, Download, Trash2, Star, FileText, Play, Pause, ShoppingCart } from 'lucide-react';
 import { usePlayer } from './PlayerContext';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
@@ -27,6 +27,32 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
 
   const [editing, setEditing] = useState(false);
   const [showLyrics, setShowLyrics] = useState(false);
+  const [purchasing, setPurchasing] = useState(false);
+
+  const handleBuy = async () => {
+    const isInIframe = window.self !== window.top;
+    if (isInIframe) {
+      alert("Purchase is only available from the published app, not the preview.");
+      return;
+    }
+    setPurchasing(true);
+    try {
+      const res = await base44.functions.invoke('createCheckoutSession', {
+        track_id: track.id,
+        track_title: track.title,
+        track_artist: track.artist,
+        price_cents: Math.round((track.price || 1.99) * 100),
+        cover_art_url: track.cover_art_url || null,
+      });
+      if (res.data?.url) {
+        window.location.href = res.data.url;
+      }
+    } catch (err) {
+      toast.error("Could not start checkout");
+    } finally {
+      setPurchasing(false);
+    }
+  };
 
   const handleDelete = async () => {
     if (confirm("Delete this track?")) {
@@ -130,7 +156,21 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
             </div>
           </div>
 
-          <div className="flex gap-1">
+          <div className="flex gap-1 flex-wrap justify-end">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleBuy}
+              disabled={purchasing}
+              className="text-amber-600 border-amber-300 hover:bg-amber-50 font-semibold text-xs px-2"
+              title="Purchase & Download"
+            >
+              {purchasing ? (
+                <span className="animate-pulse">...</span>
+              ) : (
+                <><ShoppingCart className="w-3 h-3 mr-1" />${(track.price || 1.99).toFixed(2)}</>
+              )}
+            </Button>
             <Button
               size="icon"
               variant={isCurrentTrack ? "default" : "ghost"}

@@ -190,6 +190,19 @@ Return enhanced metadata.`,
             </p>
           </div>
 
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Price (USD)</label>
+            <Input
+              type="number"
+              step="0.01"
+              min="0"
+              value={editData.price || ''}
+              onChange={(e) => setEditData({...editData, price: parseFloat(e.target.value) || null})}
+              placeholder="e.g. 1.99"
+            />
+            <p className="text-xs text-slate-500">Leave blank for default $1.99</p>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Year</label>

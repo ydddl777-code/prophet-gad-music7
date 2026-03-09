@@ -49,12 +49,14 @@
  */
 import MusicLibrary from './pages/MusicLibrary';
 import Playlists from './pages/Playlists';
+import PurchaseSuccess from './pages/PurchaseSuccess';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "MusicLibrary": MusicLibrary,
     "Playlists": Playlists,
+    "PurchaseSuccess": PurchaseSuccess,
 }
 
 export const pagesConfig = {

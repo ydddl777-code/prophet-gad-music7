@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp, Star } from 'lucide-react';
 import TrackCard from './TrackCard';
 
-export default function VersionGroupCard({ groupName, tracks, onUpdate, onDelete, onPlay }) {
+export default function VersionGroupCard({ groupName, tracks, onUpdate, onDelete, onPlay, isAdmin = false }) {
   const [expanded, setExpanded] = useState(false);
   
   // Sort to show best version first
@@ -68,6 +68,7 @@ export default function VersionGroupCard({ groupName, tracks, onUpdate, onDelete
               onUpdate={onUpdate}
               onDelete={onDelete}
               onPlay={onPlay}
+              isAdmin={isAdmin}
             />
           ))}
         </div>
@@ -80,6 +81,7 @@ export default function VersionGroupCard({ groupName, tracks, onUpdate, onDelete
             onUpdate={onUpdate}
             onDelete={onDelete}
             onPlay={onPlay}
+            isAdmin={isAdmin}
           />
         </div>
       )}

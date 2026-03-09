@@ -38,16 +38,27 @@ export default function UploadSection({ onUploadComplete }) {
           const { file_url } = await base44.integrations.Core.UploadFile({ file });
           console.log(`File uploaded: ${file_url}`);
           
-          // Extract metadata using LLM
+          // Extract metadata + BPM + rhythm analysis using LLM
           setExtracting(true);
           const metadata = await base44.integrations.Core.InvokeLLM({
-            prompt: `Extract metadata from this music file: ${file.name}. 
-            Parse the filename and return structured data.
-            If the filename has format like "Artist - Title.mp3" or "Artist - Album - Title.mp3", extract those parts.
-            Make reasonable guesses for genre based on the artist/title if you know them.
-            IMPORTANT: Detect the language of the song. It should be one of: "English", "Dominican Spanish", or "Haitian Creole". 
-            Use the artist name, title, and any context clues to determine the language.
-            If you cannot determine the language, default to "English".`,
+            prompt: `You are a music expert and DJ. Analyze this music file name: "${file.name}".
+
+            1. Extract metadata: title, artist, album, genre, year.
+            2. Detect language: must be one of "English", "Dominican Spanish", or "Haitian Creole". Use artist/title context clues. Default to "English" if unsure.
+            3. Estimate BPM (beats per minute) based on your knowledge of the artist/genre:
+               - Bachata: typically 100-140 BPM
+               - Kompa (Haitian Compas): typically 100-120 BPM  
+               - Reggae: typically 60-90 BPM
+               - Reggaeton: typically 90-100 BPM
+               - Merengue: typically 120-160 BPM
+               - Salsa: typically 170-240 BPM
+               - Gospel: typically 60-120 BPM
+            4. Detect rhythm_style — one of: "Bachata", "Kompa", "Reggae", "Reggaeton", "Gospel", "Salsa", "Merengue", "Pop", "R&B", "Hip-Hop", "Other"
+               - Dominican Spanish artists → likely Bachata or Merengue
+               - Haitian Creole artists → likely Kompa
+               - If it's a religious/praise song → Gospel
+            5. Try to identify a cover_art_url from iTunes search API or a known public image URL for the album art. Return null if unknown.`,
+            add_context_from_internet: true,
             response_json_schema: {
               type: "object",
               properties: {
@@ -56,11 +67,29 @@ export default function UploadSection({ onUploadComplete }) {
                 album: { type: "string" },
                 genre: { type: "string" },
                 language: { type: "string", enum: ["English", "Dominican Spanish", "Haitian Creole"] },
-                year: { type: "number" }
+                year: { type: "number" },
+                bpm: { type: "number" },
+                rhythm_style: { type: "string", enum: ["Bachata", "Kompa", "Reggae", "Reggaeton", "Gospel", "Salsa", "Merengue", "Pop", "R&B", "Hip-Hop", "Other"] },
+                cover_art_url: { type: "string" }
               }
             }
           });
           console.log(`Metadata extracted:`, metadata);
+
+          // Try iTunes API for cover art if LLM didn't find one
+          let coverArtUrl = metadata.cover_art_url || null;
+          if (!coverArtUrl && (metadata.artist || metadata.title)) {
+            try {
+              const query = encodeURIComponent(`${metadata.artist || ''} ${metadata.title || ''}`);
+              const itunesRes = await fetch(`https://itunes.apple.com/search?term=${query}&media=music&limit=1`);
+              const itunesData = await itunesRes.json();
+              if (itunesData.results?.[0]?.artworkUrl100) {
+                coverArtUrl = itunesData.results[0].artworkUrl100.replace('100x100', '600x600');
+              }
+            } catch (e) {
+              console.log('iTunes lookup failed:', e);
+            }
+          }
 
           // Check for duplicates by metadata (title + artist + album)
           const isDuplicate = existingTracks.some(existing => {
@@ -86,6 +115,9 @@ export default function UploadSection({ onUploadComplete }) {
             genre: metadata.genre,
             language: metadata.language || "English",
             year: metadata.year,
+            bpm: metadata.bpm || null,
+            rhythm_style: metadata.rhythm_style || null,
+            cover_art_url: coverArtUrl || null,
             file_url,
             file_size: file.size,
             duration: "Unknown"

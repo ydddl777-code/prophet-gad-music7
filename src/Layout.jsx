@@ -19,12 +19,17 @@ function LayoutContent({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-8 h-16">
             <div className="flex items-center gap-2 font-bold text-xl">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <Music2 className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-red-700 flex items-center justify-center shadow-md">
+                <Music2 className="w-6 h-6 text-white" />
               </div>
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                MusicHub
-              </span>
+              <div className="flex flex-col leading-tight">
+                <span className="bg-gradient-to-r from-amber-500 to-red-600 bg-clip-text text-transparent font-extrabold tracking-tight">
+                  Prophet Gad Music
+                </span>
+                <span className="text-[10px] font-normal text-slate-400 tracking-wide">
+                  Thread Bear Music · Remnant Seed LLC
+                </span>
+              </div>
             </div>
 
             <div className="flex gap-1">

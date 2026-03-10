@@ -186,8 +186,8 @@ export default function MusicLibrary() {
           </div>
         ) : filteredTracks.length === 0 ? (
           <div className="text-center py-12">
-            <Disc3 className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-600">
+            <Disc3 className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+            <p className="text-slate-400">
               {tracks.length === 0 ? "No tracks yet. Upload some music to get started!" : "No tracks match your filters."}
             </p>
           </div>

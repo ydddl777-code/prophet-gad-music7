@@ -12,6 +12,8 @@ export function PlayerProvider({ children }) {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [queueLength, setQueueLength] = useState(0);
   const [eqBands, setEqBands] = useState({ bass: 0, mid: 0, treble: 0 });
+  const [previewEnded, setPreviewEnded] = useState(false);
+  const previewTimerRef = useRef(null);
 
   const audioRef = useRef(null);
   const queueRef = useRef([]);
@@ -71,7 +73,7 @@ export function PlayerProvider({ children }) {
     audio.crossOrigin = 'anonymous';
     audioRef.current = audio;
 
-    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
+    // onTimeUpdate defined above with preview logic
     const onLoadedMetadata = () => {
       setDuration(audio.duration || 0);
       setIsLoading(false);
@@ -84,6 +86,16 @@ export function PlayerProvider({ children }) {
       } else {
         setIsPlaying(false);
         setCurrentTime(0);
+      }
+    };
+    const onTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+      // 30-second preview cutoff for non-free tracks
+      const track = queueRef.current[currentIndexRef.current];
+      if (track && !track.is_free_listen && audio.currentTime >= 30) {
+        audio.pause();
+        setIsPlaying(false);
+        setPreviewEnded(true);
       }
     };
     const onWaiting = () => setIsLoading(true);
@@ -113,7 +125,10 @@ export function PlayerProvider({ children }) {
     };
   }, []);
 
+  const dismissPreview = () => setPreviewEnded(false);
+
   function loadTrack(track, queue, idx) {
+    setPreviewEnded(false);
     const audio = audioRef.current;
     if (!audio) return;
     queueRef.current = queue;
@@ -196,9 +211,9 @@ export function PlayerProvider({ children }) {
   return (
     <PlayerContext.Provider value={{
       currentTrack, isPlaying, isLoading, currentTime, duration, volume,
-      currentIndex, queueLength, eqBands,
+      currentIndex, queueLength, eqBands, previewEnded,
       play, togglePlayPause, next, previous, seek, setVolume, setEqBand,
-      analyserRef,
+      dismissPreview, analyserRef,
     }}>
       {children}
     </PlayerContext.Provider>

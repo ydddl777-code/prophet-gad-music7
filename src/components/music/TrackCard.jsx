@@ -123,7 +123,7 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
                </Badge>
              )}
            </div>
-            <p className="text-sm text-slate-400 truncate">{track.artist || "Prophet Gad"}</p>
+            <p className="text-sm text-slate-400 truncate">{(!track.artist || track.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : track.artist}</p>
             {track.album && <p className="text-xs text-slate-500 truncate">{track.album}</p>}
             
             <div className="mt-1.5 mb-1">

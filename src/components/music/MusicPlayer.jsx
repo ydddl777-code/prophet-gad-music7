@@ -125,7 +125,7 @@ export default function MusicPlayer() {
             )}
             <div className="min-w-0 hidden sm:block">
               <p className="font-semibold text-sm truncate text-white">{currentTrack.title}</p>
-              <p className="text-xs text-slate-400 truncate">{currentTrack.artist || 'Prophet Gad'}</p>
+              <p className="text-xs text-slate-400 truncate">{(!currentTrack.artist || currentTrack.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : currentTrack.artist}</p>
             </div>
           </div>
 

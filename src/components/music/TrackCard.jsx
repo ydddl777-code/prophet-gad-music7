@@ -98,7 +98,7 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
           onSave={onUpdate}
         />
       )}
-    <Card className={`hover:shadow-lg transition-shadow ${track.is_best_version ? 'bg-gradient-to-br from-amber-50 to-white border-2 border-amber-400' : 'bg-white'}`}>
+    <Card className={`hover:shadow-lg transition-shadow ${track.is_best_version ? 'bg-gradient-to-br from-amber-900/40 to-slate-800 border-2 border-amber-500' : 'bg-slate-800 border border-slate-700'}`}>
      <CardContent className="p-4">
        <div className="flex items-start gap-3">
          <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden ${track.is_best_version ? 'bg-gradient-to-br from-amber-400 to-amber-600' : 'bg-gradient-to-br from-blue-500 to-purple-600'}`}>
@@ -109,7 +109,7 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
 
          <div className="flex-1 min-w-0">
            <div className="flex items-center gap-2">
-             <h3 className="font-semibold text-lg truncate">{track.title}</h3>
+             <h3 className="font-bold text-xl text-white truncate">{track.title}</h3>
              {track.is_best_version && (
                <Badge className="bg-amber-500 hover:bg-amber-600 text-white">
                  <Star className="w-3 h-3 fill-white mr-1" />
@@ -123,20 +123,20 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
                </Badge>
              )}
            </div>
-            <p className="text-sm text-slate-600 truncate">{track.artist || "Unknown Artist"}</p>
-            <p className="text-xs text-slate-500 truncate">{track.album || "Unknown Album"}</p>
+            <p className="text-sm text-slate-400 truncate">{track.artist || "Prophet Gad"}</p>
+            {track.album && <p className="text-xs text-slate-500 truncate">{track.album}</p>}
             
             <div className="mt-1.5 mb-1">
               <BpmMeter bpm={track.bpm} rhythmStyle={track.rhythm_style} compact />
             </div>
             <div className="flex gap-2 mt-2 flex-wrap">
               {track.version_group && (
-                <Badge variant="outline" className="bg-slate-100 text-slate-700">
+                <Badge variant="outline" className="bg-slate-700/50 text-slate-300 border-slate-600">
                   v: {track.version_group}
                 </Badge>
               )}
               {track.genre && (
-                <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+                <Badge variant="secondary" className="bg-purple-900/50 text-purple-300">
                   {track.genre}
                 </Badge>
               )}
@@ -144,12 +144,12 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
                 <Badge variant="outline">{track.year}</Badge>
               )}
               {track.tags && track.tags.slice(0, 2).map((tag, i) => (
-                <Badge key={i} variant="secondary" className="bg-blue-50 text-blue-700">
+                <Badge key={i} variant="secondary" className="bg-blue-900/40 text-blue-300">
                   {tag}
                 </Badge>
               ))}
               {track.tags && track.tags.length > 2 && (
-                <Badge variant="secondary" className="bg-slate-100 text-slate-600">
+                <Badge variant="secondary" className="bg-slate-700 text-slate-400">
                   +{track.tags.length - 2}
                 </Badge>
               )}

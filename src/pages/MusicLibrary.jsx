@@ -67,15 +67,7 @@ export default function MusicLibrary() {
 
   const handlePlay = (track) => play(track, filteredTracks);
 
-  // Group by language
-  const tracksByLanguage = filteredTracks.reduce((acc, track) => {
-    const language = track.language || 'Unknown Language';
-    if (!acc[language]) acc[language] = [];
-    acc[language].push(track);
-    return acc;
-  }, {});
-
-  // Group tracks by version_group within each language
+  // Group tracks by version_group within each section
   const groupTracksByVersion = (tracks) => {
     const versionGroups = {};
     const standaloneTracksArray = [];
@@ -94,26 +86,72 @@ export default function MusicLibrary() {
     return { versionGroups, standaloneTracksArray };
   };
 
+  // Classify into two sections
+  const isDominicanMemories = (track) =>
+    track.language === 'Dominican Spanish' ||
+    track.language === 'Haitian Creole' ||
+    (track.language === 'English' && ['Bachata', 'Kompa'].includes(track.rhythm_style));
+
+  const dominicanTracks = filteredTracks.filter(isDominicanMemories);
+  const propheticTracks = filteredTracks.filter(t => !isDominicanMemories(t));
+
+  const renderSection = (sectionTracks, title, subtitle, isPrimary) => {
+    if (sectionTracks.length === 0) return null;
+    const { versionGroups, standaloneTracksArray } = groupTracksByVersion(sectionTracks);
+    return (
+      <div className={isPrimary ? 'mb-16' : 'border-t border-slate-800 pt-12 mb-8'}>
+        {isPrimary ? (
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-3 mb-3">
+              <div className="h-px w-20 bg-gradient-to-r from-transparent to-amber-500/50" />
+              <span className="text-amber-500 text-xs font-bold uppercase tracking-widest">Primary Collection</span>
+              <div className="h-px w-20 bg-gradient-to-l from-transparent to-amber-500/50" />
+            </div>
+            <h2 className="text-4xl font-black text-white mb-2">{title}</h2>
+            <p className="text-slate-400 text-sm">{subtitle}</p>
+          </div>
+        ) : (
+          <div className="mb-8">
+            <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Side Collection</span>
+            <h3 className="text-2xl font-bold text-slate-300 mt-1">{title}</h3>
+            <p className="text-slate-500 text-sm mt-1">{subtitle}</p>
+          </div>
+        )}
+        <div className="space-y-4">
+          {Object.entries(versionGroups).map(([groupName, groupTracks]) => (
+            <VersionGroupCard key={groupName} groupName={groupName} tracks={groupTracks}
+              onUpdate={handleUpdate} onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} />
+          ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {standaloneTracksArray.map((track) => (
+              <TrackCard key={track.id} track={track} onUpdate={handleUpdate}
+                onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900">
       {/* Prophet Hero Banner */}
       <ProphetHeroBanner />
 
       {/* Library Header */}
-      <div className="bg-white border-b">
+      <div className="bg-slate-900 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                <Music2 className="w-6 h-6 text-amber-500" />
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                 Prophetic Music Library
               </h2>
-              <p className="text-slate-500 text-sm mt-1">These are not merely songs — they are oracles set to rhythm</p>
+              <p className="text-slate-400 text-sm mt-1">These are not merely songs — they are oracles set to rhythm</p>
             </div>
             <div className="flex items-center gap-6">
-              <div className="flex gap-5 text-sm text-slate-600">
-                <div><span className="font-bold text-slate-900">{tracks.length}</span> tracks</div>
-                <div><span className="font-bold text-slate-900">{genres.length}</span> genres</div>
+              <div className="flex gap-5 text-sm text-slate-400">
+                <div><span className="font-bold text-white">{tracks.length}</span> tracks</div>
+                <div><span className="font-bold text-white">{genres.length}</span> genres</div>
               </div>
               {!isAdmin && (
                 <Button variant="outline" size="sm" className="gap-2" onClick={() => base44.auth.redirectToLogin()}>
@@ -144,7 +182,7 @@ export default function MusicLibrary() {
         {isLoading ? (
           <div className="text-center py-12">
             <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-slate-600">Loading your library...</p>
+            <p className="text-slate-400">Loading your library...</p>
           </div>
         ) : filteredTracks.length === 0 ? (
           <div className="text-center py-12">
@@ -153,66 +191,11 @@ export default function MusicLibrary() {
               {tracks.length === 0 ? "No tracks yet. Upload some music to get started!" : "No tracks match your filters."}
             </p>
           </div>
-        ) : selectedGenre === 'all' ? (
-          // Grouped by language with version grouping
-          Object.entries(tracksByLanguage).map(([language, languageTracks]) => {
-            const { versionGroups, standaloneTracksArray } = groupTracksByVersion(languageTracks);
-            
-            return (
-              <div key={language} className="bg-white rounded-xl p-6 shadow-sm mb-8">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                    <Music2 className="w-6 h-6 text-white" />
-                  </div>
-                  {language}
-                  <span className="text-sm font-normal text-slate-500">({languageTracks.length} tracks)</span>
-                </h2>
-                
-                <div className="space-y-4">
-                  {/* Version Groups */}
-                  {Object.entries(versionGroups).map(([groupName, groupTracks]) => (
-                    <VersionGroupCard
-                      key={groupName}
-                      groupName={groupName}
-                      tracks={groupTracks}
-                      onUpdate={handleUpdate}
-                      onDelete={handleDelete}
-                      onPlay={handlePlay}
-                      isAdmin={isAdmin}
-                    />
-                  ))}
-                  
-                  {/* Standalone Tracks */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {standaloneTracksArray.map((track) => (
-                      <TrackCard
-                        key={track.id}
-                        track={track}
-                        onUpdate={handleUpdate}
-                        onDelete={handleDelete}
-                        onPlay={handlePlay}
-                        isAdmin={isAdmin}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })
         ) : (
-          // Single genre or search results
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredTracks.map((track) => (
-              <TrackCard
-                key={track.id}
-                track={track}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-                onPlay={handlePlay}
-                isAdmin={isAdmin}
-              />
-            ))}
-          </div>
+          <>
+            {renderSection(propheticTracks, 'Prophetic · Spiritual', 'Oracles set to rhythm · Prophecy · Judgment · Repentance · Awakening', true)}
+            {renderSection(dominicanTracks, '🌴 Dominican Memories', 'Dominican Spanish · Haitian Creole · Bachata · Love & Life', false)}
+          </>
         )}
       </div>
     </div>

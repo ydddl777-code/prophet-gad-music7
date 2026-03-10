@@ -19,7 +19,7 @@ export default function VersionGroupCard({ groupName, tracks, onUpdate, onDelete
   
   return (
     <div className="space-y-2">
-      <Card className="bg-gradient-to-r from-slate-50 to-slate-100 border-2 border-slate-200">
+      <Card className="bg-slate-800 border border-slate-700">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex-1">
@@ -28,8 +28,8 @@ export default function VersionGroupCard({ groupName, tracks, onUpdate, onDelete
                   {tracks.length}
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">{groupName}</h3>
-                  <p className="text-sm text-slate-600">
+                  <h3 className="font-bold text-lg text-white">{groupName}</h3>
+                  <p className="text-sm text-slate-400">
                     {tracks.length} version{tracks.length !== 1 ? 's' : ''} • 
                     Best: {bestVersion.artist || 'Unknown'}
                   </p>
@@ -60,7 +60,7 @@ export default function VersionGroupCard({ groupName, tracks, onUpdate, onDelete
       </Card>
       
       {expanded && (
-        <div className="ml-4 space-y-2 border-l-2 border-slate-200 pl-4">
+        <div className="ml-4 space-y-2 border-l-2 border-slate-700 pl-4">
           {sortedTracks.map((track) => (
             <TrackCard
               key={track.id}

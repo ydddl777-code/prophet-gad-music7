@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Music, Pencil, Download, Trash2, Star, FileText, Play, Pause, ShoppingCart } from 'lucide-react';
+import { Music, Pencil, Download, Trash2, Star, FileText, Play, Pause, ShoppingCart, Unlock } from 'lucide-react';
 import { usePlayer } from './PlayerContext';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
@@ -66,6 +66,16 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
     }
   };
 
+  const toggleFreeListen = async () => {
+    try {
+      await base44.entities.MusicTrack.update(track.id, { is_free_listen: !track.is_free_listen });
+      toast.success(track.is_free_listen ? "Removed free listen" : "Marked as free full listen");
+      onUpdate();
+    } catch (error) {
+      toast.error("Update failed");
+    }
+  };
+
   const toggleBestVersion = async () => {
     try {
       await base44.entities.MusicTrack.update(track.id, { 
@@ -110,7 +120,16 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
          <div className="flex-1 min-w-0">
            <div className="flex items-center gap-2">
              <h3 className="font-bold text-xl text-white truncate">{track.title}</h3>
-             {track.is_best_version && (
+               {track.is_free_listen ? (
+                 <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs shrink-0">
+                   FREE
+                 </Badge>
+               ) : (
+                 <Badge className="bg-slate-700 text-slate-300 text-xs shrink-0">
+                   PREVIEW
+                 </Badge>
+               )}
+               {track.is_best_version && (
                <Badge className="bg-amber-500 hover:bg-amber-600 text-white">
                  <Star className="w-3 h-3 fill-white mr-1" />
                  Best
@@ -180,6 +199,17 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
             >
               {isTrackPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
             </Button>
+            {isAdmin && (
+              <Button
+                size="icon"
+                variant={track.is_free_listen ? "default" : "ghost"}
+                onClick={toggleFreeListen}
+                className={track.is_free_listen ? "bg-emerald-600 hover:bg-emerald-700" : ""}
+                title={track.is_free_listen ? "Remove free listen" : "Mark as free full listen"}
+              >
+                <Unlock className={`w-4 h-4 ${track.is_free_listen ? 'text-white' : ''}`} />
+              </Button>
+            )}
             {isAdmin && track.version_group && (
               <Button
                 size="icon"

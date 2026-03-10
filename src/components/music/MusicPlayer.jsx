@@ -27,9 +27,9 @@ export default function MusicPlayer() {
 
   const {
     currentTrack, isPlaying, isLoading, currentTime, duration,
-    volume, currentIndex, queueLength, eqBands,
+    volume, currentIndex, queueLength, eqBands, previewEnded,
     togglePlayPause, next, previous, seek, setVolume, setEqBand,
-    analyserRef,
+    dismissPreview, analyserRef,
   } = player;
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
@@ -43,6 +43,33 @@ export default function MusicPlayer() {
 
   return (
     <>
+      {/* Preview Ended Popup */}
+      {previewEnded && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-amber-500/60 rounded-2xl p-5 shadow-2xl w-80 text-center">
+          <p className="text-amber-400 font-bold text-sm mb-1">🎵 30-Second Preview Complete</p>
+          <p className="text-white font-semibold mb-0.5">{currentTrack.title}</p>
+          <p className="text-slate-400 text-xs mb-4">Purchase the full oracle to hear the complete prophecy.</p>
+          <div className="flex gap-2">
+            <button
+              onClick={dismissPreview}
+              className="flex-1 text-xs text-slate-400 border border-slate-700 rounded-lg py-2 hover:border-slate-500 transition-colors"
+            >
+              Dismiss
+            </button>
+            <button
+              onClick={() => {
+                const isInIframe = window.self !== window.top;
+                if (isInIframe) { alert("Purchase is only available from the published app."); return; }
+                dismissPreview();
+              }}
+              className="flex-1 text-xs bg-gradient-to-r from-amber-500 to-red-600 text-white rounded-lg py-2 font-semibold hover:from-amber-400 hover:to-red-500 transition-colors"
+            >
+              ${(currentTrack.price || 1.99).toFixed(2)} — Buy Full Track
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* EQ Panel */}
       {showEQ && (
         <div className="fixed bottom-20 right-4 z-50 bg-slate-900 border border-slate-700 rounded-2xl p-5 shadow-2xl w-72">

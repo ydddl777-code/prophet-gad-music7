@@ -66,25 +66,6 @@ export default function MusicLibrary() {
 
   const handlePlay = (track) => play(track, filteredTracks);
 
-  // Group tracks by version_group within each section
-  const groupTracksByVersion = (tracks) => {
-    const versionGroups = {};
-    const standaloneTracksArray = [];
-
-    tracks.forEach(track => {
-      if (track.version_group) {
-        if (!versionGroups[track.version_group]) {
-          versionGroups[track.version_group] = [];
-        }
-        versionGroups[track.version_group].push(track);
-      } else {
-        standaloneTracksArray.push(track);
-      }
-    });
-
-    return { versionGroups, standaloneTracksArray };
-  };
-
   // Classify into two sections
   const isDominicanMemories = (track) =>
     track.language === 'Dominican Spanish' ||

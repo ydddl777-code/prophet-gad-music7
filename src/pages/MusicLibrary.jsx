@@ -4,9 +4,8 @@ import { base44 } from "@/api/base44Client";
 import { Music2, Disc3, LogIn } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import UploadSection from '../components/music/UploadSection';
-import TrackCard from '../components/music/TrackCard';
+import TrackRow from '../components/music/TrackRow';
 import FilterBar from '../components/music/FilterBar';
-import VersionGroupCard from '../components/music/VersionGroupCard';
 import ProphetHeroBanner from '../components/music/ProphetHeroBanner';
 import { usePlayer } from '../components/music/PlayerContext';
 
@@ -95,39 +94,32 @@ export default function MusicLibrary() {
   const dominicanTracks = filteredTracks.filter(isDominicanMemories);
   const propheticTracks = filteredTracks.filter(t => !isDominicanMemories(t));
 
-  const renderSection = (sectionTracks, title, subtitle, isPrimary) => {
+  const renderSection = (sectionTracks, title, subtitle, icon) => {
     if (sectionTracks.length === 0) return null;
-    const { versionGroups, standaloneTracksArray } = groupTracksByVersion(sectionTracks);
     return (
-      <div className={isPrimary ? 'mb-16' : 'border-t border-slate-800 pt-12 mb-8'}>
-        {isPrimary ? (
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-3 mb-3">
-              <div className="h-px w-20 bg-gradient-to-r from-transparent to-amber-500/50" />
-              <span className="text-amber-500 text-xs font-bold uppercase tracking-widest">Primary Collection</span>
-              <div className="h-px w-20 bg-gradient-to-l from-transparent to-amber-500/50" />
-            </div>
-            <h2 className="text-4xl font-black text-white mb-2">{title}</h2>
-            <p className="text-slate-400 text-sm">{subtitle}</p>
-          </div>
-        ) : (
-          <div className="mb-8">
-            <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Side Collection</span>
-            <h3 className="text-2xl font-bold text-slate-300 mt-1">{title}</h3>
-            <p className="text-slate-500 text-sm mt-1">{subtitle}</p>
-          </div>
-        )}
-        <div className="space-y-4">
-          {Object.entries(versionGroups).map(([groupName, groupTracks]) => (
-            <VersionGroupCard key={groupName} groupName={groupName} tracks={groupTracks}
-              onUpdate={handleUpdate} onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} />
+      <div className="mb-10">
+        {/* Section Header */}
+        <div className="flex items-center gap-3 mb-1 px-1">
+          <span className="text-lg font-bold text-white">{icon} {title}</span>
+          <span className="text-slate-500 text-xs">{sectionTracks.length} tracks</span>
+        </div>
+        <p className="text-slate-500 text-xs mb-3 px-1">{subtitle}</p>
+
+        {/* Column Headers */}
+        <div className="flex items-center gap-3 px-4 py-2 border-b border-slate-700 text-xs text-slate-500 font-medium uppercase tracking-wide">
+          <div className="w-10 flex-shrink-0" />
+          <div className="flex-1">Title / Artist</div>
+          <div className="hidden sm:block w-24 text-right">Duration · Date</div>
+          <div className="hidden md:block w-20 text-center">Style</div>
+          <div className="w-28 text-right">Actions</div>
+        </div>
+
+        {/* Track Rows */}
+        <div className="rounded-lg overflow-hidden border border-slate-800">
+          {sectionTracks.map((track) => (
+            <TrackRow key={track.id} track={track} onUpdate={handleUpdate}
+              onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} />
           ))}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {standaloneTracksArray.map((track) => (
-              <TrackCard key={track.id} track={track} onUpdate={handleUpdate}
-                onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} />
-            ))}
-          </div>
         </div>
       </div>
     );
@@ -193,8 +185,8 @@ export default function MusicLibrary() {
           </div>
         ) : (
           <>
-            {renderSection(propheticTracks, 'Prophetic · Spiritual', 'Oracles set to rhythm · Prophecy · Judgment · Repentance · Awakening', true)}
-            {renderSection(dominicanTracks, '🌴 Dominican Memories', 'Dominican Spanish · Haitian Creole · Bachata · Love & Life', false)}
+            {renderSection(propheticTracks, 'Prophetic · Spiritual', 'Oracles set to rhythm · Prophecy · Judgment · Repentance · Awakening', '🔥')}
+            {renderSection(dominicanTracks, 'Dominican Memories', 'Dominican Spanish · Haitian Creole · Bachata · Love & Life', '🌴')}
           </>
         )}
       </div>

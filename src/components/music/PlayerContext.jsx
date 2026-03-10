@@ -11,14 +11,64 @@ export function PlayerProvider({ children }) {
   const [volume, setVolumeState] = useState(0.8);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [queueLength, setQueueLength] = useState(0);
+  const [eqBands, setEqBands] = useState({ bass: 0, mid: 0, treble: 0 });
 
   const audioRef = useRef(null);
   const queueRef = useRef([]);
   const currentIndexRef = useRef(-1);
+  const audioCtxRef = useRef(null);
+  const analyserRef = useRef(null);
+  const filtersRef = useRef({});
+
+  const initAudioContext = () => {
+    if (audioCtxRef.current) {
+      if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume();
+      return;
+    }
+    const audio = audioRef.current;
+    if (!audio) return;
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+      const bass = ctx.createBiquadFilter();
+      bass.type = 'lowshelf';
+      bass.frequency.value = 100;
+      bass.gain.value = 0;
+
+      const mid = ctx.createBiquadFilter();
+      mid.type = 'peaking';
+      mid.frequency.value = 1000;
+      mid.Q.value = 1;
+      mid.gain.value = 0;
+
+      const treble = ctx.createBiquadFilter();
+      treble.type = 'highshelf';
+      treble.frequency.value = 8000;
+      treble.gain.value = 0;
+
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.8;
+
+      const source = ctx.createMediaElementSource(audio);
+      source.connect(bass);
+      bass.connect(mid);
+      mid.connect(treble);
+      treble.connect(analyser);
+      analyser.connect(ctx.destination);
+
+      audioCtxRef.current = ctx;
+      analyserRef.current = analyser;
+      filtersRef.current = { bass, mid, treble };
+    } catch (err) {
+      console.warn('Web Audio API init failed:', err.message);
+    }
+  };
 
   useEffect(() => {
     const audio = new Audio();
     audio.volume = 0.8;
+    audio.crossOrigin = 'anonymous';
     audioRef.current = audio;
 
     const onTimeUpdate = () => setCurrentTime(audio.currentTime);
@@ -75,6 +125,7 @@ export function PlayerProvider({ children }) {
     setCurrentTime(0);
     setDuration(0);
     audio.src = track.file_url;
+    initAudioContext();
     audio.play()
       .then(() => setIsPlaying(true))
       .catch(err => {
@@ -97,6 +148,7 @@ export function PlayerProvider({ children }) {
       audio.pause();
       setIsPlaying(false);
     } else {
+      initAudioContext();
       audio.play().then(() => setIsPlaying(true)).catch(console.error);
     }
   };
@@ -134,11 +186,19 @@ export function PlayerProvider({ children }) {
     setVolumeState(v);
   };
 
+  const setEqBand = (band, value) => {
+    if (filtersRef.current[band]) {
+      filtersRef.current[band].gain.value = value;
+    }
+    setEqBands(prev => ({ ...prev, [band]: value }));
+  };
+
   return (
     <PlayerContext.Provider value={{
       currentTrack, isPlaying, isLoading, currentTime, duration, volume,
-      currentIndex, queueLength,
-      play, togglePlayPause, next, previous, seek, setVolume,
+      currentIndex, queueLength, eqBands,
+      play, togglePlayPause, next, previous, seek, setVolume, setEqBand,
+      analyserRef,
     }}>
       {children}
     </PlayerContext.Provider>

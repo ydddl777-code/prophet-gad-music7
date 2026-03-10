@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Zap, Eye, AlertTriangle, ChevronLeft, ChevronRight } from 'lucide-react';
+import TribesGallery from './TribesGallery';
 
 const AVATARS = [
   {
@@ -149,6 +150,9 @@ export default function ProphetHeroBanner() {
           </div>
         </div>
       </div>
+
+      {/* TWELVE TRIBES GALLERY */}
+      <TribesGallery />
 
       {/* EXPANDED BIO */}
       {showFull && (

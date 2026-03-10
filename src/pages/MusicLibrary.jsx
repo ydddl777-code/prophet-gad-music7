@@ -96,38 +96,32 @@ export default function MusicLibrary() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
+      {/* Prophet Hero Banner */}
+      <ProphetHeroBanner />
+
+      {/* Library Header */}
       <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <Music2 className="w-7 h-7 text-white" />
-            </div>
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-slate-900">Music Library</h1>
-              <p className="text-slate-600">Organize and manage your music collection</p>
+              <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <Music2 className="w-6 h-6 text-amber-500" />
+                Prophetic Music Library
+              </h2>
+              <p className="text-slate-500 text-sm mt-1">These are not merely songs — they are oracles set to rhythm</p>
             </div>
-          </div>
-          <div className="flex items-center justify-between mt-4">
-            <div className="flex gap-6 text-sm text-slate-600">
-              <div>
-                <span className="font-semibold text-slate-900">{tracks.length}</span> tracks
+            <div className="flex items-center gap-6">
+              <div className="flex gap-5 text-sm text-slate-600">
+                <div><span className="font-bold text-slate-900">{tracks.length}</span> tracks</div>
+                <div><span className="font-bold text-slate-900">{genres.length}</span> genres</div>
               </div>
-              <div>
-                <span className="font-semibold text-slate-900">{genres.length}</span> genres
-              </div>
+              {!isAdmin && (
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => base44.auth.redirectToLogin()}>
+                  <LogIn className="w-4 h-4" />
+                  Admin Login
+                </Button>
+              )}
             </div>
-            {!isAdmin && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2"
-                onClick={() => base44.auth.redirectToLogin()}
-              >
-                <LogIn className="w-4 h-4" />
-                Admin Login
-              </Button>
-            )}
           </div>
         </div>
       </div>

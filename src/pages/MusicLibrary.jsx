@@ -119,12 +119,12 @@ export default function MusicLibrary() {
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                 Prophetic Music Library
               </h2>
-              <p className="text-slate-400 text-sm mt-1">These are not merely songs — they are oracles set to rhythm</p>
+              <p className="text-slate-400 text-sm mt-1">Hear the Visions — Listen to the Rhythm</p>
             </div>
             <div className="flex items-center gap-6">
               <div className="flex gap-5 text-sm text-slate-400">
                 <div><span className="font-bold text-white">{tracks.length}</span> tracks</div>
-                <div><span className="font-bold text-white">{genres.length}</span> genres</div>
+                <div className="text-slate-400">Eclectic mix of Gad's interpretation</div>
               </div>
               {!isAdmin && (
                 <Button variant="outline" size="sm" className="gap-2" onClick={() => base44.auth.redirectToLogin()}>

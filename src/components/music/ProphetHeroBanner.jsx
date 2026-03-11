@@ -70,7 +70,7 @@ export default function ProphetHeroBanner() {
       <div className="bg-red-700 text-white text-xs font-bold tracking-widest uppercase py-2 overflow-hidden">
         <div className="flex animate-pulse items-center justify-center gap-6 px-4 text-center">
           <AlertTriangle className="w-3 h-3 shrink-0" />
-          <span>URGENT END-TIMES WARNING &nbsp;·&nbsp; THE HOUR OF JUDGMENT IS COME &nbsp;·&nbsp; THOSE WITH EARS TO HEAR — LET THEM HEAR &nbsp;·&nbsp; "BABYLON IS FALLEN, IS FALLEN" — REVELATION 14:8</span>
+          <span>URGENT END-TIMES WARNING &nbsp;·&nbsp; THE HOUR OF HIS JUDGMENT IS COME &nbsp;·&nbsp; EARTH'S LAST DAY FINAL WARNING MESSAGE &nbsp;·&nbsp; HE THAT HATH AN EAR, LET HIM HEAR</span>
           <AlertTriangle className="w-3 h-3 shrink-0" />
         </div>
       </div>

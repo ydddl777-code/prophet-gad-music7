@@ -21,7 +21,7 @@ function LayoutContent({ children, currentPageName }) {
             <div className="flex items-center gap-6 font-bold text-xl flex-1">
               {/* Lion of Judah - Left */}
               <img 
-                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/ff8f0436d_Golden-Lion-Hea1.png" 
+                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/4626fed3d_1_The-Majesty-of-the-3D-Golden-Lion-Head.png" 
                 alt="Lion of Judah" 
                 className="w-16 h-16 object-contain"
               />

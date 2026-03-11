@@ -9,7 +9,7 @@ const AVATARS = [
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/9cab1d068_Superheropoisedinelegantdiningroom.png",
-    caption: "The Prophet in Babylon"
+    caption: "A Prophet to the Remnant Seed"
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/dde2b0bc7_Prophet_gad_trains_young_prophets_90390a5f07.jpg",
@@ -17,7 +17,7 @@ const AVATARS = [
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/5f978960b_Master_prompt_prophet_gad_is_an_ancient_israelite__delpmaspu2.png",
-    caption: "The Twelve Tribes Assembled"
+    caption: "School of the Prophets"
   },
 ];
 
@@ -127,7 +127,7 @@ export default function ProphetHeroBanner() {
             <p className="text-slate-300 text-base leading-relaxed mb-5 max-w-xl">
               The same prophetic anointing that guided King David 3,000 years ago has returned. 
               Born in a Caribbean nation of rich biblical heritage (1980), anointed at age 4, educated at an Ivy League institution, exiled at 40 — 
-              and now back with an urgent, uncompromising message: <em className="text-amber-400 not-italic font-semibold">flee Babylon before the door closes.</em>
+              and now back with an urgent, uncompromising message: <em className="text-amber-400 not-italic font-semibold">Earth's final warning message: Repent or die, for the hour of his judgment has come.</em>
             </p>
 
             <blockquote className="border-l-4 border-amber-500 pl-4 mb-5 italic text-amber-200 text-sm">

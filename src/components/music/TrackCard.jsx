@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Music, Pencil, Download, Trash2, Star, FileText, Play, Pause, ShoppingCart, Unlock } from 'lucide-react';
+import { Pencil, Download, Trash2, Star, FileText, Play, Pause, ShoppingCart, Unlock } from 'lucide-react';
 import { usePlayer } from './PlayerContext';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
@@ -111,11 +111,11 @@ export default function TrackCard({ track, onUpdate, onDelete, onPlay, isAdmin =
     <Card className={`hover:shadow-lg transition-shadow ${track.is_best_version ? 'bg-gradient-to-br from-amber-900/40 to-slate-800 border-2 border-amber-500' : 'bg-slate-800 border border-slate-700'}`}>
      <CardContent className="p-4">
        <div className="flex items-start gap-3">
-         <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden ${track.is_best_version ? 'bg-gradient-to-br from-amber-400 to-amber-600' : 'bg-gradient-to-br from-blue-500 to-purple-600'}`}>
-           {track.cover_art_url
-             ? <img src={track.cover_art_url} alt="cover" className="w-full h-full object-cover" />
-             : <Music className="w-6 h-6 text-white" />}
-         </div>
+         {track.cover_art_url && (
+           <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden ${track.is_best_version ? 'bg-gradient-to-br from-amber-400 to-amber-600' : 'bg-gradient-to-br from-blue-500 to-purple-600'}`}>
+             <img src={track.cover_art_url} alt="cover" className="w-full h-full object-cover" />
+           </div>
+         )}
 
          <div className="flex-1 min-w-0">
            <div className="flex items-center gap-2">

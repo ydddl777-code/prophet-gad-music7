@@ -45,11 +45,11 @@ const PILLARS = [
 ];
 
 const TIMELINE = [
-  { year: "1980", event: "Born in Kingston, Jamaica", sub: "Into violence and danger — as Moses was born under Pharaoh's decree" },
+  { year: "1980", event: "Born in a Caribbean Nation", sub: "Into violence and danger — as Moses was born under Pharaoh's decree" },
   { year: "Age 4", event: "Prophetic Anointing", sub: "Ritual anointing by Rastafarian elder grandfather — \"Out of the mouth of babes\" (Psalm 8:2)" },
   { year: "Age 5", event: "Exiled to Manhattan", sub: "Sent to Pharaoh's court — like Moses, \"learned in all the wisdom of the Egyptians\"" },
-  { year: "2002", event: "Wharton School of Business", sub: "Daniel in Babylon — learning the systems of power without bowing to its gods" },
-  { year: "2020", event: "The Deportation", sub: "Exiled at age 40 — the Jonah moment. Returned to Jamaica: \"Like Jonah, You led me home\"" },
+  { year: "2002", event: "Ivy League Education", sub: "Daniel in Babylon — learning the systems of power without bowing to its gods" },
+  { year: "2020", event: "The Deportation", sub: "Exiled at age 40 — the Jonah moment. Returned to the Caribbean: \"Like Jonah, You led me home\"" },
   { year: "2024", event: "The Triumphant Return", sub: "Resources amplified. Commission confirmed. The Watchman ascends the walls of Zion." },
 ];
 
@@ -60,7 +60,7 @@ export default function ProphetHeroBanner() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentAvatar(prev => (prev + 1) % AVATARS.length);
-    }, 4000);
+    }, 12000);
     return () => clearInterval(timer);
   }, []);
 
@@ -112,7 +112,7 @@ export default function ProphetHeroBanner() {
           <div className="flex-1 text-white">
             <div className="inline-flex items-center gap-2 bg-red-800/60 border border-red-500/50 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-red-300 mb-4">
               <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
-              Ancient Israelite Prophet · On Earth Right Now
+              Ancient Israelite Prophet — On Earth Right Now!
             </div>
 
             <h1 className="text-4xl lg:text-5xl font-black text-white leading-tight mb-3">
@@ -126,7 +126,7 @@ export default function ProphetHeroBanner() {
 
             <p className="text-slate-300 text-base leading-relaxed mb-5 max-w-xl">
               The same prophetic anointing that guided King David 3,000 years ago has returned. 
-              Born in Kingston, Jamaica (1980), anointed at age 4, educated at Wharton, exiled at 40 — 
+              Born in a Caribbean nation of rich biblical heritage (1980), anointed at age 4, educated at an Ivy League institution, exiled at 40 — 
               and now back with an urgent, uncompromising message: <em className="text-amber-400 not-italic font-semibold">flee Babylon before the door closes.</em>
             </p>
 

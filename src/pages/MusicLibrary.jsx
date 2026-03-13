@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from "@/api/base44Client";
-import { Music2, Disc3, LogIn } from 'lucide-react';
+import { Disc3, LogIn, Download } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import UploadSection from '../components/music/UploadSection';
 import TrackRow from '../components/music/TrackRow';
@@ -66,6 +66,23 @@ export default function MusicLibrary() {
 
   const handlePlay = (track) => play(track, filteredTracks);
 
+  const handleExportCatalog = () => {
+    const csvHeader = "Track Title,Artist Name,Price,Status\n";
+    const csvRows = tracks.map(track => {
+      const artist = (!track.artist || track.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : track.artist;
+      const price = track.price || 1.99;
+      const status = track.is_free_listen ? 'Free' : 'Paid';
+      return `"${track.title}","${artist}","${price.toFixed(2)}","${status}"`;
+    }).join('\n');
+    
+    const csvContent = csvHeader + csvRows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `prophet-gad-catalog-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  };
+
   // Classify into two sections
   const isDominicanMemories = (track) =>
     track.language === 'Dominican Spanish' ||
@@ -80,23 +97,16 @@ export default function MusicLibrary() {
     return (
       <div className="mb-10">
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-1 px-1">
-          <span className="text-lg font-bold text-white">{icon} {title}</span>
-          <span className="text-slate-500 text-xs">{sectionTracks.length} tracks</span>
-        </div>
-        <p className="text-slate-500 text-xs mb-3 px-1">{subtitle}</p>
-
-        {/* Column Headers */}
-        <div className="flex items-center gap-3 px-4 py-2 border-b border-slate-700 text-xs text-slate-500 font-medium uppercase tracking-wide">
-          <div className="w-10 flex-shrink-0" />
-          <div className="flex-1">Title / Artist</div>
-          <div className="hidden sm:block w-24 text-right">Duration · Date</div>
-          <div className="hidden md:block w-20 text-center">Style</div>
-          <div className="w-28 text-right">Actions</div>
+        <div className="mb-3 px-1">
+          <div className="flex items-center gap-3 mb-1">
+            <span className="text-lg font-bold text-white">{icon} {title}</span>
+            <span className="text-slate-500 text-xs">{sectionTracks.length} tracks</span>
+          </div>
+          <p className="text-slate-500 text-xs italic">{subtitle}</p>
         </div>
 
         {/* Track Rows */}
-        <div className="rounded-lg overflow-hidden border border-slate-800">
+        <div className="rounded-lg overflow-hidden border border-slate-900">
           {sectionTracks.map((track) => (
             <TrackRow key={track.id} track={track} onUpdate={handleUpdate}
               onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} />
@@ -107,25 +117,30 @@ export default function MusicLibrary() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900">
+    <div className="min-h-screen bg-[#111]">
       {/* Prophet Hero Banner */}
       <ProphetHeroBanner />
 
       {/* Library Header */}
-      <div className="bg-slate-900 border-b border-slate-800">
+      <div className="bg-[#111] border-b border-slate-900">
         <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-white">
                 Prophetic Music Library
               </h2>
-              <p className="text-slate-400 text-sm mt-1">Hear the Visions — Listen to the Rhythm</p>
+              <p className="text-slate-500 text-sm mt-1 italic">Hear the Visions — Listen to the Rhythm</p>
             </div>
-            <div className="flex items-center gap-6">
-              <div className="flex gap-5 text-sm text-slate-400">
-                <div><span className="font-bold text-white">{tracks.length}</span> tracks</div>
-                <div className="text-slate-400">Eclectic mix of Gad's interpretation</div>
+            <div className="flex items-center gap-3">
+              <div className="text-sm text-slate-400">
+                <span className="font-bold text-white">{tracks.length}</span> tracks
               </div>
+              {isAdmin && (
+                <Button variant="outline" size="sm" className="gap-2" onClick={handleExportCatalog}>
+                  <Download className="w-4 h-4" />
+                  Export Catalog
+                </Button>
+              )}
               {!isAdmin && (
                 <Button variant="outline" size="sm" className="gap-2" onClick={() => base44.auth.redirectToLogin()}>
                   <LogIn className="w-4 h-4" />

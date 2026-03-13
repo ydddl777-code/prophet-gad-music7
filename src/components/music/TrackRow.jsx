@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Music, Play, Pause, ShoppingCart, ChevronDown, ChevronUp, Pencil, Trash2, FileText, Unlock, Star } from 'lucide-react';
+import { Play, Pause, ShoppingCart, ChevronDown, ChevronUp, Pencil, Trash2, FileText, Unlock } from 'lucide-react';
 import { usePlayer } from './PlayerContext';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
@@ -64,7 +63,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
   };
 
   const displayArtist = (!track.artist || track.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : track.artist;
-  const formattedDate = track.created_date ? new Date(track.created_date).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' }) : '';
+  const [hovering, setHovering] = useState(false);
 
   return (
     <>
@@ -83,97 +82,65 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
         />
       )}
 
-      <div className={`group border-b border-slate-800 transition-colors ${isCurrentTrack ? 'bg-amber-950/20' : 'hover:bg-slate-800/50'}`}>
+      <div 
+        className={`group border-b border-slate-900 transition-colors ${isCurrentTrack ? 'bg-amber-950/10' : 'hover:bg-slate-900'}`}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
+      >
         {/* Main Row */}
-        <div className="flex items-center gap-3 px-4 py-3">
-          {/* Thumbnail */}
-          <div className="w-10 h-10 rounded flex-shrink-0 overflow-hidden bg-slate-700 flex items-center justify-center relative">
-            {track.cover_art_url
-              ? <img src={track.cover_art_url} alt="cover" className="w-full h-full object-cover" />
-              : <Music className="w-4 h-4 text-slate-400" />}
+        <div className="flex items-center gap-4 px-4 py-3">
+          {/* Large Cover Image */}
+          <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded">
+            {track.cover_art_url ? (
+              <img src={track.cover_art_url} alt={track.title} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full bg-[#8b0000]" />
+            )}
             <button
               onClick={handlePlay}
-              className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+              className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity"
             >
-              {isTrackPlaying
-                ? <Pause className="w-4 h-4 text-white" />
-                : <Play className="w-4 h-4 text-white" />}
+              {isTrackPlaying ? <Pause className="w-8 h-8 text-white" /> : <Play className="w-8 h-8 text-white" />}
             </button>
           </div>
 
           {/* Title + Artist */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className={`font-semibold text-sm truncate ${isCurrentTrack ? 'text-amber-400' : 'text-white'}`}>
-                {track.title}
-              </span>
-              {track.is_free_listen
-                ? <Badge className="bg-emerald-700 text-white text-[10px] px-1.5 py-0 h-4 shrink-0">FREE</Badge>
-                : <Badge className="bg-slate-700 text-slate-400 text-[10px] px-1.5 py-0 h-4 shrink-0">PREVIEW</Badge>}
-              {track.is_best_version && (
-                <Badge className="bg-amber-500 text-white text-[10px] px-1.5 py-0 h-4 shrink-0">★ Best</Badge>
-              )}
-            </div>
-            <p className="text-xs text-slate-400 truncate">{displayArtist}{track.album ? ` · ${track.album}` : ''}</p>
+            <h3 className={`font-bold text-lg sm:text-xl leading-tight mb-1 ${isCurrentTrack ? 'text-amber-400' : 'text-white'}`}>
+              {track.title}
+            </h3>
+            {displayArtist && (
+              <p className="text-sm text-[#c9a84c]">{displayArtist}</p>
+            )}
           </div>
 
-          {/* Duration + Date */}
-          <div className="text-right flex-shrink-0 mr-2 hidden sm:block">
-            <p className="text-xs text-slate-300 font-mono">{track.duration || '—'}</p>
-            <p className="text-xs text-slate-500">{formattedDate}</p>
-          </div>
-
-          {/* Style Badge */}
-          {track.rhythm_style && (
-            <Badge className="bg-slate-700 text-slate-300 text-[10px] hidden md:inline-flex">
-              {track.rhythm_style}
-            </Badge>
-          )}
-
-          {/* Actions */}
-          <div className="flex items-center gap-1 flex-shrink-0">
-            {/* Play button (always visible) */}
-            <Button size="icon" variant={isCurrentTrack ? "default" : "ghost"} onClick={handlePlay}
-              className={`w-7 h-7 ${isCurrentTrack ? 'bg-amber-500 hover:bg-amber-600' : ''}`}>
-              {isTrackPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-            </Button>
-
-            {/* Buy button */}
-            {!track.is_free_listen && (
-              <Button size="sm" variant="ghost" onClick={handleBuy} disabled={purchasing}
-                className="text-amber-500 hover:text-amber-400 text-xs px-2 h-7">
-                {purchasing ? '...' : <><ShoppingCart className="w-3 h-3 mr-1" />${(track.price || 1.99).toFixed(2)}</>}
+          {/* Price / Action Button */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {track.is_free_listen ? (
+              <div className="bg-green-800 text-white font-bold text-sm px-4 py-2 rounded-full">
+                FREE
+              </div>
+            ) : (
+              <Button 
+                onClick={handleBuy} 
+                disabled={purchasing}
+                className="bg-[#8b0000] hover:bg-[#a00000] text-white font-semibold text-sm px-4 py-2 rounded-full flex items-center gap-2"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                ${(track.price || 1.99).toFixed(2)}
               </Button>
             )}
 
-            {/* Lyrics toggle */}
-            {track.lyrics && (
-              <Button size="icon" variant="ghost" onClick={() => setShowLyricsPanel(p => !p)}
-                className={`w-7 h-7 ${showLyricsPanel ? 'text-amber-400' : 'text-slate-500'}`}
-                title="Show/hide lyrics">
-                {showLyricsPanel ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-              </Button>
-            )}
-
-            {/* Admin controls */}
-            {isAdmin && (
-              <>
-                <Button size="icon" variant="ghost"
-                  onClick={toggleFreeListen}
-                  className={`w-7 h-7 ${track.is_free_listen ? 'text-emerald-400' : 'text-slate-600'}`}
-                  title={track.is_free_listen ? "Remove free listen" : "Mark as free"}>
-                  <Unlock className="w-3.5 h-3.5" />
+            {/* Admin controls - only visible on hover */}
+            {isAdmin && hovering && (
+              <div className="flex items-center gap-1 ml-2">
+                <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="w-8 h-8 text-slate-400 hover:text-white">
+                  <Pencil className="w-4 h-4" />
                 </Button>
-                <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="w-7 h-7 text-slate-500">
-                  <Pencil className="w-3.5 h-3.5" />
+                <Button size="icon" variant="ghost" onClick={handleDelete} className="w-8 h-8 text-red-600 hover:text-red-400">
+                  <Trash2 className="w-4 h-4" />
                 </Button>
-                <Button size="icon" variant="ghost" onClick={() => setShowLyricsExtractor(true)} className="w-7 h-7 text-slate-500">
-                  <FileText className="w-3.5 h-3.5" />
-                </Button>
-                <Button size="icon" variant="ghost" onClick={handleDelete} className="w-7 h-7 text-red-700 hover:text-red-500">
-                  <Trash2 className="w-3.5 h-3.5" />
-                </Button>
-              </>
+              </div>
             )}
           </div>
         </div>

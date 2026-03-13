@@ -124,15 +124,22 @@ export default function ProphetHeroBanner() {
             <p className="text-amber-300 font-bold text-xl mb-1 tracking-wide">David's Seer · Returned</p>
             <p className="text-slate-400 text-sm mb-5">Thread Bear Music · Remnant Seed LLC</p>
 
-            <p className="text-slate-300 text-base leading-relaxed mb-5 max-w-xl">
-              The same prophetic anointing that guided King David 3,000 years ago has returned. 
-              Born in a Caribbean nation of rich biblical heritage (1980), anointed at age 4, educated at an Ivy League institution, exiled at 40 — 
-              and now back with an urgent, uncompromising message: <em className="text-amber-400 not-italic font-semibold">Earth's final warning message: Repent or die, for the hour of his judgment has come.</em>
-            </p>
+            <div className="text-slate-300 text-base leading-relaxed mb-5 max-w-xl space-y-3">
+              <p>
+                In the spirit of ancient Hebrew Israelite seers, just as Elijah's mantle fell upon Elisha, a prophetic voice has arisen for this generation: Prophet Gad. Born in a Caribbean nation steeped in biblical heritage, consecrated at age 4, and sent to the United States in secret at age 5 for his protection, Prophet Gad's life has been forged in exile and destiny. Raised in New York City under the care of a Jamaican-born, British-trained nanny and educated at elite preparatory schools and Ivy League institutions, his journey has echoed the trials of the prophets of old.
+              </p>
+              <p>
+                Bearing the mantle of the ancient Prophet Gad, seer in King David's court and Minister of Music in the Temple of the Most High, he embodies a calling ordained before the foundation of the world. Exiled back to his homeland at age 40 due to political intrigue, Prophet Gad's return to the United States through miraculous circumstances marked a new chapter. Now, he teaches and preaches an urgent, uncompromising message, <em className="text-amber-400 not-italic font-semibold">Earth's final warning: Repent or die, for the hour of His judgment has come.</em>
+              </p>
+              <p className="text-amber-300 font-semibold">
+                This is not entertainment. This is walking hand in hand, as Enoch walked.
+              </p>
+            </div>
 
             <blockquote className="border-l-4 border-amber-500 pl-4 mb-5 italic text-amber-200 text-sm">
-              "One rusty, tattered nail tells the tale — of the writing on the wall and the last day's judgment hour call."
+              "One rusty, tattered nail tells the tale of the writing on the wall and the last day's judgment hour call."
               <span className="block text-xs text-slate-500 not-italic mt-1">— Prophet Gad, "The Writing on the Wall"</span>
+              <span className="block text-xs text-slate-400 not-italic mt-2">Thread Bear Music · Remnant Seed LLC</span>
             </blockquote>
 
             <div className="flex flex-wrap gap-3 mb-5">

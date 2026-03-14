@@ -152,6 +152,34 @@ export default function ProphetHeroBanner() {
               ))}
             </div>
 
+            {/* E-book CTA */}
+            <div className="bg-gradient-to-r from-amber-900/40 to-red-900/40 border border-amber-500/50 rounded-xl p-5 mb-5">
+              <h4 className="text-amber-300 font-bold text-base mb-2">📖 Explore These Compelling Issues Further</h4>
+              <p className="text-slate-300 text-sm mb-3">
+                Dive deeper into the prophetic calling, biblical lineage, and end-times message in the comprehensive e-book:
+              </p>
+              <p className="text-white font-bold text-lg mb-3">Prophet Gad — The Watchman</p>
+              <button
+                onClick={async () => {
+                  const isInIframe = window.self !== window.top;
+                  if (isInIframe) {
+                    alert("Purchase is only available from the published app.");
+                    return;
+                  }
+                  try {
+                    const { base44 } = await import("@/api/base44Client");
+                    const res = await base44.functions.invoke('createEbookCheckout', {});
+                    if (res.data?.url) window.location.href = res.data.url;
+                  } catch (err) {
+                    alert("Could not start checkout");
+                  }
+                }}
+                className="bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white font-bold px-6 py-3 rounded-lg transition-all shadow-lg"
+              >
+                Purchase E-book — $40.00
+              </button>
+            </div>
+
             <button
               onClick={() => setShowFull(!showFull)}
               className="text-amber-400 hover:text-amber-300 text-sm font-semibold underline underline-offset-4 transition-colors"

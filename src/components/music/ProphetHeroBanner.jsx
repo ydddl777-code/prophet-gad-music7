@@ -19,6 +19,10 @@ const AVATARS = [
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/5f978960b_Master_prompt_prophet_gad_is_an_ancient_israelite__delpmaspu2.png",
     caption: "School of the Prophets"
   },
+  {
+    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/ec0f6728a_ProphetGadinblacksuitUpscale.jpg",
+    caption: "The Prophet in Modern Times"
+  },
 ];
 
 const PILLARS = [

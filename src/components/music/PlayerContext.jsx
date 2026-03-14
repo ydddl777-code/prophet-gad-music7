@@ -90,9 +90,9 @@ export function PlayerProvider({ children }) {
     };
     const onTimeUpdate = () => {
       setCurrentTime(audio.currentTime);
-      // 30-second preview cutoff for non-free tracks
+      // 60-second preview cutoff for non-free tracks
       const track = queueRef.current[currentIndexRef.current];
-      if (track && !track.is_free_listen && audio.currentTime >= 30) {
+      if (track && !track.is_free_listen && audio.currentTime >= 60) {
         audio.pause();
         setIsPlaying(false);
         setPreviewEnded(true);

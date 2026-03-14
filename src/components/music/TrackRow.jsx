@@ -104,13 +104,16 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
             </button>
           </div>
 
-          {/* Title + Artist */}
+          {/* Title + Artist + Description */}
           <div className="flex-1 min-w-0">
             <h3 className={`font-bold text-lg sm:text-xl leading-tight mb-1 ${isCurrentTrack ? 'text-amber-400' : 'text-white'}`}>
               {track.title}
             </h3>
             {displayArtist && (
-              <p className="text-sm text-[#c9a84c]">{displayArtist}</p>
+              <p className="text-sm text-[#c9a84c] mb-1">{displayArtist}</p>
+            )}
+            {track.description && (
+              <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{track.description}</p>
             )}
           </div>
 

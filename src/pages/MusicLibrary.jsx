@@ -7,6 +7,7 @@ import UploadSection from '../components/music/UploadSection';
 import TrackRow from '../components/music/TrackRow';
 import FilterBar from '../components/music/FilterBar';
 import ProphetHeroBanner from '../components/music/ProphetHeroBanner';
+import ProphetWelcome from '../components/welcome/ProphetWelcome';
 import { usePlayer } from '../components/music/PlayerContext';
 
 export default function MusicLibrary() {
@@ -14,15 +15,36 @@ export default function MusicLibrary() {
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [sortBy, setSortBy] = useState('-created_date');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const queryClient = useQueryClient();
   const { play } = usePlayer();
 
   useEffect(() => {
     base44.auth.me()
-      .then(user => setIsAdmin(user?.role === 'admin'))
-      .catch(() => setIsAdmin(false));
+      .then(user => {
+        setIsAdmin(user?.role === 'admin');
+        setCurrentUser(user);
+        
+        // Check if user has seen welcome
+        const hasSeenWelcome = localStorage.getItem(`welcome_seen_${user.id}`);
+        if (!hasSeenWelcome) {
+          setShowWelcome(true);
+        }
+      })
+      .catch(() => {
+        setIsAdmin(false);
+        setCurrentUser(null);
+      });
   }, []);
+
+  const handleWelcomeDismiss = () => {
+    if (currentUser) {
+      localStorage.setItem(`welcome_seen_${currentUser.id}`, 'true');
+    }
+    setShowWelcome(false);
+  };
 
   const { data: tracks = [], isLoading } = useQuery({
     queryKey: ['music-tracks', sortBy],
@@ -109,7 +131,7 @@ export default function MusicLibrary() {
         <div className="rounded-lg overflow-hidden border border-slate-900">
           {sectionTracks.map((track) => (
             <TrackRow key={track.id} track={track} onUpdate={handleUpdate}
-              onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} />
+              onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} allTracks={tracks} />
           ))}
         </div>
       </div>
@@ -118,6 +140,14 @@ export default function MusicLibrary() {
 
   return (
     <div className="min-h-screen bg-[#111]">
+      {/* Prophet Welcome Modal */}
+      {showWelcome && currentUser && (
+        <ProphetWelcome
+          userName={currentUser.full_name || 'beloved'}
+          onDismiss={handleWelcomeDismiss}
+        />
+      )}
+
       {/* Prophet Hero Banner */}
       <ProphetHeroBanner />
 

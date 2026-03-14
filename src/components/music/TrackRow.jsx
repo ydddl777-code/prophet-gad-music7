@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Play, Pause, ShoppingCart, ChevronDown, ChevronUp, Pencil, Trash2, FileText, Unlock } from 'lucide-react';
+import { Play, Pause, ShoppingCart, ChevronDown, ChevronUp, Pencil, Trash2, FileText, Unlock, Brain, Share2 } from 'lucide-react';
 import { usePlayer } from './PlayerContext';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
 import MetadataEditor from './MetadataEditor';
 import LyricsExtractor from './LyricsExtractor';
+import TrackAnalysis from './TrackAnalysis';
+import RelatedTracks from './RelatedTracks';
 
-export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = false }) {
+export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = false, allTracks = [] }) {
   const player = usePlayer();
   const isCurrentTrack = player?.currentTrack?.id === track.id;
   const isTrackPlaying = isCurrentTrack && player?.isPlaying;
@@ -15,6 +17,8 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
   const [showLyricsPanel, setShowLyricsPanel] = useState(false);
   const [editing, setEditing] = useState(false);
   const [showLyricsExtractor, setShowLyricsExtractor] = useState(false);
+  const [showAnalysis, setShowAnalysis] = useState(false);
+  const [showRelated, setShowRelated] = useState(false);
   const [purchasing, setPurchasing] = useState(false);
 
   const handlePlay = () => {
@@ -81,6 +85,19 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
           onSave={onUpdate}
         />
       )}
+      {showAnalysis && (
+        <TrackAnalysis
+          track={track}
+          onClose={() => setShowAnalysis(false)}
+        />
+      )}
+      {showRelated && (
+        <RelatedTracks
+          track={track}
+          allTracks={allTracks}
+          onClose={() => setShowRelated(false)}
+        />
+      )}
 
       <div 
         className={`group border-b border-slate-900 transition-colors ${isCurrentTrack ? 'bg-amber-950/10' : 'hover:bg-slate-900'}`}
@@ -134,15 +151,37 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
               </Button>
             )}
 
-            {/* Admin controls - only visible on hover */}
-            {isAdmin && hovering && (
+            {/* User controls - visible on hover */}
+            {hovering && (
               <div className="flex items-center gap-1 ml-2">
-                <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="w-8 h-8 text-slate-400 hover:text-white">
-                  <Pencil className="w-4 h-4" />
+                <Button 
+                  size="icon" 
+                  variant="ghost" 
+                  onClick={() => setShowAnalysis(true)}
+                  className="w-8 h-8 text-purple-400 hover:text-purple-300"
+                  title="AI Analysis"
+                >
+                  <Brain className="w-4 h-4" />
                 </Button>
-                <Button size="icon" variant="ghost" onClick={handleDelete} className="w-8 h-8 text-red-600 hover:text-red-400">
-                  <Trash2 className="w-4 h-4" />
+                <Button 
+                  size="icon" 
+                  variant="ghost" 
+                  onClick={() => setShowRelated(true)}
+                  className="w-8 h-8 text-blue-400 hover:text-blue-300"
+                  title="Related Tracks"
+                >
+                  <Share2 className="w-4 h-4" />
                 </Button>
+                {isAdmin && (
+                  <>
+                    <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="w-8 h-8 text-slate-400 hover:text-white">
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+                    <Button size="icon" variant="ghost" onClick={handleDelete} className="w-8 h-8 text-red-600 hover:text-red-400">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </>
+                )}
               </div>
             )}
           </div>

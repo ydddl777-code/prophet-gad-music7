@@ -13,7 +13,7 @@ import { usePlayer } from '../components/music/PlayerContext';
 export default function MusicLibrary() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('all');
-  const [sortBy, setSortBy] = useState('-created_date');
+  const [sortBy, setSortBy] = useState('created_date');
   const [isAdmin, setIsAdmin] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);

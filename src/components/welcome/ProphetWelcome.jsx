@@ -61,8 +61,7 @@ export default function ProphetWelcome({ userName, onDismiss }) {
     loadAudio();
 
     return () => {
-      audio.pause();
-      audio.src = '';
+      // cleanup only on true unmount — don't destroy the singleton
     };
   }, []);
 

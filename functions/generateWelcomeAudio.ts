@@ -5,7 +5,7 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const { userName } = await req.json();
 
-    const welcomeText = `Welcome, ${userName || 'beloved'}. This is Prophet Gad. The songs you are about to hear are not entertainment — they are prophecy. The door of mercy is still open, but time is short. God bless you.`;
+    const welcomeText = `Welcome, ${userName || 'beloved'}. This is Prophet Gad. I am glad you are here. The songs you are about to hear are not entertainment — they are oracles. Prophecies set to rhythm. Urgent voices for these last days. May the Most High open your eyes and ears as you listen. Be faithful. Be watchful. Stay the course. The door of mercy is still open — but time is short. Walk in the light.`;
 
     const response = await fetch('https://api.elevenlabs.io/v1/text-to-speech/pNInz6obpgDQGcFmaJgB', {
       method: 'POST',

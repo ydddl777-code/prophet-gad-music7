@@ -140,7 +140,7 @@ export default function MusicPlayer() {
           </div>
         </div>
 
-        <div className="px-4 py-2.5 flex items-center gap-3">
+        <div className="px-4 py-2.5 pb-4 flex items-center gap-3">
           {/* Cover / Track Info */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
             {currentTrack.cover_art_url ? (

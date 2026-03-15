@@ -163,9 +163,16 @@ export default function MusicPlayer() {
 
           {/* Playback Controls */}
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" onClick={previous} disabled={currentIndex <= 0} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
-              <SkipBack className="w-5 h-5" />
-            </Button>
+            <div className="relative flex flex-col items-center">
+              <Button variant="ghost" size="icon" onClick={previous} disabled={currentIndex <= 0} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
+                <SkipBack className="w-5 h-5" />
+              </Button>
+              {!currentTrack.is_free_listen && (
+                <span className="absolute -bottom-4 whitespace-nowrap text-[9px] text-amber-400/70 leading-none">
+                  replay sample
+                </span>
+              )}
+            </div>
 
             <Button
               onClick={togglePlayPause}

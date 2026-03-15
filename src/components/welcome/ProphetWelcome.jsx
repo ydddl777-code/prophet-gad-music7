@@ -15,9 +15,7 @@ export default function ProphetWelcome({ userName, onDismiss }) {
 
     const loadAudio = async () => {
       try {
-        const response = await base44.functions.invoke('generateWelcomeAudio', { userName });
-        // response.data is the raw audio — need to fetch as blob via direct call
-        const res = await fetch(`/api/apps/${import.meta.env.VITE_APP_ID || ''}/functions/generateWelcomeAudio`, {
+        const res = await fetch('/api/apps/698ae99a8f13115b248081e9/functions/generateWelcomeAudio', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

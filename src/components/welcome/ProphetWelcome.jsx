@@ -141,6 +141,9 @@ export default function ProphetWelcome({ userName, onDismiss }) {
             Be faithful. Be watchful. Stay the course. The door of mercy is still open — but time is short.
           </p>
           <p className="text-slate-400 italic">Walk in the light. — Prophet Gad</p>
+          <p className="text-center text-slate-500 text-xs italic mt-2 border-t border-slate-700 pt-3">
+            "Blessed are your eyes for they see, and your ears for they hear." — Matthew 13:16
+          </p>
         </div>
 
         <Button onClick={handleDismiss} variant="outline" className="w-full border-amber-500/50 text-amber-400 hover:bg-amber-500/10">

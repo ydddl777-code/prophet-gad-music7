@@ -58,6 +58,8 @@ export default function ProphetWelcome({ userName, onDismiss }) {
         console.error('Welcome audio error:', err);
         setAudioError(true);
         setIsLoading(false);
+        // Auto-dismiss after 8 seconds if audio fails
+        setTimeout(() => { cleanup(); onDismiss(); }, 8000);
       });
 
     return () => {}; // don't cleanup on strict-mode remount

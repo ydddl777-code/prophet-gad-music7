@@ -1,12 +1,53 @@
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { base44 } from "@/api/base44Client";
 
 export default function ProphetWelcome({ userName, onDismiss }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
+  const audioRef = useRef(new Audio());
 
+  useEffect(() => {
+    loadAudio();
+    const audio = audioRef.current;
+    audio.onended = () => setIsPlaying(false);
+    return () => {
+      audio.pause();
+      audio.src = '';
+    };
+  }, []);
 
-  // Audio will be enabled once a TTS API key is configured
+  const loadAudio = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `/api/apps/${import.meta.env.VITE_APP_ID || '698ae99a8f13115b248081e9'}/functions/generateWelcomeAudio`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userName: userName || 'beloved' }),
+        }
+      );
+
+      if (!response.ok) throw new Error('Audio generation failed');
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      audioRef.current.src = url;
+      setAudioReady(true);
+      // Auto-play
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(console.error);
+    } catch (err) {
+      console.error('Welcome audio error:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const toggleAudio = () => {
+    const audio = audioRef.current;
     if (isPlaying) {
       audio.pause();
       setIsPlaying(false);
@@ -38,13 +79,41 @@ export default function ProphetWelcome({ userName, onDismiss }) {
           <p className="text-slate-400 text-sm">A Personal Greeting from Prophet Gad</p>
         </div>
 
+        {/* Audio Button */}
+        <div className="flex justify-center mb-5">
+          <button
+            onClick={toggleAudio}
+            disabled={isLoading || !audioReady}
+            className="flex items-center gap-2 bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500/30 text-amber-300 rounded-full px-6 py-2.5 text-sm font-semibold transition-colors disabled:opacity-50"
+          >
+            {isLoading ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /> Preparing voice message...</>
+            ) : isPlaying ? (
+              <><VolumeX className="w-4 h-4" /> Pause Greeting</>
+            ) : (
+              <><Volume2 className="w-4 h-4" /> {audioReady ? 'Play Greeting' : 'Loading...'}</>
+            )}
+          </button>
+        </div>
 
+        {/* Waveform animation while playing */}
+        {isPlaying && (
+          <div className="flex justify-center gap-1 mb-4">
+            {[...Array(7)].map((_, i) => (
+              <div
+                key={i}
+                className="w-1 bg-amber-500 rounded-full animate-pulse"
+                style={{ height: `${12 + (i % 3) * 8}px`, animationDelay: `${i * 0.12}s` }}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Written Message */}
         <div className="text-slate-300 text-sm leading-relaxed space-y-3 mb-6">
           <p className="text-amber-300 font-semibold">Welcome, {userName},</p>
           <p>
-            I am truly honored that you have chosen to join us here. 
+            I am truly honored that you have chosen to join us here.
             The songs you are about to hear are not mere entertainment — they are oracles, prophecies set to rhythm, urgent warning voices for these last days.
           </p>
           <p>

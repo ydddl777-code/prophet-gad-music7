@@ -141,6 +141,8 @@ export default function MusicLibrary() {
 
   return (
     <div className="min-h-screen bg-[#111]">
+      <EmailCapturePopup />
+
       {/* Prophet Welcome Modal */}
       {showWelcome && currentUser && (
         <ProphetWelcome

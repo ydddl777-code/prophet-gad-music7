@@ -1,34 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { createPageUrl } from '@/utils';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Download, Music2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Download, Music2, Loader2, Clock, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function PurchaseSuccess() {
-  const [track, setTrack] = useState(null);
+  const [status, setStatus] = useState('loading'); // loading | ready | error
+  const [downloadUrl, setDownloadUrl] = useState(null);
+  const [trackTitle, setTrackTitle] = useState('');
+  const [trackArtist, setTrackArtist] = useState('');
+  const [coverArt, setCoverArt] = useState(null);
   const [downloading, setDownloading] = useState(false);
 
   const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
   const trackId = params.get('track_id');
   const title = params.get('title') || 'Your track';
 
   useEffect(() => {
+    if (!sessionId) {
+      setStatus('error');
+      return;
+    }
+
+    // Get secure download link from backend (verifies Stripe payment server-side)
+    base44.functions.invoke('generateDownloadLink', { session_id: sessionId })
+      .then(res => {
+        if (res.data?.download_url) {
+          setDownloadUrl(res.data.download_url);
+          setTrackTitle(res.data.track_title || title);
+          setTrackArtist(res.data.track_artist || 'Prophet Gad');
+          setStatus('ready');
+        } else {
+          setStatus('error');
+        }
+      })
+      .catch(() => setStatus('error'));
+
+    // Also fetch cover art
     if (trackId) {
       base44.entities.MusicTrack.filter({ id: trackId }, '-created_date', 1)
-        .then(results => {
-          if (results?.[0]) setTrack(results[0]);
-        })
-        .catch(console.error);
+        .then(results => { if (results?.[0]?.cover_art_url) setCoverArt(results[0].cover_art_url); })
+        .catch(() => {});
     }
-  }, [trackId]);
+  }, [sessionId]);
 
   const handleDownload = () => {
-    if (!track?.file_url) return;
+    if (!downloadUrl) return;
     setDownloading(true);
     const a = document.createElement('a');
-    a.href = track.file_url;
-    a.download = `${track.title || 'track'}.mp3`;
+    a.href = downloadUrl;
+    a.download = `${trackTitle || 'track'}.mp3`;
+    a.target = '_blank';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -38,46 +61,76 @@ export default function PurchaseSuccess() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-red-50 flex items-center justify-center p-6">
       <div className="bg-white rounded-2xl shadow-xl p-10 max-w-md w-full text-center">
-        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 className="w-10 h-10 text-green-600" />
-        </div>
 
-        <h1 className="text-2xl font-bold text-slate-800 mb-2">Payment Successful!</h1>
-        <p className="text-slate-500 mb-1">Thank you for your purchase.</p>
-        <p className="text-slate-700 font-semibold mb-6">"{title}"</p>
-
-        {track?.cover_art_url && (
-          <img
-            src={track.cover_art_url}
-            alt="Album art"
-            className="w-32 h-32 object-cover rounded-xl mx-auto mb-6 shadow"
-          />
+        {status === 'loading' && (
+          <>
+            <Loader2 className="w-12 h-12 text-amber-500 animate-spin mx-auto mb-4" />
+            <p className="text-slate-600 font-semibold">Verifying payment & preparing your download...</p>
+          </>
         )}
 
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 text-left">
-          <p className="text-xs text-amber-700 font-semibold uppercase tracking-wider mb-1">Artist</p>
-          <p className="font-semibold text-slate-800">Prophet Gad</p>
-          <p className="text-xs text-slate-500 mt-1">Thread Bear Music · Remnant Seed LLC</p>
-        </div>
+        {status === 'error' && (
+          <>
+            <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Music2 className="w-10 h-10 text-red-500" />
+            </div>
+            <h1 className="text-xl font-bold text-slate-800 mb-2">Something went wrong</h1>
+            <p className="text-slate-500 mb-6">We couldn't verify your purchase. Please contact support with your order details.</p>
+            <Link to="/MusicLibrary">
+              <Button variant="outline" className="w-full">Back to Library</Button>
+            </Link>
+          </>
+        )}
 
-        <Button
-          onClick={handleDownload}
-          disabled={!track || downloading}
-          className="w-full bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-600 hover:to-red-700 text-white font-semibold py-3 mb-3"
-        >
-          {downloading ? (
-            <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Downloading...</>
-          ) : (
-            <><Download className="w-4 h-4 mr-2" /> Download Track</>
-          )}
-        </Button>
+        {status === 'ready' && (
+          <>
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-10 h-10 text-green-600" />
+            </div>
 
-        <Link to={createPageUrl('MusicLibrary')}>
-          <Button variant="outline" className="w-full">
-            <Music2 className="w-4 h-4 mr-2" />
-            Back to Library
-          </Button>
-        </Link>
+            <h1 className="text-2xl font-bold text-slate-800 mb-2">Payment Successful!</h1>
+            <p className="text-slate-500 mb-1">Thank you for your purchase.</p>
+            <p className="text-slate-700 font-semibold mb-6">"{trackTitle}"</p>
+
+            {coverArt && (
+              <img src={coverArt} alt="Album art" className="w-32 h-32 object-cover rounded-xl mx-auto mb-6 shadow" />
+            )}
+
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-left">
+              <p className="text-xs text-amber-700 font-semibold uppercase tracking-wider mb-1">Artist</p>
+              <p className="font-semibold text-slate-800">{trackArtist}</p>
+              <p className="text-xs text-slate-500 mt-1">Thread Bear Music · Remnant Seed LLC</p>
+            </div>
+
+            {/* Secure link notice */}
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl p-3 mb-5 text-left">
+              <ShieldCheck className="w-5 h-5 text-green-500 shrink-0" />
+              <div>
+                <p className="text-xs font-semibold text-slate-700">Secure download link</p>
+                <p className="text-xs text-slate-400 flex items-center gap-1"><Clock className="w-3 h-3" /> Expires in 1 hour</p>
+              </div>
+            </div>
+
+            <Button
+              onClick={handleDownload}
+              disabled={downloading}
+              className="w-full bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-600 hover:to-red-700 text-white font-semibold py-3 mb-3"
+            >
+              {downloading ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Downloading...</>
+              ) : (
+                <><Download className="w-4 h-4 mr-2" /> Download Track</>
+              )}
+            </Button>
+
+            <Link to="/MusicLibrary">
+              <Button variant="outline" className="w-full">
+                <Music2 className="w-4 h-4 mr-2" />
+                Back to Library
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

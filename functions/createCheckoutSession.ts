@@ -27,7 +27,7 @@ Deno.serve(async (req) => {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: `${origin}/PurchaseSuccess?track_id=${encodeURIComponent(track_id)}&title=${encodeURIComponent(track_title || 'Track')}`,
+      success_url: `${origin}/PurchaseSuccess?session_id={CHECKOUT_SESSION_ID}&track_id=${encodeURIComponent(track_id)}&title=${encodeURIComponent(track_title || 'Track')}`,
       cancel_url: `${origin}/MusicLibrary`,
       metadata: {
         base44_app_id: Deno.env.get('BASE44_APP_ID'),

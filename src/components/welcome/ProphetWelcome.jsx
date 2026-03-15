@@ -140,7 +140,7 @@ export default function ProphetWelcome({ userName, onDismiss }) {
         </div>
 
         <Button
-          onClick={onDismiss}
+          onClick={() => { if (_audioInstance) { _audioInstance.pause(); _audioInstance = null; _audioLoading = false; } onDismiss(); }}
           variant="outline"
           className="w-full border-amber-500/50 text-amber-400 hover:bg-amber-500/10"
         >

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { base44 } from "@/api/base44Client";
 
 export default function ProphetWelcome({ userName, onDismiss }) {
   const [isPlaying, setIsPlaying] = useState(false);

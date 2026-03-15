@@ -5,46 +5,52 @@ import { base44 } from "@/api/base44Client";
 
 export default function ProphetWelcome({ userName, onDismiss }) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [audioReady, setAudioReady] = useState(false);
+  const [audioError, setAudioError] = useState(false);
   const audioRef = useRef(new Audio());
 
   useEffect(() => {
-    loadAudio();
     const audio = audioRef.current;
-    audio.onended = () => setIsPlaying(false);
+
+    const loadAudio = async () => {
+      try {
+        const response = await base44.functions.invoke('generateWelcomeAudio', { userName });
+        // response.data is the raw audio — need to fetch as blob via direct call
+        const res = await fetch(`/api/apps/${import.meta.env.VITE_APP_ID || ''}/functions/generateWelcomeAudio`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-App-Id': '698ae99a8f13115b248081e9',
+          },
+          body: JSON.stringify({ userName }),
+        });
+
+        if (!res.ok) throw new Error('Audio fetch failed');
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        audio.src = url;
+        audio.onended = () => setIsPlaying(false);
+        setAudioReady(true);
+        setIsLoading(false);
+
+        // Auto-play
+        audio.play().then(() => setIsPlaying(true)).catch(() => setIsLoading(false));
+      } catch (err) {
+        console.error('Welcome audio error:', err);
+        setAudioError(true);
+        setIsLoading(false);
+      }
+    };
+
+    loadAudio();
+
     return () => {
       audio.pause();
       audio.src = '';
     };
   }, []);
-
-  const loadAudio = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `/api/apps/${import.meta.env.VITE_APP_ID || '698ae99a8f13115b248081e9'}/functions/generateWelcomeAudio`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userName: userName || 'beloved' }),
-        }
-      );
-
-      if (!response.ok) throw new Error('Audio generation failed');
-
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      audioRef.current.src = url;
-      setAudioReady(true);
-      // Auto-play
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(console.error);
-    } catch (err) {
-      console.error('Welcome audio error:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const toggleAudio = () => {
     const audio = audioRef.current;
@@ -59,10 +65,7 @@ export default function ProphetWelcome({ userName, onDismiss }) {
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-gradient-to-br from-slate-900 via-amber-950 to-slate-900 border-2 border-amber-500 rounded-2xl max-w-2xl w-full p-8 shadow-2xl relative">
-        <button
-          onClick={onDismiss}
-          className="absolute top-4 right-4 text-slate-400 hover:text-white"
-        >
+        <button onClick={onDismiss} className="absolute top-4 right-4 text-slate-400 hover:text-white">
           <X className="w-6 h-6" />
         </button>
 
@@ -79,33 +82,31 @@ export default function ProphetWelcome({ userName, onDismiss }) {
           <p className="text-slate-400 text-sm">A Personal Greeting from Prophet Gad</p>
         </div>
 
-        {/* Audio Button */}
-        <div className="flex justify-center mb-5">
-          <button
-            onClick={toggleAudio}
-            disabled={isLoading || !audioReady}
-            className="flex items-center gap-2 bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500/30 text-amber-300 rounded-full px-6 py-2.5 text-sm font-semibold transition-colors disabled:opacity-50"
-          >
+        {/* Audio Control */}
+        {!audioError && (
+          <div className="flex items-center justify-center gap-3 mb-5">
             {isLoading ? (
-              <><Loader2 className="w-4 h-4 animate-spin" /> Preparing voice message...</>
-            ) : isPlaying ? (
-              <><VolumeX className="w-4 h-4" /> Pause Greeting</>
+              <div className="flex items-center gap-2 text-amber-400 text-sm">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Preparing voice message...
+              </div>
             ) : (
-              <><Volume2 className="w-4 h-4" /> {audioReady ? 'Play Greeting' : 'Loading...'}</>
+              <button
+                onClick={toggleAudio}
+                className="flex items-center gap-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/50 text-amber-400 rounded-full px-5 py-2 text-sm font-semibold transition-all"
+              >
+                {isPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                {isPlaying ? 'Pause Voice Message' : 'Play Voice Message'}
+              </button>
             )}
-          </button>
-        </div>
-
-        {/* Waveform animation while playing */}
-        {isPlaying && (
-          <div className="flex justify-center gap-1 mb-4">
-            {[...Array(7)].map((_, i) => (
-              <div
-                key={i}
-                className="w-1 bg-amber-500 rounded-full animate-pulse"
-                style={{ height: `${12 + (i % 3) * 8}px`, animationDelay: `${i * 0.12}s` }}
-              />
-            ))}
+            {isPlaying && (
+              <div className="flex gap-1 items-end h-5">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="w-1 bg-amber-500 rounded-full animate-pulse"
+                    style={{ height: `${10 + i * 3}px`, animationDelay: `${i * 0.1}s` }} />
+                ))}
+              </div>
+            )}
           </div>
         )}
 

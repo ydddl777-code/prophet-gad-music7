@@ -191,6 +191,7 @@ export default function MusicPlayer() {
             </Button>
           </div>
 
+
           {/* Time */}
           <span className="text-xs text-slate-400 font-mono hidden lg:block whitespace-nowrap">
             {formatTime(currentTime)} / {formatTime(duration)}

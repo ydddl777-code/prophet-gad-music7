@@ -78,7 +78,7 @@ export default function ProphetWelcome({ userName, onDismiss }) {
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-gradient-to-br from-slate-900 via-amber-950 to-slate-900 border-2 border-amber-500 rounded-2xl max-w-2xl w-full p-8 shadow-2xl relative">
-        <button onClick={onDismiss} className="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <button onClick={() => { if (_audioInstance) { _audioInstance.pause(); _audioInstance = null; _audioLoading = false; } onDismiss(); }} className="absolute top-4 right-4 text-slate-400 hover:text-white">
           <X className="w-6 h-6" />
         </button>
 

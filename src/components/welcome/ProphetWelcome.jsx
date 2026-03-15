@@ -2,19 +2,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
+let _audioInstance = null;
+let _audioLoading = false;
+
 export default function ProphetWelcome({ userName, onDismiss }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [audioReady, setAudioReady] = useState(false);
   const [audioError, setAudioError] = useState(false);
   const audioRef = useRef(null);
-  const loadedRef = useRef(false);
 
   useEffect(() => {
-    if (loadedRef.current) return;
-    loadedRef.current = true;
+    // If already loading or loaded, reuse the existing instance
+    if (_audioLoading || _audioInstance) {
+      if (_audioInstance) {
+        audioRef.current = _audioInstance;
+        setIsLoading(false);
+        setAudioReady(true);
+        if (!_audioInstance.paused) setIsPlaying(true);
+      }
+      return;
+    }
+    _audioLoading = true;
 
     const audio = new Audio();
+    _audioInstance = audio;
     audioRef.current = audio;
 
     const loadAudio = async () => {

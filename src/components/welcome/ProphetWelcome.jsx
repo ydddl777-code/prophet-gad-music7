@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Volume2, VolumeX } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -7,68 +7,7 @@ export default function ProphetWelcome({ userName, onDismiss }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio] = useState(new Audio());
 
-  useEffect(() => {
-    generateWelcomeAudio();
-    return () => {
-      audio.pause();
-      audio.src = '';
-    };
-  }, []);
-
-  const generateWelcomeAudio = async () => {
-    try {
-      const { base44 } = await import("@/api/base44Client");
-      
-      const welcomeText = `Welcome, ${userName}. This is Prophet Gad. 
-      
-      I am truly honored that you have chosen to join us here. 
-      
-      The songs you are about to hear are not mere entertainment — they are oracles, prophecies set to rhythm, urgent warning voices for these last days.
-      
-      May God bless you richly as you listen. May these messages reach your heart and awaken you to the importance of this hour.
-      
-      Be faithful. Be watchful. Stay the course. The door of mercy is still open, but time is short.
-      
-      Walk in the light. God bless you.`;
-
-      // Generate audio using text-to-speech
-      const response = await fetch('https://api.openai.com/v1/audio/speech', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${await getOpenAIKey()}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'tts-1',
-          voice: 'onyx', // Deep, authoritative voice
-          input: welcomeText,
-          speed: 0.95
-        })
-      });
-
-      const audioBlob = await response.blob();
-      const url = URL.createObjectURL(audioBlob);
-      setAudioUrl(url);
-      audio.src = url;
-      
-      // Auto-play the welcome
-      setTimeout(() => {
-        audio.play().then(() => setIsPlaying(true)).catch(console.error);
-      }, 500);
-
-      audio.onended = () => setIsPlaying(false);
-    } catch (error) {
-      console.error('Failed to generate welcome audio:', error);
-    }
-  };
-
-  const getOpenAIKey = async () => {
-    // This would need to be called via backend function for security
-    const { base44 } = await import("@/api/base44Client");
-    const res = await base44.functions.invoke('getOpenAIKey', {});
-    return res.data.key;
-  };
-
+  // Audio will be enabled once a TTS API key is configured
   const toggleAudio = () => {
     if (isPlaying) {
       audio.pause();
@@ -101,45 +40,7 @@ export default function ProphetWelcome({ userName, onDismiss }) {
           <p className="text-slate-400 text-sm">A Personal Greeting from Prophet Gad</p>
         </div>
 
-        {/* Audio Player */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-6">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Button
-              onClick={toggleAudio}
-              disabled={!audioUrl}
-              className="bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white px-8 py-6 text-lg"
-            >
-              {isPlaying ? (
-                <>
-                  <VolumeX className="w-6 h-6 mr-2" />
-                  Pause Message
-                </>
-              ) : (
-                <>
-                  <Volume2 className="w-6 h-6 mr-2" />
-                  {audioUrl ? 'Play Message' : 'Generating...'}
-                </>
-              )}
-            </Button>
-          </div>
 
-          {isPlaying && (
-            <div className="flex items-center justify-center gap-2">
-              <div className="flex gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-1 bg-amber-500 rounded-full animate-pulse"
-                    style={{
-                      height: `${Math.random() * 20 + 10}px`,
-                      animationDelay: `${i * 0.1}s`
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
 
         {/* Written Message */}
         <div className="text-slate-300 text-sm leading-relaxed space-y-3 mb-6">

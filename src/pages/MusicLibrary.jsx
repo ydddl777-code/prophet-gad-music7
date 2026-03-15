@@ -7,7 +7,7 @@ import UploadSection from '../components/music/UploadSection';
 import TrackRow from '../components/music/TrackRow';
 import FilterBar from '../components/music/FilterBar';
 import ProphetHeroBanner from '../components/music/ProphetHeroBanner';
-import ProphetWelcome from '../components/welcome/ProphetWelcome';
+import ProphetWelcome from '../components/welcome/ProphetWelcome.jsx';
 import { usePlayer } from '../components/music/PlayerContext';
 
 export default function MusicLibrary() {

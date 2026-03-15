@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { X, Volume2, VolumeX } from 'lucide-react';
+import { X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function ProphetWelcome({ userName, onDismiss }) {
-  const [audioUrl, setAudioUrl] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(new Audio());
+
 
   // Audio will be enabled once a TTS API key is configured
   const toggleAudio = () => {

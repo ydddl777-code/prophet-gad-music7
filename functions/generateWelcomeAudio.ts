@@ -38,8 +38,8 @@ Walk in the light. God bless you.`;
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('ElevenLabs error:', err);
-      return Response.json({ error: 'TTS generation failed', details: err }, { status: 500 });
+      console.error('ElevenLabs error status:', response.status, 'body:', err);
+      return Response.json({ error: 'TTS generation failed', status: response.status, details: err }, { status: 500 });
     }
 
     const audioBuffer = await response.arrayBuffer();

@@ -7,10 +7,15 @@ export default function ProphetWelcome({ userName, onDismiss }) {
   const [isLoading, setIsLoading] = useState(true);
   const [audioReady, setAudioReady] = useState(false);
   const [audioError, setAudioError] = useState(false);
-  const audioRef = useRef(new Audio());
+  const audioRef = useRef(null);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
-    const audio = audioRef.current;
+    if (loadedRef.current) return;
+    loadedRef.current = true;
+
+    const audio = new Audio();
+    audioRef.current = audio;
 
     const loadAudio = async () => {
       try {

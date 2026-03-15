@@ -20,6 +20,12 @@ export default function ProphetWelcome({ userName, onDismiss }) {
   const [isLoading, setIsLoading] = useState(true);
   const [audioError, setAudioError] = useState(false);
 
+  // Lock body scroll while modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
   useEffect(() => {
     if (_audioLoaded) {
       // Already fetched — just sync state

@@ -132,12 +132,15 @@ export default function ProphetWelcome({ userName, onDismiss }) {
         <div className="text-slate-300 text-sm leading-relaxed space-y-3 mb-6">
           <p className="text-amber-300 font-semibold">Welcome, {userName},</p>
           <p>
-            The songs you are about to hear are not entertainment — they are prophecy set to rhythm, urgent warning voices for these last days.
+            The songs you are about to hear are not entertainment — they are oracles. Prophecies set to rhythm. Urgent voices for these last days.
+          </p>
+          <p>
+            May the Most High open your eyes and ears as you listen.
           </p>
           <p className="text-amber-400 font-semibold">
-            The door of mercy is still open, but time is short.
+            Be faithful. Be watchful. Stay the course. The door of mercy is still open — but time is short.
           </p>
-          <p className="text-slate-400 italic">God bless you. — Prophet Gad</p>
+          <p className="text-slate-400 italic">Walk in the light. — Prophet Gad</p>
         </div>
 
         <Button onClick={handleDismiss} variant="outline" className="w-full border-amber-500/50 text-amber-400 hover:bg-amber-500/10">

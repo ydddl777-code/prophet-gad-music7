@@ -34,7 +34,7 @@ const PILLARS = [
   {
     icon: AlertTriangle,
     title: "End-Times Warning",
-    text: "\"The hour of His judgment is come.\" Three Angels' messages (Revelation 14) are being proclaimed now — not as distant prophecy but as present reality."
+    text: "\"The hour of His judgment is come.\" Three Angels' messages (Revelation chapter 14) are being proclaimed now — not as distant prophecy but as present reality."
   },
   {
     icon: Shield,
@@ -50,7 +50,7 @@ const PILLARS = [
 
 const TIMELINE = [
   { year: "1980", event: "Born in a Caribbean Nation", sub: "Into violence and danger — as Moses was born under Pharaoh's decree" },
-  { year: "Age 4", event: "Prophetic Anointing", sub: "Ritual anointing by Rastafarian elder grandfather — \"Out of the mouth of babes\" (Psalm 8:2)" },
+  { year: "Age 4", event: "Prophetic Anointing", sub: "Ritual anointing by Rastafarian elder grandfather — \"Out of the mouth of babes\" (Psalm chapter 8, verse 2)" },
   { year: "Age 5", event: "Exiled to Manhattan", sub: "Sent to Pharaoh's court — like Moses, \"learned in all the wisdom of the Egyptians\"" },
   { year: "2002", event: "Ivy League Education", sub: "Daniel in Babylon — learning the systems of power without bowing to its gods" },
   { year: "2020", event: "The Deportation", sub: "Exiled at age 40 — the Jonah moment. Returned to the Caribbean: \"Like Jonah, You led me home\"" },

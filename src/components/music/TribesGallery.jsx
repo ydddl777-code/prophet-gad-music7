@@ -212,7 +212,7 @@ export default function TribesGallery() {
           <h3 className="text-white text-lg font-bold mb-2">The Twelve Tribes of Israel: A Prophetic Dossier (Version 2)</h3>
           <p className="text-slate-400 text-xs mb-4 max-w-2xl mx-auto">Complete tribal banners and prophetic analysis — from Jacob's deathbed to the sealed remnant of Revelation 7.</p>
           <a
-            href="https://media.base44.com/files/public/698ae99a8f13115b248081e9/270f917fa_twelve_tribes_ebook_v2.pdf"
+            href="https://media.base44.com/files/public/698ae99a8f13115b248081e9/0776f5a8f_twelve_tribes_ebook_v2.pdf"
             download="Twelve_Tribes_Prophetic_Dossier_v2.pdf"
             className="inline-flex items-center gap-2 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-700 hover:to-red-800 text-amber-400 font-bold px-6 py-3 rounded-lg transition-all shadow-lg border border-amber-500/30"
           >

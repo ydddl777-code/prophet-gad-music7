@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Download } from 'lucide-react';
 
 const TRIBES = [
   {
     name: "Reuben",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/e237ef153_REUBEN1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/56c9d04fe_tribe-reuben.jpg",
     symbol: "Mandrakes",
     symbolMeaning: "Potential without follow-through — beautiful but rooted, unable to move.",
     blessing: "Reuben, you are my firstborn, my might, and the firstfruits of my strength, the excellency of dignity and the excellency of power. Unstable as water, you shall not excel, because you went up to your father's bed; then you defiled it. — Genesis 49:3-4",
@@ -14,7 +14,7 @@ const TRIBES = [
   },
   {
     name: "Simeon",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/64a5d1c11_SIMEON1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/1754cd3c4_tribe-simeon.jpg",
     symbol: "Sword / City Gate",
     symbolMeaning: "Zeal without wisdom — the sword that cuts both ways.",
     blessing: "Simeon and Levi are brothers; instruments of cruelty are in their habitations... for in their anger they slew a man... Cursed be their anger, for it was fierce; and their wrath, for it was cruel: I will divide them in Jacob, and scatter them in Israel. — Genesis 49:5-7",
@@ -24,7 +24,7 @@ const TRIBES = [
   },
   {
     name: "Levi",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/1b0dffc2d_LEVI1.jpeg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/441813596_tribe-levi.jpeg",
     symbol: "Breastplate / Urim and Thummim",
     symbolMeaning: "Lights and Perfections — the instrument of divine communication and holy inquiry.",
     blessing: "Let your Thummim and your Urim belong to your faithful servant... He watched over your word and guarded your covenant. — Deuteronomy 33:8-9",
@@ -34,7 +34,7 @@ const TRIBES = [
   },
   {
     name: "Judah",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/62121e8bd_JUDAH1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/84413faf3_tribe-judah.jpg",
     symbol: "Lion",
     symbolMeaning: "Sovereignty, courage, and the authority to rule — the scepter belongs to Judah alone.",
     blessing: "Judah is a lion's whelp... The scepter shall not depart from Judah, nor a lawgiver from between his feet, until Shiloh come; and unto him shall the gathering of the people be. — Genesis 49:9-10",
@@ -44,7 +44,7 @@ const TRIBES = [
   },
   {
     name: "Dan",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/cdc196f14_DAN1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/adb0fab63_tribe-dan.jpg",
     symbol: "Serpent / Eagle",
     symbolMeaning: "Discernment twisted into guile — the tension of gifting used for good or ill.",
     blessing: "Dan shall judge his people, as one of the tribes of Israel. Dan shall be a serpent by the way, an adder in the path... I have waited for your salvation, O Lord. — Genesis 49:16-18",
@@ -54,7 +54,7 @@ const TRIBES = [
   },
   {
     name: "Naphtali",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/e92c9bb08_naphtali1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/dca3287ca_tribe-naphtali.jpg",
     symbol: "Doe / Swift Deer",
     symbolMeaning: "Liberation and eloquence — a tribe that could not be contained by conventional boundaries.",
     blessing: "Naphtali is a doe let loose; he gives beautiful words. — Genesis 49:21",
@@ -64,7 +64,7 @@ const TRIBES = [
   },
   {
     name: "Gad",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/d759e65b4_GAD1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/e7d6cffa8_tribe-gad.jpg",
     symbol: "Lion / Armed Warrior / Encampment",
     symbolMeaning: "A field lion — ferocity combined with speed — the warrior-prophet bearing the word like a weapon.",
     blessing: "Gad, a troop shall overcome him, but he shall overcome at the last. — Genesis 49:19. Moses adds: Gad lives there like a lion, tearing at arm or head... He executed the justice of the Lord, and his judgments with Israel. — Deuteronomy 33:20-21",
@@ -74,7 +74,7 @@ const TRIBES = [
   },
   {
     name: "Asher",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/a92747e62_ASHER1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/6b12a61de_tribe-asher.jpg",
     symbol: "Olive Tree / Cup of Oil",
     symbolMeaning: "The cup that overflows — anointing, abundance, light, and healing beyond measure.",
     blessing: "Out of Asher his bread shall be fat, and he shall yield royal dainties... let him dip his foot in oil. Your bars shall be iron and bronze, and as your days, so shall your strength be. — Genesis 49:20, Deuteronomy 33:24-25",
@@ -84,7 +84,7 @@ const TRIBES = [
   },
   {
     name: "Issachar",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/f45a1b7ad_ISSACHAR1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/1c3fa705f_tribe-issachar.jpg",
     symbol: "Donkey / Sun and Moon",
     symbolMeaning: "The tribe that bore burdens also bore understanding — knowing the times and seasons.",
     blessing: "Issachar is a strong donkey, crouching between the sheepfolds. He saw that a resting place was good... so he bowed his shoulder to bear, and became a servant at forced labor. — Genesis 49:14-15",
@@ -94,7 +94,7 @@ const TRIBES = [
   },
   {
     name: "Zebulun",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/c90a2525e_ZEBULUN1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/c60760dd6_tribe-zebulun.jpg",
     symbol: "Ship / Anchor",
     symbolMeaning: "A bridge tribe — rooted in covenant while navigating between peoples and nations.",
     blessing: "Zebulun shall dwell at the shore of the sea; he shall become a haven for ships, and his border shall be at Sidon. — Genesis 49:13",
@@ -104,7 +104,7 @@ const TRIBES = [
   },
   {
     name: "Joseph",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/fdb7d9ab4_JOSEPH1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/ab79e3e4a_tribe-joseph.jpg",
     symbol: "Fruitful Vine / Bull",
     symbolMeaning: "Branches that run over the wall — influence that overflows every boundary placed upon it.",
     blessing: "Joseph is a fruitful bough, a fruitful bough by a spring; his branches run over the wall... by the God of your father who will help you, by the Almighty who will bless you with blessings of heaven above. — Genesis 49:22-25",
@@ -114,7 +114,7 @@ const TRIBES = [
   },
   {
     name: "Benjamin",
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/ab3d8b448_BENJAMIN1.jpg",
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/724aa0483_tribe-benjamin.jpg",
     symbol: "Wolf / Arrow",
     symbolMeaning: "Relentless, resilient, precise — nearly annihilated and miraculously restored.",
     blessing: "Benjamin is a ravenous wolf; in the morning he devours the prey, and at evening he divides the spoil. — Genesis 49:27",
@@ -202,6 +202,23 @@ export default function TribesGallery() {
             Remnant Seed · Standing Firm
           </h2>
           <p className="text-slate-400 text-xs mt-1 italic">"He that hath an ear, let him hear what the Spirit saith" — Rev. 2</p>
+        </div>
+      </div>
+
+      {/* Free E-book Download */}
+      <div className="bg-gradient-to-br from-slate-900 to-red-950/40 border-y border-amber-500/30 py-6 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-2">Free Download</p>
+          <h3 className="text-white text-lg font-bold mb-2">The Twelve Tribes of Israel: A Prophetic Dossier (Version 2)</h3>
+          <p className="text-slate-400 text-xs mb-4 max-w-2xl mx-auto">Complete tribal banners and prophetic analysis — from Jacob's deathbed to the sealed remnant of Revelation 7.</p>
+          <a
+            href="https://media.base44.com/files/public/698ae99a8f13115b248081e9/270f917fa_twelve_tribes_ebook_v2.pdf"
+            download="Twelve_Tribes_Prophetic_Dossier_v2.pdf"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-700 hover:to-red-800 text-amber-400 font-bold px-6 py-3 rounded-lg transition-all shadow-lg border border-amber-500/30"
+          >
+            <Download className="w-4 h-4" />
+            Download Free E-book (PDF)
+          </a>
         </div>
       </div>
 

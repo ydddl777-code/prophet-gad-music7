@@ -9,7 +9,8 @@ function LayoutContent({ children, currentPageName }) {
   const { currentTrack } = usePlayer();
 
   const navItems = [
-    { name: 'MusicLibrary', label: 'Home', icon: null },
+    { name: 'MusicLibrary', label: 'Music', icon: null },
+    { name: 'EbookStore', label: 'E-Books', icon: null },
     { name: 'Playlists', label: 'Playlists', icon: ListMusic },
   ];
 

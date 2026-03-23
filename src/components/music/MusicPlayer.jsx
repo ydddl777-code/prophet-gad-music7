@@ -46,7 +46,7 @@ export default function MusicPlayer() {
       {/* Preview Ended Popup */}
       {previewEnded && (
         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-amber-500/60 rounded-2xl p-5 shadow-2xl w-80 text-center">
-          <p className="text-amber-400 font-bold text-sm mb-1">🎵 60-Second Preview Complete</p>
+          <p className="text-amber-400 font-bold text-sm mb-1">🎵 Extended Play Preview Complete</p>
           <p className="text-white font-semibold mb-0.5">{currentTrack.title}</p>
           <p className="text-slate-400 text-xs mb-4">Purchase the full oracle to hear the complete prophecy.</p>
           <div className="flex gap-2">

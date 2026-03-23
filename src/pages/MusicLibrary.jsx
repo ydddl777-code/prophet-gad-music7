@@ -186,8 +186,7 @@ export default function MusicLibrary() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        {/* Upload Section - Admin only */}
-        {isAdmin && <UploadSection onUploadComplete={handleUploadComplete} />}
+        {/* Upload Section - Hidden from public, admin only */}
 
         {/* Filters */}
         {tracks.length > 0 && (

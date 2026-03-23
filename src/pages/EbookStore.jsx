@@ -5,7 +5,7 @@ const EBOOKS = [
     id: 'remnant-vol-1',
     title: 'Volume I: No Contemporary Praise Music',
     subtitle: 'The Frequency of Babylon',
-    price: 9.99,
+    price: 18.99,
     status: 'coming_soon',
     fullTitle: 'No Contemporary Praise Music for the Israelites',
     tagline: 'When worship became performance and the altar became a stage'
@@ -14,7 +14,7 @@ const EBOOKS = [
     id: 'remnant-vol-2',
     title: 'Volume II: Inordinate Affection',
     subtitle: 'No Dogs for the Israelites',
-    price: 9.99,
+    price: 18.99,
     status: 'coming_soon',
     fullTitle: 'No Dogs for the Israelites',
     tagline: 'The snare of displaced intimacy and the idolatry of the creature'
@@ -23,7 +23,7 @@ const EBOOKS = [
     id: 'remnant-vol-3',
     title: "Volume III: No King's Meat",
     subtitle: "The King's Table",
-    price: 9.99,
+    price: 18.99,
     status: 'coming_soon',
     fullTitle: "No King's Meat for the Israelites",
     tagline: "Daniel's resolve and the divine wisdom of biblical dietary law"
@@ -32,7 +32,7 @@ const EBOOKS = [
     id: 'remnant-vol-4',
     title: 'Volume IV: No False Wisdom',
     subtitle: 'The Debt Trap',
-    price: 9.99,
+    price: 18.99,
     status: 'coming_soon',
     fullTitle: 'No False Wisdom for the Israelites',
     tagline: "The borrower is servant to the lender — breaking free from Babylon's schools"
@@ -51,7 +51,7 @@ const EBOOKS = [
     id: 'eternal-oracle',
     title: 'The Eternal Oracle',
     subtitle: 'A Chosen People',
-    price: 39.99,
+    price: 38.99,
     status: 'coming_soon',
     fullTitle: 'The Eternal Oracle',
     tagline: 'Always the same — if He chose then, He chooses now'
@@ -69,10 +69,11 @@ function EbookCover({ book }) {
         <div className="absolute inset-0" style={{background: 'radial-gradient(ellipse at 50% 20%, rgba(180,20,20,0.15) 0%, transparent 60%)'}} />
       </div>
 
-      {/* Outer border gold */}
-      <div className="absolute inset-1.5 border border-[#D4AF37]" />
-      {/* Inner border red */}
-      <div className="absolute inset-[9px] border border-[rgba(180,30,30,0.55)]" />
+      {/* Double gold outer border */}
+      <div className="absolute inset-1 border border-[#D4AF37]" />
+      <div className="absolute inset-[5px] border border-[#D4AF37]/40" />
+      {/* Inner accent border */}
+      <div className="absolute inset-[9px] border border-[rgba(180,30,30,0.45)]" />
 
       {/* Content — strictly clipped inside borders */}
       <div className="absolute inset-[11px] flex flex-col items-center justify-between text-center overflow-hidden py-1">
@@ -141,8 +142,8 @@ function EbookCard({ book }) {
       <div className="text-center w-[180px]">
         <h3 className="text-[0.65rem] font-bold text-white mb-1 leading-tight">{book.title}</h3>
         <div className="flex items-center justify-center gap-2 mb-2">
-          <span className={`text-xs font-bold ${book.price === 0 ? 'text-green-500' : 'text-amber-400'}`}>
-            {book.price === 0 ? 'Free' : `$${book.price.toFixed(2)}`}
+          <span className="text-xs font-bold text-amber-400">
+            {book.price === 0 ? '' : `$${book.price.toFixed(2)}`}
           </span>
           {book.status === 'coming_soon' && (
             <span className="text-[0.45rem] tracking-wider uppercase px-1.5 py-0.5 border border-slate-700 text-slate-500">Soon</span>
@@ -157,7 +158,7 @@ function EbookCard({ book }) {
               : 'bg-gradient-to-r from-red-800 to-amber-700 hover:from-red-700 hover:to-amber-600 text-white'
           }`}
         >
-          {book.price === 0 ? 'Download Free' : book.status === 'coming_soon' ? 'Coming Soon' : 'Purchase'}
+          {book.price === 0 ? 'Free Download' : book.status === 'coming_soon' ? 'Coming Soon' : 'Purchase'}
         </button>
       </div>
     </div>
@@ -172,9 +173,7 @@ export default function EbookStore() {
     <div className="bg-[#0a0a0a] text-white py-10 px-6">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-10">
-        <div className="text-[0.6rem] tracking-[0.4em] uppercase text-[rgba(212,175,55,0.4)] mb-2">
-          Thread Bear Books · Remnant Seed LLC
-        </div>
+        <div className="">
         <h1 className="text-3xl tracking-[0.2em] uppercase text-[#D4AF37] font-bold mb-2">
           Remnant Warning Series
         </h1>
@@ -218,8 +217,8 @@ export default function EbookStore() {
         <p className="text-xs text-slate-600 leading-relaxed">
           All titles are currently in development. Covers shown are design placeholders. Interior content is being revised prior to final publication. Pricing is subject to change.
         </p>
-        <div className="text-[0.55rem] tracking-[0.2em] uppercase text-[rgba(212,175,55,0.25)] mt-4">
-          Thread Bear Books · Remnant Seed LLC · Prophet Gad
+        <div className="text-[0.45rem] tracking-[0.15em] text-[rgba(212,175,55,0.15)] mt-6">
+          Thread Bear Books, a DBA of Remnant Seed LLC · Prophet Gad
         </div>
       </div>
     </div>

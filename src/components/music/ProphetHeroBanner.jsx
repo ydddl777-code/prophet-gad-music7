@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Zap, Eye, AlertTriangle, ChevronLeft, ChevronRight } from 'lucide-react';
-import TribesGallery from './TribesGallery';
+import { AlertTriangle } from 'lucide-react';
+import EbookStore from '../../pages/EbookStore';
 
 const AVATARS = [
   {
@@ -25,41 +25,8 @@ const AVATARS = [
   },
 ];
 
-const PILLARS = [
-  {
-    icon: Eye,
-    title: "Ancient Seer Reborn",
-    text: "The biblical Gad was David's seer — chozeh — one who sees what others cannot. That same prophetic mantle has returned to Earth."
-  },
-  {
-    icon: AlertTriangle,
-    title: "End-Times Warning",
-    text: "\"The hour of His judgment is come.\" Three Angels' messages (Revelation chapter 14) are being proclaimed now — not as distant prophecy but as present reality."
-  },
-  {
-    icon: Shield,
-    title: "Spiritual Warfare",
-    text: "This warfare is not physical. It is waged in the realm of Bible doctrine, interpretation, and the decoding of Babylon's deceptions."
-  },
-  {
-    icon: Zap,
-    title: "Music as Oracle",
-    text: "Just as the historical Gad organized temple worship (2 Chronicles 29:25), today's oracles are delivered through Nyabinghi reggae — prophecy set to rhythm."
-  },
-];
-
-const TIMELINE = [
-  { year: "1980", event: "Born in a Caribbean Nation", sub: "Into violence and danger — as Moses was born under Pharaoh's decree" },
-  { year: "Age 4", event: "Prophetic Anointing", sub: "Ritual anointing by Rastafarian elder grandfather — \"Out of the mouth of babes\" (Psalm chapter 8, verse 2)" },
-  { year: "Age 5", event: "Exiled to Manhattan", sub: "Sent to Pharaoh's court — like Moses, \"learned in all the wisdom of the Egyptians\"" },
-  { year: "2002", event: "Ivy League Education", sub: "Daniel in Babylon — learning the systems of power without bowing to its gods" },
-  { year: "2020", event: "The Deportation", sub: "Exiled at age 40 — the Jonah moment. Returned to the Caribbean: \"Like Jonah, You led me home\"" },
-  { year: "2024", event: "The Triumphant Return", sub: "Resources amplified. Commission confirmed. The Watchman ascends the walls of Zion." },
-];
-
 export default function ProphetHeroBanner() {
   const [currentAvatar, setCurrentAvatar] = useState(0);
-  const [showFull, setShowFull] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -81,7 +48,6 @@ export default function ProphetHeroBanner() {
 
       {/* HERO */}
       <div className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 overflow-hidden">
-        {/* Background texture */}
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at 20% 50%, #f59e0b 0%, transparent 50%), radial-gradient(circle at 80% 50%, #dc2626 0%, transparent 50%)'}} />
 
         <div className="relative max-w-7xl mx-auto px-6 pt-8 pb-10 flex flex-col items-center gap-8">
@@ -101,7 +67,6 @@ export default function ProphetHeroBanner() {
                 <p className="text-amber-400 text-xs font-semibold tracking-wider uppercase">{AVATARS[currentAvatar].caption}</p>
               </div>
             </div>
-            {/* Dots */}
             <div className="flex justify-center gap-2 mt-3">
               {AVATARS.map((_, i) => (
                 <button key={i} onClick={() => setCurrentAvatar(i)}
@@ -111,7 +76,7 @@ export default function ProphetHeroBanner() {
             </div>
           </div>
 
-          {/* TEXT CONTENT — below image, centered */}
+          {/* TEXT CONTENT */}
           <div className="flex-1 text-white text-center max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-red-800/60 border border-red-500/50 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-red-300 mb-4">
               <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
@@ -133,122 +98,13 @@ export default function ProphetHeroBanner() {
               <p>
                 Bearing the mantle of the ancient Prophet Gad, seer in King David's court and Minister of Music in the Temple of the Most High, he embodies a calling ordained before the foundation of the world. Exiled back to his homeland at age 40 due to political intrigue, Prophet Gad's return to the United States through miraculous circumstances marked a new chapter. Now, he teaches and preaches an urgent, uncompromising message, <em className="text-amber-400 not-italic font-semibold">Earth's final warning: Repent or die, for the hour of His judgment has come.</em>
               </p>
-              <p className="text-amber-300 font-semibold">
-                This is not entertainment. This is walking hand in hand, as Enoch walked.
-              </p>
             </div>
-
-            <blockquote className="border-l-4 border-amber-500 pl-4 mb-5 italic text-amber-200 text-sm text-left">
-              "One rusty, tattered nail tells the tale of the writing on the wall and the last day's judgment hour call."
-              <span className="block text-xs text-slate-500 not-italic mt-1">— Prophet Gad, "The Writing on the Wall"</span>
-            </blockquote>
-
-            <div className="flex flex-wrap gap-3 mb-5 justify-center">
-              {['Spiritual Warfare', 'Biblical Doctrine', 'End-Times Prophecy', 'Hebraic Roots', 'Three Angels\' Messages'].map(tag => (
-                <span key={tag} className="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1 rounded-full">{tag}</span>
-              ))}
-            </div>
-
-            {/* E-book CTA */}
-            <div className="bg-gradient-to-r from-amber-900/40 to-red-900/40 border border-amber-500/50 rounded-xl p-5 mb-5">
-              <h4 className="text-amber-300 font-bold text-base mb-2">📖 Explore These Compelling Issues Further</h4>
-              <p className="text-slate-300 text-sm mb-3">
-                Dive deeper into the prophetic calling, biblical lineage, and end-times message in the comprehensive e-book:
-              </p>
-              <p className="text-white font-bold text-lg mb-3">Prophet Gad — The Watchman</p>
-              <button
-                onClick={async () => {
-                  const isInIframe = window.self !== window.top;
-                  if (isInIframe) {
-                    alert("Purchase is only available from the published app.");
-                    return;
-                  }
-                  try {
-                    const { base44 } = await import("@/api/base44Client");
-                    const res = await base44.functions.invoke('createEbookCheckout', {});
-                    if (res.data?.url) window.location.href = res.data.url;
-                  } catch (err) {
-                    alert("Could not start checkout");
-                  }
-                }}
-                className="bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white font-bold px-6 py-3 rounded-lg transition-all shadow-lg"
-              >
-                Purchase E-book — $40.00
-              </button>
-            </div>
-
-            <button
-              onClick={() => setShowFull(!showFull)}
-              className="text-amber-400 hover:text-amber-300 text-sm font-semibold underline underline-offset-4 transition-colors"
-            >
-              {showFull ? '▲ Hide Biography' : '▼ Read Full Prophetic Biography'}
-            </button>
           </div>
         </div>
       </div>
 
-      {/* TWELVE TRIBES GALLERY */}
-      <TribesGallery />
-
-      {/* EXPANDED BIO */}
-      {showFull && (
-        <div className="bg-slate-900 text-white">
-          {/* Four Pillars */}
-          <div className="max-w-7xl mx-auto px-6 py-10">
-            <h2 className="text-center text-xs uppercase tracking-widest text-amber-500 font-bold mb-8">The Prophetic Mission</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-14">
-              {PILLARS.map((p) => {
-                const Icon = p.icon;
-                return (
-                  <div key={p.title} className="bg-slate-800 rounded-xl p-5 border border-slate-700 hover:border-amber-500/50 transition-colors">
-                    <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-red-600 rounded-lg flex items-center justify-center mb-3">
-                      <Icon className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="font-bold text-white mb-2 text-sm">{p.title}</h3>
-                    <p className="text-slate-400 text-xs leading-relaxed">{p.text}</p>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Timeline */}
-            <h2 className="text-center text-xs uppercase tracking-widest text-amber-500 font-bold mb-8">The Prophetic Journey</h2>
-            <div className="relative">
-              <div className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-amber-500 via-red-600 to-slate-700" />
-              <div className="space-y-6">
-                {TIMELINE.map((item, i) => (
-                  <div key={i} className={`flex items-start gap-6 ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} relative pl-10 lg:pl-0`}>
-                    <div className={`lg:w-1/2 ${i % 2 === 0 ? 'lg:text-right lg:pr-10' : 'lg:pl-10'}`}>
-                      <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 hover:border-amber-500/40 transition-colors">
-                        <span className="text-amber-500 font-black text-sm">{item.year}</span>
-                        <h4 className="text-white font-bold mt-1">{item.event}</h4>
-                        <p className="text-slate-400 text-xs mt-1 leading-relaxed">{item.sub}</p>
-                      </div>
-                    </div>
-                    {/* Dot */}
-                    <div className="absolute left-2 lg:left-1/2 lg:-translate-x-1/2 top-4 w-4 h-4 bg-amber-500 rounded-full border-4 border-slate-900 z-10" />
-                    <div className="hidden lg:block lg:w-1/2" />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Final CTA */}
-            <div className="mt-14 text-center border border-red-800 bg-red-950/40 rounded-2xl p-8 max-w-2xl mx-auto">
-              <AlertTriangle className="w-10 h-10 text-red-400 mx-auto mb-3" />
-              <h3 className="text-2xl font-black text-white mb-2">The Door Is Still Open</h3>
-              <p className="text-slate-400 text-sm leading-relaxed mb-4">
-                "As in Noah's shadowed time, the door was shut that fateful day. 
-                Turn now while mercy lingers — before it slips away." <br/>
-                <em className="text-slate-500">— The Writing on the Wall</em>
-              </p>
-              <p className="text-amber-300 text-xs font-semibold uppercase tracking-widest">
-                These Songs Are Not Entertainment. They Are Prophecy.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* REMNANT WARNING CATALOG */}
+      <EbookStore />
     </div>
   );
 }

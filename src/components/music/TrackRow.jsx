@@ -137,8 +137,8 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
           {/* Price / Action Button */}
           <div className="flex items-center gap-2 flex-shrink-0">
             {track.is_free_listen ? (
-              <div className="bg-green-800 text-white font-bold text-sm px-4 py-2 rounded-full">
-                FREE
+              <div className="bg-amber-900/60 border border-amber-500/40 text-amber-400 font-bold text-xs px-3 py-1.5 rounded-full tracking-wider uppercase">
+                Extended Play
               </div>
             ) : (
               <Button 

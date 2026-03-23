@@ -27,33 +27,38 @@ const AVATARS = [
 ];
 
 export default function ProphetHeroBanner() {
-  const [currentAvatar, setCurrentAvatar] = useState(0);
   const [muted, setMuted] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentAvatar(prev => (prev + 1) % AVATARS.length);
-    }, 12000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    base44.entities.MusicTrack.filter({ is_free_listen: true }, '-created_date', 1)
+    let audio1, audio2;
+    base44.entities.MusicTrack.list('-created_date', 2)
       .then(tracks => {
-        if (!tracks || tracks.length === 0) return base44.entities.MusicTrack.list('-created_date', 1);
-        return tracks;
-      })
-      .then(tracks => {
-        if (!tracks || tracks.length === 0 || !tracks[0].file_url) return;
-        const audio = new Audio(tracks[0].file_url);
-        audio.volume = 0.12;
-        audio.loop = true;
-        audioRef.current = audio;
-        audio.play().catch(() => {});
+        if (!tracks || tracks.length < 1) return;
+        const [t1, t2] = tracks;
+        if (!t1?.file_url) return;
+        audio1 = new Audio(t1.file_url);
+        audio1.volume = 0.12;
+        audioRef.current = audio1;
+        if (t2?.file_url) {
+          audio2 = new Audio(t2.file_url);
+          audio2.volume = 0.08;
+          audio2.loop = true;
+          audio1.addEventListener('ended', () => {
+            audioRef.current = audio2;
+            audio2.play().catch(() => {});
+          });
+        } else {
+          audio1.loop = true;
+        }
+        audio1.play().catch(() => {});
       })
       .catch(() => {});
-    return () => { if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; } };
+    return () => {
+      if (audio1) audio1.pause();
+      if (audio2) audio2.pause();
+      audioRef.current = null;
+    };
   }, []);
 
   const toggleMute = () => {
@@ -67,7 +72,7 @@ export default function ProphetHeroBanner() {
       {/* TICKER */}
       <div className="bg-red-900 text-white py-4 px-6 relative">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-2xl sm:text-3xl font-black tracking-wide uppercase text-white leading-tight mb-1">Earth's Last Day Final Warning Message</p>
+          <p className="text-lg sm:text-xl font-black tracking-wide uppercase text-white leading-tight mb-1">Earth's Last Day Final Warning Message</p>
           <p className="text-xs sm:text-sm tracking-[0.2em] uppercase text-red-300/80 font-semibold">The Hour of His Judgment Is Come</p>
         </div>
         <span className="absolute bottom-2 right-4 text-[0.55rem] text-red-400/60 tracking-widest uppercase">— Revelation 14:7</span>
@@ -79,18 +84,15 @@ export default function ProphetHeroBanner() {
 
         <div className="relative max-w-7xl mx-auto px-6 pt-8 pb-10 flex flex-col items-center gap-8">
 
-          {/* CAROUSEL */}
+          {/* FIXED PORTRAIT */}
           <div className="relative w-56 h-72 rounded-xl overflow-hidden border-2 border-amber-500/60 shadow-2xl shadow-amber-900/40 shrink-0">
-            {AVATARS.map((avatar, i) => (
-              <img
-                key={i}
-                src={avatar.url}
-                alt={avatar.caption}
-                className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === currentAvatar ? 'opacity-100' : 'opacity-0'}`}
-              />
-            ))}
+            <img
+              src={AVATARS[4].url}
+              alt={AVATARS[4].caption}
+              className="absolute inset-0 w-full h-full object-cover object-top"
+            />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-center">
-              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{AVATARS[currentAvatar].caption}</p>
+              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{AVATARS[4].caption}</p>
             </div>
           </div>
 
@@ -110,7 +112,7 @@ export default function ProphetHeroBanner() {
                 In the spirit of ancient Hebrew Israelite seers, just as Elijah's mantle fell upon Elisha, a prophetic voice has arisen for this generation: Prophet Gad. Born in a Caribbean nation steeped in biblical heritage, consecrated at age 4, and sent to the United States in secret at age 5 for his protection, Prophet Gad's life has been forged in exile and destiny. Raised in New York City under the care of a Jamaican-born, British-trained nanny and educated at elite preparatory schools and Ivy League institutions, his journey has echoed the trials of the prophets of old.
               </p>
               <p>
-                Bearing the mantle of the ancient Prophet Gad, seer in King David's court and Minister of Music in the Temple of the Most High, he embodies a calling ordained before the foundation of the world. Exiled back to his homeland at age 40 due to political intrigue, Prophet Gad's return to the United States through miraculous circumstances marked a new chapter. Now, he teaches and preaches an urgent, uncompromising message, <em className="text-amber-400 not-italic font-semibold">Earth's final warning: Repent or die, for the hour of His judgment has come.</em>
+                Bearing the mantle of the ancient Prophet Gad, seer in King David's court and Minister of Music in the Temple of the Most High, he embodies a calling ordained before the foundation of the world. Exiled back to his homeland at age 40 due to political intrigue, Prophet Gad's return to the United States through miraculous circumstances marked a new chapter. Now, he teaches and preaches an urgent, uncompromising message — <em className="text-red-500 not-italic font-bold">repent or die.</em>
               </p>
             </div>
 
@@ -131,7 +133,7 @@ export default function ProphetHeroBanner() {
         <div className="max-w-5xl mx-auto flex items-center gap-5">
           <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-amber-500/60 shrink-0 shadow-lg">
             <img
-              src={AVATARS[currentAvatar].url}
+              src={AVATARS[4].url}
               alt="Prophet Gad"
               className="w-full h-full object-cover object-top"
             />

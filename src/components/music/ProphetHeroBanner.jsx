@@ -84,9 +84,9 @@ export default function ProphetHeroBanner() {
         {/* Background texture */}
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at 20% 50%, #f59e0b 0%, transparent 50%), radial-gradient(circle at 80% 50%, #dc2626 0%, transparent 50%)'}} />
 
-        <div className="relative max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-10 items-center">
-          {/* IMAGE CAROUSEL */}
-          <div className="relative w-full lg:w-80 shrink-0">
+        <div className="relative max-w-7xl mx-auto px-6 pt-8 pb-10 flex flex-col items-center gap-8">
+          {/* IMAGE CAROUSEL — centered at top */}
+          <div className="relative w-64 sm:w-72 shrink-0">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/40" style={{aspectRatio: '3/4'}}>
               {AVATARS.map((avatar, i) => (
                 <img
@@ -96,7 +96,6 @@ export default function ProphetHeroBanner() {
                   className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === currentAvatar ? 'opacity-100' : 'opacity-0'}`}
                 />
               ))}
-              {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
               <div className="absolute bottom-3 left-0 right-0 text-center">
                 <p className="text-amber-400 text-xs font-semibold tracking-wider uppercase">{AVATARS[currentAvatar].caption}</p>
@@ -112,8 +111,8 @@ export default function ProphetHeroBanner() {
             </div>
           </div>
 
-          {/* TEXT CONTENT */}
-          <div className="flex-1 text-white">
+          {/* TEXT CONTENT — below image, centered */}
+          <div className="flex-1 text-white text-center max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-red-800/60 border border-red-500/50 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-red-300 mb-4">
               <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
               Ancient Israelite Prophet — On Earth Right Now!
@@ -125,9 +124,9 @@ export default function ProphetHeroBanner() {
                 Gad
               </span>
             </h1>
-            <p className="text-amber-300 font-bold text-xl mb-1 tracking-wide">David's Seer · Returned</p>
+            <p className="text-amber-300 font-bold text-xl mb-5 tracking-wide">David's Seer · Returned</p>
 
-            <div className="text-slate-300 text-base leading-relaxed mb-5 max-w-xl space-y-3">
+            <div className="text-slate-300 text-base leading-relaxed mb-5 space-y-3 text-left">
               <p>
                 In the spirit of ancient Hebrew Israelite seers, just as Elijah's mantle fell upon Elisha, a prophetic voice has arisen for this generation: Prophet Gad. Born in a Caribbean nation steeped in biblical heritage, consecrated at age 4, and sent to the United States in secret at age 5 for his protection, Prophet Gad's life has been forged in exile and destiny. Raised in New York City under the care of a Jamaican-born, British-trained nanny and educated at elite preparatory schools and Ivy League institutions, his journey has echoed the trials of the prophets of old.
               </p>
@@ -139,12 +138,12 @@ export default function ProphetHeroBanner() {
               </p>
             </div>
 
-            <blockquote className="border-l-4 border-amber-500 pl-4 mb-5 italic text-amber-200 text-sm">
+            <blockquote className="border-l-4 border-amber-500 pl-4 mb-5 italic text-amber-200 text-sm text-left">
               "One rusty, tattered nail tells the tale of the writing on the wall and the last day's judgment hour call."
               <span className="block text-xs text-slate-500 not-italic mt-1">— Prophet Gad, "The Writing on the Wall"</span>
             </blockquote>
 
-            <div className="flex flex-wrap gap-3 mb-5">
+            <div className="flex flex-wrap gap-3 mb-5 justify-center">
               {['Spiritual Warfare', 'Biblical Doctrine', 'End-Times Prophecy', 'Hebraic Roots', 'Three Angels\' Messages'].map(tag => (
                 <span key={tag} className="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1 rounded-full">{tag}</span>
               ))}

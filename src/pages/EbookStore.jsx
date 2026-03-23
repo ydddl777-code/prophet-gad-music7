@@ -73,52 +73,63 @@ const EBOOKS = [
 ];
 
 function EbookCover({ book }) {
+  const volMatch = book.id.match(/vol-(\d+)/);
+  const volNum = volMatch ? ['I','II','III','IV'][parseInt(volMatch[1])-1] : null;
+
   return (
-    <div className="w-[260px] h-[390px] relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d0d] via-[#1a1510] to-[#0d0d0d]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,rgba(212,175,55,0.05)_0%,transparent_60%)]" />
+    <div className="w-[200px] h-[300px] relative overflow-hidden flex-shrink-0">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#180a08] to-[#0a0a0a]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_20%,rgba(180,20,20,0.15)_0%,transparent_60%)]" />
       </div>
 
-      {/* Double borders */}
-      <div className="absolute inset-2 border-[1.5px] border-[#D4AF37]" />
-      <div className="absolute inset-[14px] border border-[rgba(212,175,55,0.4)]" />
+      {/* Outer border gold */}
+      <div className="absolute inset-1.5 border border-[#D4AF37]" />
+      {/* Inner border red */}
+      <div className="absolute inset-[10px] border border-[rgba(180,30,30,0.6)]" />
 
-      {/* Content */}
-      <div className="absolute inset-5 flex flex-col items-center justify-center text-center z-10">
-        <div className="text-[0.45rem] tracking-[0.3em] uppercase text-[rgba(212,175,55,0.3)] mb-1">
-          Remnant Warning
+      {/* Content area — strictly clipped */}
+      <div className="absolute inset-[12px] flex flex-col items-center justify-between text-center overflow-hidden">
+        {/* Top label */}
+        <div className="w-full">
+          <div className="text-[0.38rem] tracking-[0.25em] uppercase text-[rgba(212,175,55,0.35)] leading-tight">Remnant Warning</div>
+          {volNum && (
+            <div className="text-[0.42rem] tracking-[0.2em] uppercase text-[rgba(180,30,30,0.8)] mt-0.5 font-bold">Volume {volNum}</div>
+          )}
+          {!volNum && (
+            <div className="text-[0.38rem] tracking-[0.2em] uppercase text-[rgba(212,175,55,0.4)] mt-0.5">Special Edition</div>
+          )}
         </div>
-        <div className="w-10 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent my-1.5" />
-        <div className="text-[0.5rem] tracking-[0.25em] uppercase text-[rgba(212,175,55,0.45)] mt-1">
-          {book.id.includes('vol-') ? `Volume ${book.id.split('-')[2].toUpperCase()}` : 'Special Edition'}
-        </div>
-        <div
-          className="text-[0.5rem] tracking-[0.2em] uppercase my-1"
-          style={{ color: book.accentColor }}
-        >
+
+        {/* Divider */}
+        <div className="w-[40px] h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
+
+        {/* Subtitle in red */}
+        <div className="text-[0.38rem] tracking-[0.15em] uppercase leading-tight" style={{color: 'rgba(200,60,60,0.9)'}}>
           {book.subtitle}
         </div>
-        <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent my-1.5" />
-        <div className="text-[1rem] font-bold text-[#D4AF37] leading-tight my-1.5">
-          {book.fullTitle.split(' ').map((word, i) => (
-            <React.Fragment key={i}>
-              {word}
-              {i < book.fullTitle.split(' ').length - 1 && <br />}
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent my-1.5" />
-        <div className="font-serif italic text-[0.6rem] text-[rgba(245,240,225,0.45)] leading-relaxed max-w-[200px] mt-1">
-          {book.tagline}
+
+        {/* Main Title */}
+        <div className="px-1 w-full">
+          <div className="text-[0.7rem] font-black text-[#D4AF37] leading-tight tracking-wide">
+            {book.fullTitle}
+          </div>
         </div>
 
-        {/* Author at bottom */}
-        <div className="absolute bottom-2 left-0 right-0 text-center">
-          <div className="w-[50px] h-px bg-gradient-to-r from-transparent via-[rgba(212,175,55,0.3)] to-transparent mx-auto mb-1.5" />
-          <span className="text-[0.5rem] tracking-[0.25em] uppercase text-[#D4AF37]">
-            Prophet Gad
-          </span>
+        {/* Divider */}
+        <div className="w-[40px] h-px bg-gradient-to-r from-transparent via-[rgba(180,30,30,0.6)] to-transparent" />
+
+        {/* Tagline */}
+        <div className="px-1 w-full">
+          <div className="text-[0.33rem] italic text-[rgba(245,240,225,0.4)] leading-tight">
+            {book.tagline}
+          </div>
+        </div>
+
+        {/* Author */}
+        <div className="w-full">
+          <div className="w-[30px] h-px bg-gradient-to-r from-transparent via-[rgba(212,175,55,0.3)] to-transparent mx-auto mb-1" />
+          <span className="text-[0.35rem] tracking-[0.2em] uppercase text-[#D4AF37]">Prophet Gad</span>
         </div>
       </div>
     </div>
@@ -142,42 +153,29 @@ function EbookCard({ book }) {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center gap-3">
       <EbookCover book={book} />
-      <div className="mt-4 text-center max-w-[260px]">
-        <h3 className="text-sm font-bold text-white mb-1">{book.title}</h3>
-        <p className="text-xs text-slate-400 leading-relaxed mb-3">{book.description}</p>
-        <div className="flex items-center justify-center gap-3 mb-3">
-          <span className={`text-sm font-bold ${book.price === 0 ? 'text-green-500' : 'text-amber-400'}`}>
-            {book.price === 0 ? 'Free Download' : `$${book.price.toFixed(2)}`}
+      <div className="text-center w-[200px]">
+        <h3 className="text-xs font-bold text-white mb-1 leading-tight">{book.title}</h3>
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <span className={`text-xs font-bold ${book.price === 0 ? 'text-green-500' : 'text-amber-400'}`}>
+            {book.price === 0 ? 'Free' : `$${book.price.toFixed(2)}`}
           </span>
           {book.status === 'coming_soon' && (
-            <span className="text-[0.5rem] tracking-wider uppercase px-2 py-1 border border-slate-700 text-slate-500">
-              Coming Soon
-            </span>
+            <span className="text-[0.5rem] tracking-wider uppercase px-1.5 py-0.5 border border-slate-700 text-slate-500">Soon</span>
           )}
         </div>
-        <Button
+        <button
           onClick={handlePurchase}
-          variant={book.status === 'available' ? 'default' : 'outline'}
-          size="sm"
-          className="w-full gap-2"
           disabled={book.status === 'coming_soon'}
+          className={`w-full text-xs py-1.5 rounded font-semibold transition-all ${
+            book.status === 'coming_soon'
+              ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+              : 'bg-gradient-to-r from-red-800 to-amber-700 hover:from-red-700 hover:to-amber-600 text-white'
+          }`}
         >
-          {book.price === 0 ? (
-            <>
-              <Download className="w-4 h-4" /> Download Free
-            </>
-          ) : book.status === 'coming_soon' ? (
-            <>
-              <Clock className="w-4 h-4" /> Coming Soon
-            </>
-          ) : (
-            <>
-              <ShoppingCart className="w-4 h-4" /> Purchase
-            </>
-          )}
-        </Button>
+          {book.price === 0 ? 'Download Free' : book.status === 'coming_soon' ? 'Coming Soon' : 'Purchase'}
+        </button>
       </div>
     </div>
   );
@@ -215,27 +213,11 @@ export default function EbookStore() {
       <div className="text-center text-[0.7rem] tracking-[0.3em] uppercase text-[rgba(212,175,55,0.5)] mb-8">
         The Four Warnings · Volumes I – IV
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 max-w-7xl mx-auto mb-12">
-        {remnantVolumes.map(book => (
-          <EbookCard key={book.id} book={book} />
-        ))}
-      </div>
-
-      <div className="w-[120px] h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto my-8" />
-
-      {/* Special Editions */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12 justify-items-center">
       <div className="text-center text-[0.7rem] tracking-[0.3em] uppercase text-[rgba(212,175,55,0.5)] mb-8">
         Special Editions
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto mb-12">
-        {specialEditions.map(book => (
-          <EbookCard key={book.id} book={book} />
-        ))}
-      </div>
-
-      <div className="w-[120px] h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto my-8" />
-
-      {/* Footer */}
+      <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto mb-12 justify-items-center">
       <div className="text-center max-w-2xl mx-auto">
         <p className="text-xs text-slate-600 leading-relaxed">
           All titles are currently in development. Covers shown are design placeholders representing the intended visual direction for each volume. Interior content is being revised, expanded, and fact-checked prior to final publication. Pricing is subject to change. Available for pre-order soon.

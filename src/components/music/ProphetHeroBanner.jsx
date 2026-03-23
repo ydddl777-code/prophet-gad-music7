@@ -51,30 +51,6 @@ export default function ProphetHeroBanner() {
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at 20% 50%, #f59e0b 0%, transparent 50%), radial-gradient(circle at 80% 50%, #dc2626 0%, transparent 50%)'}} />
 
         <div className="relative max-w-7xl mx-auto px-6 pt-8 pb-10 flex flex-col items-center gap-8">
-          {/* IMAGE CAROUSEL — centered at top */}
-          <div className="relative w-64 sm:w-72 shrink-0">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/40" style={{aspectRatio: '3/4'}}>
-              {AVATARS.map((avatar, i) => (
-                <img
-                  key={i}
-                  src={avatar.url}
-                  alt={avatar.caption}
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === currentAvatar ? 'opacity-100' : 'opacity-0'}`}
-                />
-              ))}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
-              <div className="absolute bottom-3 left-0 right-0 text-center">
-                <p className="text-amber-400 text-xs font-semibold tracking-wider uppercase">{AVATARS[currentAvatar].caption}</p>
-              </div>
-            </div>
-            <div className="flex justify-center gap-2 mt-3">
-              {AVATARS.map((_, i) => (
-                <button key={i} onClick={() => setCurrentAvatar(i)}
-                  className={`w-2 h-2 rounded-full transition-all ${i === currentAvatar ? 'bg-amber-500 scale-125' : 'bg-slate-600'}`}
-                />
-              ))}
-            </div>
-          </div>
 
           {/* TEXT CONTENT */}
           <div className="flex-1 text-white text-center max-w-2xl">
@@ -99,6 +75,24 @@ export default function ProphetHeroBanner() {
                 Bearing the mantle of the ancient Prophet Gad, seer in King David's court and Minister of Music in the Temple of the Most High, he embodies a calling ordained before the foundation of the world. Exiled back to his homeland at age 40 due to political intrigue, Prophet Gad's return to the United States through miraculous circumstances marked a new chapter. Now, he teaches and preaches an urgent, uncompromising message, <em className="text-amber-400 not-italic font-semibold">Earth's final warning: Repent or die, for the hour of His judgment has come.</em>
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* AUTHOR STRIP */}
+      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-y border-amber-500/20 py-6 px-6">
+        <div className="max-w-5xl mx-auto flex items-center gap-5">
+          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-amber-500/60 shrink-0 shadow-lg">
+            <img
+              src={AVATARS[currentAvatar].url}
+              alt="Prophet Gad"
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
+          <div>
+            <p className="text-[0.55rem] tracking-[0.3em] uppercase text-amber-500/60 mb-0.5">Author</p>
+            <p className="text-white font-bold text-sm">Prophet Gad</p>
+            <p className="text-slate-400 text-xs">Ancient Israelite Seer · David's Prophet · Returned</p>
           </div>
         </div>
       </div>

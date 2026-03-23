@@ -173,7 +173,6 @@ export default function EbookStore() {
     <div className="bg-[#0a0a0a] text-white py-10 px-6">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-10">
-        <div className="">
         <h1 className="text-3xl tracking-[0.2em] uppercase text-[#D4AF37] font-bold mb-2">
           Remnant Warning Series
         </h1>

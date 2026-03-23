@@ -107,12 +107,9 @@ export default function ProphetHeroBanner() {
               Prophet Gad
             </h1>
 
-            <div className="text-slate-300 text-base leading-relaxed mb-5 space-y-3 text-justify">
+            <div className="text-slate-300 text-base leading-relaxed mb-5 text-justify">
               <p>
-                In the spirit of ancient Hebrew Israelite seers, just as Elijah's mantle fell upon Elisha, a prophetic voice has arisen for this generation: Prophet Gad. Born in a Caribbean nation steeped in biblical heritage, consecrated at age 4, and sent to the United States in secret at age 5 for his protection, Prophet Gad's life has been forged in exile and destiny. Raised in New York City under the care of a Jamaican-born, British-trained nanny and educated at elite preparatory schools and Ivy League institutions, his journey has echoed the trials of the prophets of old.
-              </p>
-              <p>
-                Bearing the mantle of the ancient Prophet Gad, seer in King David's court and Minister of Music in the Temple of the Most High, he embodies a calling ordained before the foundation of the world. Exiled back to his homeland at age 40 due to political intrigue, Prophet Gad's return to the United States through miraculous circumstances marked a new chapter. Now, he teaches and preaches an urgent, uncompromising message — <em className="text-red-500 not-italic font-bold">repent or die.</em>
+                In the spirit of ancient Hebrew seers, Prophet Gad has emerged as a prophetic voice for this generation. Born in a Caribbean nation rooted in biblical tradition, he was consecrated at age four and sent to the U.S. in secret for protection, where he was raised and educated in New York. Bearing the mantle of the biblical Prophet Gad, his life has mirrored the trials of the prophets of old, marked by exile and miraculous returns. Now, he delivers an urgent and uncompromising message: <strong className="text-red-500">repent or die.</strong>
               </p>
             </div>
 

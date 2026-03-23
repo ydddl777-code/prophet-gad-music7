@@ -4,6 +4,10 @@ import EbookStore from '../../pages/EbookStore';
 
 const AVATARS = [
   {
+    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/1e2633946_smallGadup1.jpg",
+    caption: "The Seer — Breastplate of Judgment"
+  },
+  {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/82e316e3e_ProphetGadinuniformupscale.jpg",
     caption: "The Seer in Full Armor"
   },
@@ -14,10 +18,6 @@ const AVATARS = [
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/dde2b0bc7_Prophet_gad_trains_young_prophets_90390a5f07.jpg",
     caption: "Training the Remnant"
-  },
-  {
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/5f978960b_Master_prompt_prophet_gad_is_an_ancient_israelite__delpmaspu2.png",
-    caption: "School of the Prophets"
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/ec0f6728a_ProphetGadinblacksuitUpscale.jpg",

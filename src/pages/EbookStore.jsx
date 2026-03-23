@@ -5,7 +5,7 @@ const EBOOKS = [
     id: 'remnant-vol-1',
     title: 'Volume I: No Contemporary Praise Music',
     subtitle: 'The Frequency of Babylon',
-    price: 18.99,
+    price: 18.89,
     status: 'coming_soon',
     fullTitle: 'No Contemporary Praise Music for the Israelites',
     tagline: 'When worship became performance and the altar became a stage'
@@ -14,7 +14,7 @@ const EBOOKS = [
     id: 'remnant-vol-2',
     title: 'Volume II: Inordinate Affection',
     subtitle: 'No Dogs for the Israelites',
-    price: 18.99,
+    price: 18.89,
     status: 'coming_soon',
     fullTitle: 'No Dogs for the Israelites',
     tagline: 'The snare of displaced intimacy and the idolatry of the creature'
@@ -23,7 +23,7 @@ const EBOOKS = [
     id: 'remnant-vol-3',
     title: "Volume III: No King's Meat",
     subtitle: "The King's Table",
-    price: 18.99,
+    price: 18.89,
     status: 'coming_soon',
     fullTitle: "No King's Meat for the Israelites",
     tagline: "Daniel's resolve and the divine wisdom of biblical dietary law"
@@ -32,7 +32,7 @@ const EBOOKS = [
     id: 'remnant-vol-4',
     title: 'Volume IV: No False Wisdom',
     subtitle: 'The Debt Trap',
-    price: 18.99,
+    price: 18.89,
     status: 'coming_soon',
     fullTitle: 'No False Wisdom for the Israelites',
     tagline: "The borrower is servant to the lender — breaking free from Babylon's schools"
@@ -51,7 +51,7 @@ const EBOOKS = [
     id: 'eternal-oracle',
     title: 'The Eternal Oracle',
     subtitle: 'A Chosen People',
-    price: 38.99,
+    price: 38.89,
     status: 'coming_soon',
     fullTitle: 'The Eternal Oracle',
     tagline: 'Always the same — if He chose then, He chooses now'

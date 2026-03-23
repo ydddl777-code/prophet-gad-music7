@@ -126,7 +126,6 @@ export default function ProphetHeroBanner() {
               </span>
             </h1>
             <p className="text-amber-300 font-bold text-xl mb-1 tracking-wide">David's Seer · Returned</p>
-            <p className="text-slate-400 text-sm mb-5">Thread Bear Music · Remnant Seed LLC</p>
 
             <div className="text-slate-300 text-base leading-relaxed mb-5 max-w-xl space-y-3">
               <p>
@@ -143,7 +142,6 @@ export default function ProphetHeroBanner() {
             <blockquote className="border-l-4 border-amber-500 pl-4 mb-5 italic text-amber-200 text-sm">
               "One rusty, tattered nail tells the tale of the writing on the wall and the last day's judgment hour call."
               <span className="block text-xs text-slate-500 not-italic mt-1">— Prophet Gad, "The Writing on the Wall"</span>
-              <span className="block text-xs text-slate-400 not-italic mt-2">Thread Bear Music · Remnant Seed LLC</span>
             </blockquote>
 
             <div className="flex flex-wrap gap-3 mb-5">

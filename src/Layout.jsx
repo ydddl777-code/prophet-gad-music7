@@ -29,7 +29,7 @@ function LayoutContent({ children, currentPageName }) {
               
               {/* Center Title - Takes full width */}
               <div className="flex flex-col leading-tight flex-1 text-center">
-                <span className="bg-gradient-to-r from-amber-500 to-red-600 bg-clip-text text-transparent font-extrabold tracking-tight text-3xl">
+                <span className="bg-gradient-to-r from-amber-400 to-red-500 bg-clip-text text-transparent font-black tracking-tight text-4xl">
                   Prophet Gad Music
                 </span>
               </div>

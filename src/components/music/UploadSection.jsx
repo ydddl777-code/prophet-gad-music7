@@ -199,7 +199,7 @@ export default function UploadSection({ onUploadComplete }) {
             id="file-upload"
             type="file"
             multiple
-            accept="audio/*"
+            accept="audio/*,video/mp4,.mp4"
             onChange={handleFileUpload}
             className="hidden"
           />

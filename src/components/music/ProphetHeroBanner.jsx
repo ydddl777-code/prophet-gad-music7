@@ -37,16 +37,16 @@ export default function ProphetHeroBanner() {
 
   return (
     <div className="mb-10">
-      {/* URGENT TICKER */}
-      <div className="bg-red-700 text-white text-xs font-bold tracking-widest uppercase py-2 overflow-hidden">
-        <div className="flex animate-pulse items-center justify-center gap-6 px-4 text-center">
-          <AlertTriangle className="w-3 h-3 shrink-0" />
-          <span>URGENT END-TIMES WARNING &nbsp;·&nbsp; THE HOUR OF HIS JUDGMENT IS COME &nbsp;·&nbsp; EARTH'S LAST DAY FINAL WARNING MESSAGE &nbsp;·&nbsp; HE THAT HATH AN EAR, LET HIM HEAR</span>
-          <AlertTriangle className="w-3 h-3 shrink-0" />
+      {/* TICKER */}
+      <div className="bg-red-900 text-white py-4 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-xs tracking-[0.25em] uppercase text-red-300/80 mb-1 font-semibold">Earth's Last Day Final Warning Message:</p>
+          <p className="text-lg sm:text-xl font-black tracking-wider uppercase text-white leading-tight">The Hour of His Judgment Is Come</p>
+          <p className="text-[0.6rem] text-red-400/70 tracking-widest mt-1 uppercase">— Revelation 14:7</p>
         </div>
       </div>
 
-      {/* HERO */}
+      {/* HERO */
       <div className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at 20% 50%, #f59e0b 0%, transparent 50%), radial-gradient(circle at 80% 50%, #dc2626 0%, transparent 50%)'}} />
 
@@ -54,9 +54,9 @@ export default function ProphetHeroBanner() {
 
           {/* TEXT CONTENT */}
           <div className="flex-1 text-white text-center max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-red-800/60 border border-red-500/50 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-red-300 mb-4">
+            <div className="inline-flex items-center gap-2 bg-red-900/50 border border-red-700/50 rounded-full px-4 py-1.5 text-xs font-semibold text-red-300/90 mb-4">
               <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
-              Ancient Israelite Prophet — On Earth Right Now!
+              Prophet Gad comes in the spirit and likeness of the ancient Israelite prophets
             </div>
 
             <h1 className="text-4xl lg:text-5xl font-black text-white leading-tight mb-3">
@@ -65,9 +65,9 @@ export default function ProphetHeroBanner() {
                 Gad
               </span>
             </h1>
-            <p className="text-amber-300 font-bold text-xl mb-5 tracking-wide">David's Seer · Returned</p>
 
-            <div className="text-slate-300 text-base leading-relaxed mb-5 space-y-3 text-left">
+
+            <div className="text-slate-300 text-base leading-relaxed mb-5 space-y-3 text-justify">
               <p>
                 In the spirit of ancient Hebrew Israelite seers, just as Elijah's mantle fell upon Elisha, a prophetic voice has arisen for this generation: Prophet Gad. Born in a Caribbean nation steeped in biblical heritage, consecrated at age 4, and sent to the United States in secret at age 5 for his protection, Prophet Gad's life has been forged in exile and destiny. Raised in New York City under the care of a Jamaican-born, British-trained nanny and educated at elite preparatory schools and Ivy League institutions, his journey has echoed the trials of the prophets of old.
               </p>

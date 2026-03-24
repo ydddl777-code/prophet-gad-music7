@@ -102,9 +102,7 @@ export default function ProphetHeroBanner() {
               Prophet Gad comes in the same spirit of the ancient Hebrew Israelite prophets
             </div>
 
-            <h1 className="text-4xl lg:text-5xl font-black leading-tight mb-3" style={{color: '#D4AF37'}}>
-              Prophet Gad
-            </h1>
+
 
             <div className="text-slate-300 text-base leading-relaxed mb-5 text-justify">
               <p>

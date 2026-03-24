@@ -28,21 +28,84 @@ const AVATARS = [
     caption: "The Prophet in Modern Times",
     type: "image"
   },
-  // ADD MP4 VIDEO ENTRIES HERE — example:
-  // { url: "https://your-mp4-url.mp4", caption: "Your Caption", type: "video" },
 ];
+
+// Fetch video clips from database and add dynamically
+let videoClips = [];
+
+// Function to load videos from database
+const loadVideos = async () => {
+  try {
+    const tracks = await base44.entities.MusicTrack.filter(
+      { tags: { $elemMatch: { $eq: "H2" } } },
+      'title',
+      10
+    ).catch(() => []);
+    
+    // Also search by title pattern
+    const allTracks = await base44.entities.MusicTrack.list('title', 1000).catch(() => []);
+    const videoTracks = allTracks.filter(t => {
+      const title = t.title?.toUpperCase() || '';
+      const url = t.file_url?.toLowerCase() || '';
+      return (title.match(/^H[2-5]$/i) || title.includes('H2') || title.includes('H3') || title.includes('H4') || title.includes('H5')) &&
+             (url.endsWith('.mp4') || url.endsWith('.webm'));
+    });
+    
+    videoClips = videoTracks.map((t, idx) => ({
+      url: t.file_url,
+      caption: t.title || `Prophecy Video ${idx + 1}`,
+      type: 'video'
+    }));
+  } catch (err) {
+    console.log('Video loading skipped');
+  }
+};
+
+// Call this once during component mount
+loadVideos();
 
 export default function ProphetHeroBanner() {
   const [muted, setMuted] = useState(false);
   const [avatarIndex, setAvatarIndex] = useState(0);
+  const [allMedia, setAllMedia] = useState(AVATARS);
   const audioRef = useRef(null);
 
   useEffect(() => {
+    // Load video clips and combine with images
+    const loadMedia = async () => {
+      try {
+        const allTracks = await base44.entities.MusicTrack.list('title', 1000).catch(() => []);
+        const videoTracks = allTracks.filter(t => {
+          const title = t.title?.toUpperCase() || '';
+          const url = t.file_url?.toLowerCase() || '';
+          return (title.match(/^H[2-5]$/i) || title.includes('H2') || title.includes('H3') || title.includes('H4') || title.includes('H5')) &&
+                 (url.endsWith('.mp4') || url.endsWith('.webm'));
+        });
+        
+        const newMedia = [
+          ...AVATARS,
+          ...videoTracks.map(t => ({
+            url: t.file_url,
+            caption: t.title || 'Prophecy Video',
+            type: 'video'
+          }))
+        ];
+        
+        setAllMedia(newMedia);
+      } catch (err) {
+        setAllMedia(AVATARS);
+      }
+    };
+    
+    loadMedia();
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
-      setAvatarIndex(i => (i + 1) % AVATARS.length);
+      setAvatarIndex(i => (i + 1) % allMedia.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [allMedia.length]);
 
   useEffect(() => {
     let audio1, audio2;
@@ -100,7 +163,7 @@ export default function ProphetHeroBanner() {
 
           {/* CAROUSEL PORTRAIT */}
           <div className="relative w-56 h-72 rounded-xl overflow-hidden border-2 border-amber-500/60 shadow-2xl shadow-amber-900/40 shrink-0">
-            {AVATARS.map((avatar, i) => (
+            {allMedia.map((avatar, i) => (
             avatar.type === 'video' ? (
               <video
                 key={i}
@@ -121,7 +184,7 @@ export default function ProphetHeroBanner() {
             )
           ))}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-center">
-              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{AVATARS[avatarIndex].caption}</p>
+              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{allMedia[avatarIndex]?.caption || 'Prophet Gad'}</p>
             </div>
           </div>
 

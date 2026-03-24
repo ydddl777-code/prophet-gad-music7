@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { usePlayer } from './PlayerContext';
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Volume1, Music, Loader2, SlidersHorizontal, X } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Volume1, Music, Loader2, SlidersHorizontal, X, Maximize2, Minimize2 } from 'lucide-react';
 import WaveformVisualizer from './WaveformVisualizer';
 
 function formatTime(secs) {
@@ -22,6 +22,7 @@ export default function MusicPlayer() {
   const player = usePlayer();
   const [showVolume, setShowVolume] = useState(false);
   const [showEQ, setShowEQ] = useState(false);
+  const [showVideoMode, setShowVideoMode] = useState(false);
 
   if (!player?.currentTrack) return null;
 
@@ -32,6 +33,7 @@ export default function MusicPlayer() {
     dismissPreview, analyserRef,
   } = player;
 
+  const isVideoFile = currentTrack?.file_url?.endsWith('.mp4') || currentTrack?.file_url?.endsWith('.webm');
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
   const VolumeIcon = volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
 
@@ -43,28 +45,22 @@ export default function MusicPlayer() {
 
   return (
     <>
-      {/* Preview Ended Popup */}
-      {previewEnded && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-amber-500/60 rounded-2xl p-5 shadow-2xl w-80 text-center">
-          <p className="text-amber-400 font-bold text-sm mb-1">🎵 Extended Play Preview Complete</p>
-          <p className="text-white font-semibold mb-0.5">{currentTrack.title}</p>
-          <p className="text-slate-400 text-xs mb-4">Purchase the full oracle to hear the complete prophecy.</p>
-          <div className="flex gap-2">
+      {/* Video Fullscreen Mode */}
+      {showVideoMode && isVideoFile && currentTrack?.file_url && (
+        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-black">
+            <video
+              src={currentTrack.file_url}
+              controls
+              autoPlay
+              className="w-full h-full object-contain"
+              style={{ maxHeight: '100vh' }}
+            />
             <button
-              onClick={dismissPreview}
-              className="flex-1 text-xs text-slate-400 border border-slate-700 rounded-lg py-2 hover:border-slate-500 transition-colors"
+              onClick={() => setShowVideoMode(false)}
+              className="absolute top-4 right-4 z-50 text-white hover:text-gray-300 transition-colors"
             >
-              Dismiss
-            </button>
-            <button
-              onClick={() => {
-                const isInIframe = window.self !== window.top;
-                if (isInIframe) { alert("Purchase is only available from the published app."); return; }
-                dismissPreview();
-              }}
-              className="flex-1 text-xs bg-gradient-to-r from-amber-500 to-red-600 text-white rounded-lg py-2 font-semibold hover:from-amber-400 hover:to-red-500 transition-colors"
-            >
-              ${(currentTrack.price || 1.99).toFixed(2)} — Buy Full Track
+              <X className="w-8 h-8" />
             </button>
           </div>
         </div>
@@ -197,18 +193,20 @@ export default function MusicPlayer() {
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
 
-          {/* EQ Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`h-9 w-9 hidden sm:flex ${showEQ ? 'text-amber-400' : 'text-slate-400 hover:text-white'} hover:bg-slate-800`}
-            onClick={() => { setShowEQ(!showEQ); setShowVolume(false); }}
-            title="Equalizer"
-          >
-            <SlidersHorizontal className="w-4 h-4" />
-          </Button>
+          {/* Video Mode Button */}
+          {isVideoFile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 text-slate-400 hover:text-white hover:bg-slate-800"
+              onClick={() => setShowVideoMode(true)}
+              title="Fullscreen Video"
+            >
+              <Maximize2 className="w-4 h-4" />
+            </Button>
+          )}
 
-          {/* Volume */}
+          {/* EQ Button */}
           <div className="relative hidden sm:flex items-center">
             <Button
               variant="ghost"

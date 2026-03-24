@@ -41,12 +41,12 @@ export default function ExtendedPlayStrip() {
         {tracks.map((track) => {
           const isActive = player.currentTrack?.id === track.id;
           const isPlaying = isActive && player.isPlaying;
-          const displayArtist = (!track.artist || track.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : track.artist;
+          const displayArtist = 'Prophet Gad';
 
           return (
-            <div key={track.id} className="flex-shrink-0 w-36 flex flex-col items-center gap-2 group">
+            <div key={track.id} className="flex-shrink-0 w-24 flex flex-col items-center gap-2 group">
               {/* Cover Art */}
-              <div className="relative w-36 h-36 rounded-lg overflow-hidden border border-amber-500/20 shadow-lg">
+              <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-amber-500/20 shadow-lg">
                 {track.cover_art_url ? (
                   <img src={track.cover_art_url} alt={track.title} className="w-full h-full object-cover" />
                 ) : (

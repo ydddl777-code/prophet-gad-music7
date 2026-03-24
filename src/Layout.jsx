@@ -27,10 +27,13 @@ function LayoutContent({ children, currentPageName }) {
           <div className="flex items-center gap-8 h-20">
             <div className="flex items-center gap-6 font-bold text-xl flex-1">
               {/* Prophet Gad Logo - Left */}
-              <img 
-                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/c64c67d9c_ProphetGadLogo7.png" 
-                alt="Prophet Gad Logo" 
-                className="w-16 h-16 object-contain"
+              <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-900 to-purple-950 border border-purple-700 flex items-center justify-center">
+                <img 
+                  src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/c64c67d9c_ProphetGadLogo7.png" 
+                  alt="Prophet Gad Logo" 
+                  className="w-16 h-16 object-contain"
+                />
+              </div>
               />
               
               {/* Center Title - Takes full width */}

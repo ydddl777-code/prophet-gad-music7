@@ -27,7 +27,15 @@ const AVATARS = [
 
 export default function ProphetHeroBanner() {
   const [muted, setMuted] = useState(false);
+  const [avatarIndex, setAvatarIndex] = useState(0);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAvatarIndex(i => (i + 1) % AVATARS.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     let audio1, audio2;
@@ -83,15 +91,18 @@ export default function ProphetHeroBanner() {
 
         <div className="relative max-w-7xl mx-auto px-6 pt-8 pb-10 flex flex-col items-center gap-8">
 
-          {/* FIXED PORTRAIT */}
+          {/* CAROUSEL PORTRAIT */}
           <div className="relative w-56 h-72 rounded-xl overflow-hidden border-2 border-amber-500/60 shadow-2xl shadow-amber-900/40 shrink-0">
-            <img
-              src={AVATARS[4].url}
-              alt={AVATARS[4].caption}
-              className="absolute inset-0 w-full h-full object-cover object-top"
-            />
+            {AVATARS.map((avatar, i) => (
+              <img
+                key={i}
+                src={avatar.url}
+                alt={avatar.caption}
+                className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
+              />
+            ))}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-center">
-              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{AVATARS[4].caption}</p>
+              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{AVATARS[avatarIndex].caption}</p>
             </div>
           </div>
 

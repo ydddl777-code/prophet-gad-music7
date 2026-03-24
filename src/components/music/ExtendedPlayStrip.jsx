@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, ShoppingCart } from 'lucide-react';
+import { toast } from 'sonner';
 import { base44 } from '@/api/base44Client';
 import { usePlayer } from './PlayerContext';
 
@@ -33,7 +34,7 @@ export default function ExtendedPlayStrip() {
           <div className="h-px w-12 bg-amber-500/40" />
         </div>
         <h2 className="text-xl font-black tracking-wider text-white">Extended Play</h2>
-        <p className="text-xs text-slate-500 mt-1">Full previews — listen before you purchase</p>
+
       </div>
 
       {/* Horizontal Scrollable Track Strip */}
@@ -95,10 +96,27 @@ export default function ExtendedPlayStrip() {
                 <p className="text-[0.6rem] text-slate-500 mt-0.5 truncate">{displayArtist}</p>
               </div>
 
-              {/* Extended Play Badge */}
-              <div className="text-[0.45rem] tracking-[0.2em] uppercase border border-amber-500/30 text-amber-500/70 px-2 py-0.5 rounded-full">
-                Extended Play
-              </div>
+              {/* Buy Button */}
+              <button
+                onClick={async () => {
+                  if (window.self !== window.top) { alert('Purchase is only available from the published app.'); return; }
+                  try {
+                    const { base44: b } = await import('@/api/base44Client');
+                    const res = await b.functions.invoke('createCheckoutSession', {
+                      track_id: track.id,
+                      track_title: track.title,
+                      track_artist: 'Prophet Gad',
+                      price_cents: Math.round((track.price || 1.99) * 100),
+                      cover_art_url: track.cover_art_url || null,
+                    });
+                    if (res.data?.url) window.location.href = res.data.url;
+                  } catch { toast.error('Could not start checkout'); }
+                }}
+                className="flex items-center gap-1 text-[0.5rem] tracking-[0.15em] uppercase bg-red-900/70 hover:bg-red-800 border border-red-700/50 text-red-300 px-2 py-0.5 rounded-full transition-colors"
+              >
+                <ShoppingCart className="w-2.5 h-2.5" />
+                Buy Full Song
+              </button>
             </div>
           );
         })}

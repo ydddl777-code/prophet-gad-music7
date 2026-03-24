@@ -9,6 +9,7 @@ import FilterBar from '../components/music/FilterBar';
 import ProphetHeroBanner from '../components/music/ProphetHeroBanner';
 import ProphetWelcome from '../components/welcome/ProphetWelcome.jsx';
 import EmailCapturePopup from '../components/welcome/EmailCapturePopup.jsx';
+import EbookStore from './EbookStore';
 import { usePlayer } from '../components/music/PlayerContext';
 
 export default function MusicLibrary() {
@@ -220,6 +221,11 @@ export default function MusicLibrary() {
             {renderSection(dominicanTracks, 'Dominican Memories', 'Dominican Spanish · Haitian Creole · Bachata · Love & Life', '🌴')}
           </>
         )}
+
+        {/* E-Book Store — after the music */}
+        <div className="-mx-6 mt-10">
+          <EbookStore />
+        </div>
       </div>
     </div>
   );

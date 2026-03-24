@@ -76,8 +76,9 @@ export default function MusicLibrary() {
   // Get unique genres
   const genres = [...new Set(tracks.filter(t => t.genre).map(t => t.genre))].sort();
 
-  // Filter tracks
+  // Filter tracks — exclude dormant placeholders
   const filteredTracks = tracks.filter(track => {
+    if (track.is_dormant) return false;
     const matchesSearch = 
       track.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       track.artist?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -167,13 +168,32 @@ export default function MusicLibrary() {
             </div>
             <div className="flex items-center gap-3">
               <div className="text-sm text-slate-400">
-                <span className="font-bold text-white">{tracks.length}</span> tracks
+                <span className="font-bold text-white">{tracks.filter(t => !t.is_dormant).length}</span> tracks
+                {isAdmin && tracks.filter(t => t.is_dormant).length > 0 && (
+                  <span className="ml-2 text-slate-600">· <span className="text-amber-700">{tracks.filter(t => t.is_dormant).length} dormant</span></span>
+                )}
               </div>
               {isAdmin && (
-                <Button variant="outline" size="sm" className="gap-2" onClick={handleExportCatalog}>
-                  <Download className="w-4 h-4" />
-                  Export Catalog
-                </Button>
+                <>
+                  <Button
+                    variant="outline" size="sm"
+                    className="gap-2 border-amber-800 text-amber-600 hover:bg-amber-950"
+                    onClick={async () => {
+                      if (!confirm('Mark all image-only placeholder records as dormant?')) return;
+                      try {
+                        const res = await base44.functions.invoke('markDormantRecords', {});
+                        alert(res.data?.message || 'Done');
+                        queryClient.invalidateQueries({ queryKey: ['music-tracks'] });
+                      } catch { alert('Error running task'); }
+                    }}
+                  >
+                    🗂 Mark Dormant
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-2" onClick={handleExportCatalog}>
+                    <Download className="w-4 h-4" />
+                    Export Catalog
+                  </Button>
+                </>
               )}
               {!isAdmin && (
                 <Button variant="outline" size="sm" className="gap-2" onClick={() => base44.auth.redirectToLogin()}>

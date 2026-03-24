@@ -46,14 +46,56 @@ export default function ExtendedPlayStrip() {
 
           return (
             <div key={track.id} className="flex-shrink-0 w-24 flex flex-col items-center gap-2 group">
-              {/* Cover Art */}
+              {/* Cover Art / Video */}
               <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-amber-500/20 shadow-lg">
-                {track.cover_art_url ? (
+                {track.file_url?.endsWith('.mp4') ? (
+                  <video
+                    src={track.file_url}
+                    className="w-full h-full object-cover"
+                    autoPlay={isActive}
+                    muted
+                    loop
+                    playsInline
+                  />
+                ) : track.cover_art_url ? (
                   <img src={track.cover_art_url} alt={track.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-red-950 to-amber-950 flex items-center justify-center">
                     <span className="text-4xl">🎵</span>
                   </div>
+                )}
+
+                {/* Play Button Overlay */}
+                <button
+                  onClick={() => handlePlay(track)}
+                  className={`absolute inset-0 flex items-center justify-center transition-all ${
+                    isActive
+                      ? 'bg-black/50'
+                      : 'bg-black/0 group-hover:bg-black/50'
+                  }`}
+                >
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                    isActive
+                      ? 'bg-amber-500 opacity-100'
+                      : 'bg-amber-500 opacity-0 group-hover:opacity-100'
+                  }`}>
+                    {isPlaying
+                      ? <Pause className="w-5 h-5 text-black" />
+                      : <Play className="w-5 h-5 text-black ml-0.5" />
+                    }
+                  </div>
+                </button>
+
+                {/* Active indicator */}
+                {isActive && (
+                  <div className="absolute bottom-1 left-0 right-0 flex justify-center gap-0.5">
+                    {[1,2,3].map(i => (
+                      <div key={i} className={`w-0.5 bg-amber-400 rounded-full ${isPlaying ? 'animate-bounce' : ''}`}
+                        style={{ height: '8px', animationDelay: `${i * 0.1}s` }} />
+                    ))}
+                  </div>
+                )}
+              </div>
                 )}
 
                 {/* Play Button Overlay */}

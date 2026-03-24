@@ -5,24 +5,31 @@ import ExtendedPlayStrip from './ExtendedPlayStrip';
 const AVATARS = [
   {
     url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/1e2633946_smallGadup1.jpg",
-    caption: "The Seer — Breastplate of Judgment"
+    caption: "The Seer — Breastplate of Judgment",
+    type: "image"
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/82e316e3e_ProphetGadinuniformupscale.jpg",
-    caption: "The Seer in Full Armor"
+    caption: "The Seer in Full Armor",
+    type: "image"
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/9cab1d068_Superheropoisedinelegantdiningroom.png",
-    caption: "A Prophet to the Remnant Seed"
+    caption: "A Prophet to the Remnant Seed",
+    type: "image"
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/dde2b0bc7_Prophet_gad_trains_young_prophets_90390a5f07.jpg",
-    caption: "Training the Remnant"
+    caption: "Training the Remnant",
+    type: "image"
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/ec0f6728a_ProphetGadinblacksuitUpscale.jpg",
-    caption: "The Prophet in Modern Times"
+    caption: "The Prophet in Modern Times",
+    type: "image"
   },
+  // ADD MP4 VIDEO ENTRIES HERE — example:
+  // { url: "https://your-mp4-url.mp4", caption: "Your Caption", type: "video" },
 ];
 
 export default function ProphetHeroBanner() {
@@ -94,13 +101,25 @@ export default function ProphetHeroBanner() {
           {/* CAROUSEL PORTRAIT */}
           <div className="relative w-56 h-72 rounded-xl overflow-hidden border-2 border-amber-500/60 shadow-2xl shadow-amber-900/40 shrink-0">
             {AVATARS.map((avatar, i) => (
+            avatar.type === 'video' ? (
+              <video
+                key={i}
+                src={avatar.url}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
+              />
+            ) : (
               <img
                 key={i}
                 src={avatar.url}
                 alt={avatar.caption}
                 className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
               />
-            ))}
+            )
+          ))}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-center">
               <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{AVATARS[avatarIndex].caption}</p>
             </div>

@@ -66,7 +66,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
     } catch { toast.error("Update failed"); }
   };
 
-  const displayArtist = (!track.artist || track.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : track.artist;
+  const displayArtist = 'Prophet Gad';
   const [hovering, setHovering] = useState(false);
 
   return (

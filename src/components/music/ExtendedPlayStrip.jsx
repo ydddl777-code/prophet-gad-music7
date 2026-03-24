@@ -114,7 +114,7 @@ export default function ExtendedPlayStrip() {
                       cover_art_url: track.cover_art_url || null,
                     });
                     if (res.data?.url) window.location.href = res.data.url;
-                  } catch { alert('Purchase failed'); }
+                  } catch (e) { alert('Purchase failed'); }
                 }}
                 className="flex items-center gap-1 text-[0.5rem] tracking-[0.15em] uppercase bg-red-900/70 hover:bg-red-800 border border-red-700/50 text-red-300 px-2 py-0.5 rounded-full transition-colors"
               >

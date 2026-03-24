@@ -34,7 +34,6 @@ export default function ExtendedPlayStrip() {
           <div className="h-px w-12 bg-amber-500/40" />
         </div>
         <h2 className="text-xl font-black tracking-wider text-white">Extended Play</h2>
-
       </div>
 
       {/* Horizontal Scrollable Track Strip */}
@@ -42,13 +41,13 @@ export default function ExtendedPlayStrip() {
         {tracks.map((track) => {
           const isActive = player.currentTrack?.id === track.id;
           const isPlaying = isActive && player.isPlaying;
-          const displayArtist = 'Prophet Gad';
+          const isVideo = track.file_url?.endsWith('.mp4');
 
           return (
             <div key={track.id} className="flex-shrink-0 w-24 flex flex-col items-center gap-2 group">
               {/* Cover Art / Video */}
               <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-amber-500/20 shadow-lg">
-                {track.file_url?.endsWith('.mp4') ? (
+                {isVideo ? (
                   <video
                     src={track.file_url}
                     className="w-full h-full object-cover"
@@ -69,48 +68,11 @@ export default function ExtendedPlayStrip() {
                 <button
                   onClick={() => handlePlay(track)}
                   className={`absolute inset-0 flex items-center justify-center transition-all ${
-                    isActive
-                      ? 'bg-black/50'
-                      : 'bg-black/0 group-hover:bg-black/50'
+                    isActive ? 'bg-black/50' : 'bg-black/0 group-hover:bg-black/50'
                   }`}
                 >
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                    isActive
-                      ? 'bg-amber-500 opacity-100'
-                      : 'bg-amber-500 opacity-0 group-hover:opacity-100'
-                  }`}>
-                    {isPlaying
-                      ? <Pause className="w-5 h-5 text-black" />
-                      : <Play className="w-5 h-5 text-black ml-0.5" />
-                    }
-                  </div>
-                </button>
-
-                {/* Active indicator */}
-                {isActive && (
-                  <div className="absolute bottom-1 left-0 right-0 flex justify-center gap-0.5">
-                    {[1,2,3].map(i => (
-                      <div key={i} className={`w-0.5 bg-amber-400 rounded-full ${isPlaying ? 'animate-bounce' : ''}`}
-                        style={{ height: '8px', animationDelay: `${i * 0.1}s` }} />
-                    ))}
-                  </div>
-                )}
-              </div>
-                )}
-
-                {/* Play Button Overlay */}
-                <button
-                  onClick={() => handlePlay(track)}
-                  className={`absolute inset-0 flex items-center justify-center transition-all ${
-                    isActive
-                      ? 'bg-black/50'
-                      : 'bg-black/0 group-hover:bg-black/50'
-                  }`}
-                >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                    isActive
-                      ? 'bg-amber-500 opacity-100'
-                      : 'bg-amber-500 opacity-0 group-hover:opacity-100'
+                    isActive ? 'bg-amber-500 opacity-100' : 'bg-amber-500 opacity-0 group-hover:opacity-100'
                   }`}>
                     {isPlaying
                       ? <Pause className="w-5 h-5 text-black" />
@@ -135,7 +97,7 @@ export default function ExtendedPlayStrip() {
                 <p className={`text-xs font-semibold leading-tight line-clamp-2 ${isActive ? 'text-amber-400' : 'text-white'}`}>
                   {track.title}
                 </p>
-                <p className="text-[0.6rem] text-slate-500 mt-0.5 truncate">{displayArtist}</p>
+                <p className="text-[0.6rem] text-slate-500 mt-0.5 truncate">Prophet Gad</p>
               </div>
 
               {/* Buy Button */}

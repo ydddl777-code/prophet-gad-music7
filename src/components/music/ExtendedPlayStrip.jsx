@@ -107,6 +107,14 @@ export default function ExtendedPlayStrip() {
                   try {
                     const { base44: b } = await import('@/api/base44Client');
                     const res = await b.functions.invoke('createSquareCheckout', {
+                      track_id: track.id,
+                      track_title: track.title,
+                      track_artist: track.artist,
+                      price_cents: Math.round((track.price || 1.99) * 100),
+                      cover_art_url: track.cover_art_url || null,
+                    });
+                    if (res.data?.url) window.location.href = res.data.url;
+                  } catch { alert('Purchase failed'); }
                 }}
                 className="flex items-center gap-1 text-[0.5rem] tracking-[0.15em] uppercase bg-red-900/70 hover:bg-red-800 border border-red-700/50 text-red-300 px-2 py-0.5 rounded-full transition-colors"
               >

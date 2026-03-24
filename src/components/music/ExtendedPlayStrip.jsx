@@ -9,7 +9,7 @@ export default function ExtendedPlayStrip() {
   const player = usePlayer();
 
   useEffect(() => {
-    base44.entities.MusicTrack.filter({ is_free_listen: true }, '-created_date', 20)
+    base44.entities.MusicTrack.filter({ is_free_listen: true }, 'sort_order', 20)
       .then(setTracks)
       .catch(() => {});
   }, []);

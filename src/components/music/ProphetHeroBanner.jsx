@@ -99,7 +99,7 @@ export default function ProphetHeroBanner() {
           <div className="flex-1 text-white text-center max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-red-900/50 border border-red-700/50 rounded-full px-4 py-1.5 text-xs font-semibold text-red-300/90 mb-4">
               <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
-              Prophet Gad comes in the spirit and likeness of the ancient Israelite prophets
+              Prophet Gad comes in the same spirit of the ancient Hebrew Israelite prophets
             </div>
 
             <h1 className="text-4xl lg:text-5xl font-black leading-tight mb-3" style={{color: '#D4AF37'}}>

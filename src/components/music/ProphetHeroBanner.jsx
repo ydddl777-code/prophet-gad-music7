@@ -137,7 +137,6 @@ export default function ProphetHeroBanner() {
           <div>
             <p className="text-[0.55rem] tracking-[0.3em] uppercase text-amber-500/60 mb-0.5">Author</p>
             <p className="text-white font-bold text-sm">Prophet Gad</p>
-            <p className="text-slate-400 text-xs">Ancient Israelite Seer · David's Prophet · Returned</p>
           </div>
         </div>
       </div>

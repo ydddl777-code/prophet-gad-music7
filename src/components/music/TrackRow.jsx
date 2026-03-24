@@ -36,7 +36,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
     if (isInIframe) { alert("Purchase is only available from the published app."); return; }
     setPurchasing(true);
     try {
-      const res = await base44.functions.invoke('createCheckoutSession', {
+      const res = await base44.functions.invoke('createSquareCheckout', {
         track_id: track.id,
         track_title: track.title,
         track_artist: track.artist,

@@ -28,7 +28,7 @@ function LayoutContent({ children, currentPageName }) {
             <div className="flex items-center gap-6 font-bold text-xl flex-1">
               {/* Lion Logo - Left */}
               <img 
-                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/193326470_Lionlogo7.png" 
+                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/721a8b40d_Lionlogo7a.png" 
                 alt="Lion of Judah" 
                 className="w-20 h-20 object-contain"
               />
@@ -45,7 +45,7 @@ function LayoutContent({ children, currentPageName }) {
 
               {/* Breastplate - Right */}
               <img 
-                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/8b6d2b2f8_Breastplatelogo2.png" 
+                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/c086b78e9_Breastplatelogo2.png" 
                 alt="High Priest Breastplate" 
                 className="w-20 h-20 object-contain"
               />

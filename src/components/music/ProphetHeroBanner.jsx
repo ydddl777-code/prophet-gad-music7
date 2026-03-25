@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import ExtendedPlayStrip from './ExtendedPlayStrip';
+import EbookStore from '../../pages/EbookStore';
 
 const AVATARS = [
   {
@@ -224,6 +225,9 @@ export default function ProphetHeroBanner() {
           </div>
         </div>
       </div>
+
+      {/* E-BOOKS — above Extended Play */}
+      <EbookStore />
 
       {/* EXTENDED PLAY STRIP */}
       <ExtendedPlayStrip />

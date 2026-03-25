@@ -9,7 +9,7 @@ import FilterBar from '../components/music/FilterBar';
 import ProphetHeroBanner from '../components/music/ProphetHeroBanner';
 import ProphetWelcome from '../components/welcome/ProphetWelcome.jsx';
 import EmailCapturePopup from '../components/welcome/EmailCapturePopup.jsx';
-import EbookStore from './EbookStore';
+
 import { usePlayer } from '../components/music/PlayerContext';
 
 export default function MusicLibrary() {
@@ -156,8 +156,7 @@ export default function MusicLibrary() {
       {/* Prophet Hero Banner */}
       <ProphetHeroBanner />
 
-      {/* E-Book Store — right after the hero */}
-      <EbookStore />
+
 
       {/* Library Header */}
       <div className="bg-[#111] border-b border-slate-900">

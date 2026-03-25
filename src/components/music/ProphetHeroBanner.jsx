@@ -65,7 +65,7 @@ const loadVideos = async () => {
 loadVideos();
 
 export default function ProphetHeroBanner() {
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
   const [videoMuted, setVideoMuted] = useState(true);
   const [avatarIndex, setAvatarIndex] = useState(0);
   const [allMedia, setAllMedia] = useState(AVATARS);
@@ -141,8 +141,12 @@ export default function ProphetHeroBanner() {
 
   const toggleMute = () => {
     if (!audioRef.current) return;
-    audioRef.current.muted = !audioRef.current.muted;
-    setMuted(!muted);
+    const newMuted = !muted;
+    audioRef.current.muted = newMuted;
+    setMuted(newMuted);
+    if (!newMuted && audioRef.current.paused) {
+      audioRef.current.play().catch(() => {});
+    }
   };
 
   return (
@@ -163,6 +167,7 @@ export default function ProphetHeroBanner() {
         <div className="relative max-w-7xl mx-auto px-6 pt-8 pb-10 flex flex-col items-center gap-8">
 
           {/* CAROUSEL PORTRAIT */}
+          <div className="flex flex-col items-center gap-2">
           <div className="relative w-56 h-72 rounded-xl overflow-hidden border-2 border-amber-500/60 shadow-2xl shadow-amber-900/40 shrink-0">
             {allMedia.map((avatar, i) => (
             avatar.type === 'video' ? (
@@ -189,6 +194,27 @@ export default function ProphetHeroBanner() {
             </div>
           </div>
 
+          {/* Mute controls right under carousel */}
+          <div className="flex gap-2 flex-wrap justify-center mt-1">
+            <button
+              onClick={toggleMute}
+              className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
+            >
+              <span>{muted ? '🔇' : '🔊'}</span>
+              <span>{muted ? 'Unmute music' : 'Mute music'}</span>
+            </button>
+            {allMedia[avatarIndex]?.type === 'video' && (
+              <button
+                onClick={() => setVideoMuted(v => !v)}
+                className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
+              >
+                <span>{videoMuted ? '🔇' : '🔊'}</span>
+                <span>{videoMuted ? 'Unmute video' : 'Mute video'}</span>
+              </button>
+            )}
+          </div>
+          </div>
+
           {/* TEXT CONTENT */}
           <div className="flex-1 text-white text-center max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-red-900/50 border border-red-700/50 rounded-full px-4 py-1.5 text-xs font-semibold text-red-300/90 mb-4">
@@ -205,24 +231,7 @@ export default function ProphetHeroBanner() {
             </div>
 
             {/* Auto-play mute button */}
-            <div className="flex gap-3 flex-wrap justify-center">
-              <button
-                onClick={toggleMute}
-                className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
-              >
-                <span>{muted ? '🔇' : '🔊'}</span>
-                <span>{muted ? 'Unmute background music' : 'Mute background music'}</span>
-              </button>
-              {allMedia[avatarIndex]?.type === 'video' && (
-                <button
-                  onClick={() => setVideoMuted(v => !v)}
-                  className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
-                >
-                  <span>{videoMuted ? '🔇' : '🔊'}</span>
-                  <span>{videoMuted ? 'Unmute video' : 'Mute video'}</span>
-                </button>
-              )}
-            </div>
+            {/* mute controls moved above */}
           </div>
         </div>
       </div>

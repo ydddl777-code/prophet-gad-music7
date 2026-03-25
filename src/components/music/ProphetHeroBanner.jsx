@@ -209,23 +209,6 @@ export default function ProphetHeroBanner() {
         </div>
       </div>
 
-      {/* AUTHOR STRIP */}
-      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-y border-amber-500/20 py-6 px-6">
-        <div className="max-w-5xl mx-auto flex items-center gap-5">
-          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-amber-500/60 shrink-0 shadow-lg">
-            <img
-              src={AVATARS[4].url}
-              alt="Prophet Gad"
-              className="w-full h-full object-cover object-top"
-            />
-          </div>
-          <div>
-            <p className="text-[0.55rem] tracking-[0.3em] uppercase text-amber-500/60 mb-0.5">Author</p>
-            <p className="text-white font-bold text-sm">Prophet Gad</p>
-          </div>
-        </div>
-      </div>
-
       {/* E-BOOKS — above Extended Play */}
       <EbookStore />
 

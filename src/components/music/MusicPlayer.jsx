@@ -121,6 +121,36 @@ export default function MusicPlayer() {
         </div>
       )}
 
+      {/* Preview Ended — Buy Prompt */}
+      {previewEnded && currentTrack && (
+        <div className="fixed bottom-16 left-0 right-0 z-50 flex justify-center px-4">
+          <div className="bg-slate-900 border border-amber-500/60 rounded-2xl px-5 py-3 shadow-2xl flex items-center gap-4 max-w-sm w-full">
+            <div className="flex-1 min-w-0">
+              <p className="text-white font-bold text-sm truncate">{currentTrack.title}</p>
+              <p className="text-amber-400 text-xs">Preview ended — buy to hear the full song</p>
+            </div>
+            <button
+              onClick={async () => {
+                if (window.self !== window.top) { alert('Purchase only available from the published app.'); return; }
+                const { base44 } = await import('@/api/base44Client');
+                const res = await base44.functions.invoke('createSquareCheckout', {
+                  track_id: currentTrack.id,
+                  track_title: currentTrack.title,
+                  track_artist: currentTrack.artist,
+                  price_cents: Math.round((currentTrack.price || 2.99) * 100),
+                  cover_art_url: currentTrack.cover_art_url || null,
+                });
+                if (res.data?.url) window.location.href = res.data.url;
+              }}
+              className="bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white font-bold text-sm px-4 py-2 rounded-full flex-shrink-0"
+            >
+              Buy ${(currentTrack.price || 2.99).toFixed(2)}
+            </button>
+            <button onClick={dismissPreview} className="text-slate-500 hover:text-slate-300 text-lg leading-none">&times;</button>
+          </div>
+        </div>
+      )}
+
       {/* Player Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-950 border-t border-slate-800 shadow-2xl">
         {/* Progress Bar */}

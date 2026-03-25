@@ -179,11 +179,26 @@ export default function EbookStore() {
         <p className="text-[0.6rem] text-slate-600 mt-1 tracking-widest uppercase">Coming Soon · Books in Development</p>
       </div>
 
-      {/* Horizontal Scrollable Carousel */}
-      <div className="flex gap-6 overflow-x-auto pb-2 max-w-7xl mx-auto" style={{scrollbarWidth: 'none'}}>
-        {EBOOKS.map(book => (
-          <EbookCard key={book.id} book={book} />
-        ))}
+      {/* Books row with Prophet image on left */}
+      <div className="max-w-7xl mx-auto flex items-start gap-6">
+        {/* Prophet Gad image on left */}
+        <div className="flex-shrink-0 flex flex-col items-center gap-2">
+          <div className="w-28 h-40 rounded-xl overflow-hidden border-2 border-amber-500/50 shadow-lg shadow-amber-900/30">
+            <img
+              src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/1e2633946_smallGadup1.jpg"
+              alt="Prophet Gad"
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
+          <p className="text-[0.5rem] tracking-[0.2em] uppercase text-amber-500/60">Prophet Gad</p>
+        </div>
+
+        {/* Horizontal Scrollable Carousel */}
+        <div className="flex gap-6 overflow-x-auto pb-2" style={{scrollbarWidth: 'none'}}>
+          {EBOOKS.map(book => (
+            <EbookCard key={book.id} book={book} />
+          ))}
+        </div>
       </div>
     </div>
   );

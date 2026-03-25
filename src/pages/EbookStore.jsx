@@ -185,12 +185,12 @@ export default function EbookStore() {
         <div className="flex-shrink-0 flex flex-col items-center gap-2">
           <div className="w-28 h-40 rounded-xl overflow-hidden border-2 border-amber-500/50 shadow-lg shadow-amber-900/30">
             <img
-              src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/1e2633946_smallGadup1.jpg"
-              alt="Prophet Gad"
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/9cab1d068_Superheropoisedinelegantdiningroom.png"
+              alt="Author"
               className="w-full h-full object-cover object-top"
             />
           </div>
-          <p className="text-[0.5rem] tracking-[0.2em] uppercase text-amber-500/60">Prophet Gad</p>
+          <p className="text-[0.5rem] tracking-[0.2em] uppercase text-amber-500/60">Author</p>
         </div>
 
         {/* Horizontal Scrollable Carousel */}

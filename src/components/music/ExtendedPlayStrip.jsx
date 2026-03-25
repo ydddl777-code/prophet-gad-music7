@@ -10,7 +10,14 @@ export default function ExtendedPlayStrip() {
 
   useEffect(() => {
     base44.entities.MusicTrack.filter({ is_free_listen: true }, 'sort_order', 20)
-      .then(setTracks)
+      .then(data => {
+        const sorted = [...data].sort((a, b) => {
+          const aOrder = a.sort_order ?? 999;
+          const bOrder = b.sort_order ?? 999;
+          return aOrder - bOrder;
+        });
+        setTracks(sorted);
+      })
       .catch(() => {});
   }, []);
 

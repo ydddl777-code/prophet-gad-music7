@@ -166,59 +166,24 @@ function EbookCard({ book }) {
 }
 
 export default function EbookStore() {
-  const remnantVolumes = EBOOKS.filter(b => b.id.includes('vol-'));
-  const specialEditions = EBOOKS.filter(b => !b.id.includes('vol-'));
-
   return (
-    <div className="bg-[#0a0a0a] text-white py-10 px-6">
+    <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
       {/* Header */}
-      <div className="text-center max-w-3xl mx-auto mb-10">
-        <h1 className="text-3xl tracking-[0.2em] uppercase text-[#D4AF37] font-bold mb-2">
-          Remnant Warning Series
-        </h1>
-        <p className="text-sm tracking-[0.15em] text-slate-500 mb-4">by Prophet Gad</p>
-        <div className="inline-block text-[0.6rem] tracking-[0.15em] uppercase text-[#C4785B] border border-[rgba(196,120,91,0.3)] px-4 py-2 mb-3">
-          Books in Development
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center gap-3 mb-1">
+          <div className="h-px w-12 bg-amber-500/40" />
+          <span className="text-[0.6rem] tracking-[0.35em] uppercase text-amber-500/70 font-semibold">by Prophet Gad</span>
+          <div className="h-px w-12 bg-amber-500/40" />
         </div>
-        <p className="text-xs text-slate-600 leading-relaxed max-w-lg mx-auto">
-          These covers represent the current design direction for the Remnant Warning series. Final editions are being revised and expanded.
-        </p>
+        <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning Books</h2>
+        <p className="text-[0.6rem] text-slate-600 mt-1 tracking-widest uppercase">Coming Soon · Books in Development</p>
       </div>
 
-      <div className="w-[120px] h-px mx-auto my-8" style={{background: 'linear-gradient(to right, transparent, #D4AF37, transparent)'}} />
-
-      {/* Volumes I–IV */}
-      <div className="text-center text-[0.7rem] tracking-[0.3em] uppercase text-[rgba(212,175,55,0.5)] mb-8">
-        The Four Warnings · Volumes I – IV
-      </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto mb-12 justify-items-center">
-        {remnantVolumes.map(book => (
+      {/* Horizontal Scrollable Carousel */}
+      <div className="flex gap-6 overflow-x-auto pb-2 max-w-7xl mx-auto" style={{scrollbarWidth: 'none'}}>
+        {EBOOKS.map(book => (
           <EbookCard key={book.id} book={book} />
         ))}
-      </div>
-
-      <div className="w-[120px] h-px mx-auto my-8" style={{background: 'linear-gradient(to right, transparent, #D4AF37, transparent)'}} />
-
-      {/* Special Editions */}
-      <div className="text-center text-[0.7rem] tracking-[0.3em] uppercase text-[rgba(212,175,55,0.5)] mb-8">
-        Special Editions
-      </div>
-      <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto mb-12 justify-items-center">
-        {specialEditions.map(book => (
-          <EbookCard key={book.id} book={book} />
-        ))}
-      </div>
-
-      <div className="w-[120px] h-px mx-auto my-8" style={{background: 'linear-gradient(to right, transparent, #D4AF37, transparent)'}} />
-
-      {/* Footer */}
-      <div className="text-center max-w-2xl mx-auto">
-        <p className="text-xs text-slate-600 leading-relaxed">
-          All titles are currently in development. Covers shown are design placeholders. Interior content is being revised prior to final publication. Pricing is subject to change.
-        </p>
-        <div className="text-[0.45rem] tracking-[0.15em] text-[rgba(212,175,55,0.15)] mt-6">
-          Thread Bear Books, a DBA of Remnant Seed LLC · Prophet Gad
-        </div>
       </div>
     </div>
   );

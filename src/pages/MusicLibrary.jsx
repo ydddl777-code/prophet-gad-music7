@@ -156,6 +156,9 @@ export default function MusicLibrary() {
       {/* Prophet Hero Banner */}
       <ProphetHeroBanner />
 
+      {/* E-Book Store — right after the hero */}
+      <EbookStore />
+
       {/* Library Header */}
       <div className="bg-[#111] border-b border-slate-900">
         <div className="max-w-7xl mx-auto px-6 py-6">
@@ -242,10 +245,7 @@ export default function MusicLibrary() {
           </>
         )}
 
-        {/* E-Book Store — after the music */}
-        <div className="-mx-6 mt-10">
-          <EbookStore />
-        </div>
+        {/* E-Book Store moved above */}
       </div>
     </div>
   );

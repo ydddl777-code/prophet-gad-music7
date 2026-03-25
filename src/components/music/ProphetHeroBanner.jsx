@@ -66,6 +66,7 @@ loadVideos();
 
 export default function ProphetHeroBanner() {
   const [muted, setMuted] = useState(false);
+  const [videoMuted, setVideoMuted] = useState(true);
   const [avatarIndex, setAvatarIndex] = useState(0);
   const [allMedia, setAllMedia] = useState(AVATARS);
   const audioRef = useRef(null);
@@ -169,7 +170,7 @@ export default function ProphetHeroBanner() {
                 key={i}
                 src={avatar.url}
                 autoPlay
-                muted
+                muted={videoMuted}
                 loop
                 playsInline
                 className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
@@ -204,13 +205,24 @@ export default function ProphetHeroBanner() {
             </div>
 
             {/* Auto-play mute button */}
-            <button
-              onClick={toggleMute}
-              className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
-            >
-              <span>{muted ? '🔇' : '🔊'}</span>
-              <span>{muted ? 'Unmute background music' : 'Mute background music'}</span>
-            </button>
+            <div className="flex gap-3 flex-wrap justify-center">
+              <button
+                onClick={toggleMute}
+                className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
+              >
+                <span>{muted ? '🔇' : '🔊'}</span>
+                <span>{muted ? 'Unmute background music' : 'Mute background music'}</span>
+              </button>
+              {allMedia[avatarIndex]?.type === 'video' && (
+                <button
+                  onClick={() => setVideoMuted(v => !v)}
+                  className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
+                >
+                  <span>{videoMuted ? '🔇' : '🔊'}</span>
+                  <span>{videoMuted ? 'Unmute video' : 'Mute video'}</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

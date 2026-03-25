@@ -124,11 +124,12 @@ function EbookCover({ book }) {
 }
 
 function EbookCard({ book }) {
-  const handlePurchase = () => {
-    if (book.price === 0 && book.downloadUrl) {
-      window.open(book.downloadUrl, '_blank');
-      return;
-    }
+  return (
+    <div className="flex-shrink-0 cursor-pointer" onClick={() => window.open('https://prophetgad.com', '_blank')}>
+      <EbookCover book={book} />
+    </div>
+  );
+}
     alert('To order, visit prophetgad.com or contact us directly.');
   };
 
@@ -162,35 +163,16 @@ export default function EbookStore() {
     <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-center gap-3 mb-1">
-          <div className="h-px w-12 bg-amber-500/40" />
-          <div className="h-px w-12 bg-amber-500/40" />
-        </div>
         <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning Books</h2>
-        <p className="text-lg font-black text-amber-400 mt-2 tracking-widest uppercase" style={{letterSpacing:'0.15em'}}>prophetgad.com</p>
+        <p className="text-lg font-black text-amber-400 mt-2 uppercase" style={{letterSpacing:'0.15em'}}>prophetgad.com</p>
         <p className="text-[0.6rem] text-slate-400 mt-1 tracking-widest uppercase">The Father's Word — Sent for You</p>
       </div>
 
-      {/* Books row with Prophet image on left */}
-      <div className="max-w-7xl mx-auto flex items-start gap-6">
-        {/* Prophet Gad image on left */}
-        <div className="flex-shrink-0 flex flex-col items-center gap-2">
-          <div className="w-28 h-40 rounded-xl overflow-hidden border-2 border-amber-500/50 shadow-lg shadow-amber-900/30">
-            <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/9cab1d068_Superheropoisedinelegantdiningroom.png"
-              alt="Author"
-              className="w-full h-full object-cover object-top"
-            />
-          </div>
-          <p className="text-[0.5rem] tracking-[0.2em] uppercase text-amber-500/60">Professor Gad!</p>
-        </div>
-
-        {/* Horizontal Scrollable Carousel */}
-        <div className="flex gap-6 overflow-x-auto pb-2" style={{scrollbarWidth: 'none'}}>
-          {EBOOKS.map(book => (
-            <EbookCard key={book.id} book={book} />
-          ))}
-        </div>
+      {/* Books row — covers only */}
+      <div className="max-w-7xl mx-auto flex gap-6 overflow-x-auto pb-2 justify-center" style={{scrollbarWidth: 'none'}}>
+        {EBOOKS.map(book => (
+          <EbookCard key={book.id} book={book} />
+        ))}
       </div>
     </div>
   );

@@ -172,7 +172,6 @@ export default function EbookStore() {
       <div className="text-center mb-6">
         <div className="inline-flex items-center gap-3 mb-1">
           <div className="h-px w-12 bg-amber-500/40" />
-          <span className="text-[0.6rem] tracking-[0.35em] uppercase text-amber-500/70 font-semibold">by Prophet Gad</span>
           <div className="h-px w-12 bg-amber-500/40" />
         </div>
         <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning Books</h2>
@@ -190,7 +189,7 @@ export default function EbookStore() {
               className="w-full h-full object-cover object-top"
             />
           </div>
-          <p className="text-[0.5rem] tracking-[0.2em] uppercase text-amber-500/60">Author</p>
+          <p className="text-[0.5rem] tracking-[0.2em] uppercase text-amber-500/60">Professor Gad:</p>
         </div>
 
         {/* Horizontal Scrollable Carousel */}

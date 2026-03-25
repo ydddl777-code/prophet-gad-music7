@@ -15,7 +15,7 @@ const AVATARS = [
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/9cab1d068_Superheropoisedinelegantdiningroom.png",
-    caption: "A Prophet to the Remnant Seed",
+    caption: "Hebrew Israelite Prophetess Hualdh",
     type: "image"
   },
   {
@@ -104,40 +104,12 @@ export default function ProphetHeroBanner() {
   useEffect(() => {
     const interval = setInterval(() => {
       setAvatarIndex(i => (i + 1) % allMedia.length);
-    }, 4000);
+    }, 13000);
     return () => clearInterval(interval);
   }, [allMedia.length]);
 
-  useEffect(() => {
-    let audio1, audio2;
-    base44.entities.MusicTrack.list('-created_date', 2)
-      .then(tracks => {
-        if (!tracks || tracks.length < 1) return;
-        const [t1, t2] = tracks;
-        if (!t1?.file_url) return;
-        audio1 = new Audio(t1.file_url);
-        audio1.volume = 0.12;
-        audioRef.current = audio1;
-        if (t2?.file_url) {
-          audio2 = new Audio(t2.file_url);
-          audio2.volume = 0.08;
-          audio2.loop = true;
-          audio1.addEventListener('ended', () => {
-            audioRef.current = audio2;
-            audio2.play().catch(() => {});
-          });
-        } else {
-          audio1.loop = true;
-        }
-        audio1.play().catch(() => {});
-      })
-      .catch(() => {});
-    return () => {
-      if (audio1) audio1.pause();
-      if (audio2) audio2.pause();
-      audioRef.current = null;
-    };
-  }, []);
+  // Audio disabled — sorting out audio experience
+  // useEffect(() => { ... }, []);
 
   const toggleMute = () => {
     if (!audioRef.current) return;

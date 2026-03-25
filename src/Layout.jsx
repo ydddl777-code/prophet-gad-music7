@@ -44,7 +44,7 @@ function LayoutContent({ children, currentPageName }) {
               <img 
                 src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/8b6d2b2f8_Breastplatelogo2.png" 
                 alt="High Priest Breastplate" 
-                className="w-16 h-16 object-contain"
+                className="w-20 h-20 object-contain"
               />
             </div>
 

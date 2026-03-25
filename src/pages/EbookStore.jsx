@@ -125,15 +125,11 @@ function EbookCover({ book }) {
 
 function EbookCard({ book }) {
   const handlePurchase = () => {
-    if (book.status === 'available' && book.price === 0 && book.downloadUrl) {
+    if (book.price === 0 && book.downloadUrl) {
       window.open(book.downloadUrl, '_blank');
       return;
     }
-    if (book.status === 'coming_soon') {
-      alert('This e-book is coming soon. Pre-orders will be available shortly.');
-      return;
-    }
-    alert('Purchase flow coming soon');
+    alert('To order, visit prophetgad.com or contact us directly.');
   };
 
   return (
@@ -145,20 +141,16 @@ function EbookCard({ book }) {
           <span className="text-xs font-bold text-amber-400">
             {book.price === 0 ? '' : `$${book.price.toFixed(2)}`}
           </span>
-          {book.status === 'coming_soon' && (
-            <span className="text-[0.45rem] tracking-wider uppercase px-1.5 py-0.5 border border-slate-700 text-slate-500">Soon</span>
-          )}
         </div>
         <button
           onClick={handlePurchase}
-          disabled={book.status === 'coming_soon'}
           className={`w-full text-xs py-1.5 rounded font-semibold transition-all ${
-            book.status === 'coming_soon'
-              ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+            book.price === 0
+              ? 'bg-gradient-to-r from-red-800 to-amber-700 hover:from-red-700 hover:to-amber-600 text-white'
               : 'bg-gradient-to-r from-red-800 to-amber-700 hover:from-red-700 hover:to-amber-600 text-white'
           }`}
         >
-          {book.price === 0 ? 'Free Download' : book.status === 'coming_soon' ? 'Coming Soon' : 'Purchase'}
+          {book.price === 0 ? 'Free Download' : 'Order Now'}
         </button>
       </div>
     </div>
@@ -175,7 +167,8 @@ export default function EbookStore() {
           <div className="h-px w-12 bg-amber-500/40" />
         </div>
         <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning Books</h2>
-        <p className="text-[0.6rem] text-slate-600 mt-1 tracking-widest uppercase">Coming Soon · Books in Development</p>
+        <p className="text-lg font-black text-amber-400 mt-2 tracking-widest uppercase" style={{letterSpacing:'0.15em'}}>prophetgad.com</p>
+        <p className="text-[0.6rem] text-slate-400 mt-1 tracking-widest uppercase">The Father's Word — Sent for You</p>
       </div>
 
       {/* Books row with Prophet image on left */}

@@ -189,7 +189,7 @@ export default function EbookStore() {
               className="w-full h-full object-cover object-top"
             />
           </div>
-          <p className="text-[0.5rem] tracking-[0.2em] uppercase text-amber-500/60">Professor Gad:</p>
+          <p className="text-[0.5rem] tracking-[0.2em] uppercase text-amber-500/60">Professor Gad!</p>
         </div>
 
         {/* Horizontal Scrollable Carousel */}

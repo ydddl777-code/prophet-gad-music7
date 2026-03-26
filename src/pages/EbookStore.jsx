@@ -45,6 +45,12 @@ function EbookCover({ book }) {
 
   return (
     <div className="w-[180px] h-[270px] relative overflow-hidden flex-shrink-0">
+      {/* CONTROVERSIAL diagonal stamp */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none" style={{transform: 'rotate(-35deg)', top: '-10px'}}>
+        <span className="text-[0.55rem] font-black tracking-[0.18em] uppercase px-2 py-0.5 border border-red-600/70 text-red-500/80" style={{letterSpacing: '0.2em', whiteSpace: 'nowrap'}}>
+          CONTROVERSIAL
+        </span>
+      </div>
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#180a08] to-[#0a0a0a]">
         <div className="absolute inset-0" style={{background: 'radial-gradient(ellipse at 50% 20%, rgba(180,20,20,0.15) 0%, transparent 60%)'}} />
       </div>
@@ -88,10 +94,7 @@ export default function EbookStore() {
   return (
     <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning Books</h2>
-        <p className="text-[0.6rem] tracking-[0.3em] uppercase text-red-500/70 mt-1 mb-2">Doctrine They Don't Want You to Read</p>
-        <p className="text-sm text-slate-400 italic">No dogs. No king's meat. No contemporary praise music. No false wisdom.<br/>Find out why — if you can handle it.</p>
-        <p className="text-lg font-black text-amber-400 mt-3 uppercase" style={{letterSpacing:'0.15em'}}>Prophet Gad · prophetgad.com</p>
+        <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning</h2>
       </div>
       <div className="max-w-7xl mx-auto flex gap-6 overflow-x-auto pb-2 justify-center" style={{scrollbarWidth: 'none'}}>
         {EBOOKS.map(book => (

@@ -3,7 +3,6 @@ import { createHmac } from 'node:crypto';
 
 const SQUARE_WEBHOOK_SIGNATURE_KEY = Deno.env.get("SQUARE_WEBHOOK_SIGNATURE_KEY");
 
-// Square webhook signature verification
 function isValidSquareSignature(body, signatureHeader, webhookUrl, signatureKey) {
   const hmac = createHmac('sha256', signatureKey);
   hmac.update(webhookUrl + body);
@@ -15,11 +14,10 @@ Deno.serve(async (req) => {
   try {
     const body = await req.text();
     const signatureHeader = req.headers.get('x-square-hmacsha256-signature') || '';
-    const webhookUrl = req.url;
 
     // Verify Square signature
     if (SQUARE_WEBHOOK_SIGNATURE_KEY) {
-      if (!isValidSquareSignature(body, signatureHeader, webhookUrl, SQUARE_WEBHOOK_SIGNATURE_KEY)) {
+      if (!isValidSquareSignature(body, signatureHeader, req.url, SQUARE_WEBHOOK_SIGNATURE_KEY)) {
         console.warn('Invalid Square webhook signature');
         return Response.json({ error: 'Invalid signature' }, { status: 403 });
       }
@@ -28,7 +26,39 @@ Deno.serve(async (req) => {
     const event = JSON.parse(body);
     console.log('Square webhook event type:', event.type);
 
-    // Only handle completed payments
+    const base44 = createClientFromRequest(req);
+    const SQUARE_ACCESS_TOKEN = Deno.env.get('SQUARE_ACCESS_TOKEN');
+
+    // --- REFUND CREATED ---
+    if (event.type === 'refund.created') {
+      const refund = event.data?.object?.refund;
+      const paymentId = refund?.payment_id;
+      if (paymentId) {
+        const purchases = await base44.asServiceRole.entities.Purchase.filter({ stripe_session_id: paymentId });
+        if (purchases?.[0]) {
+          await base44.asServiceRole.entities.Purchase.update(purchases[0].id, { status: 'refunded' });
+          console.log(`Purchase ${purchases[0].id} marked as refunded (payment ${paymentId})`);
+        }
+      }
+      return Response.json({ received: true });
+    }
+
+    // --- DISPUTE CREATED (chargeback) ---
+    if (event.type === 'dispute.created') {
+      const dispute = event.data?.object?.dispute;
+      const paymentId = dispute?.disputed_payment?.payment_id;
+      console.warn(`Square dispute for payment ${paymentId}, reason: ${dispute?.reason}`);
+      if (paymentId) {
+        const purchases = await base44.asServiceRole.entities.Purchase.filter({ stripe_session_id: paymentId });
+        if (purchases?.[0]) {
+          await base44.asServiceRole.entities.Purchase.update(purchases[0].id, { status: 'refunded' });
+          console.log(`Purchase ${purchases[0].id} marked refunded due to dispute`);
+        }
+      }
+      return Response.json({ received: true });
+    }
+
+    // --- PAYMENT COMPLETED ---
     if (event.type !== 'payment.completed') {
       return Response.json({ received: true });
     }
@@ -45,7 +75,6 @@ Deno.serve(async (req) => {
     }
 
     // Fetch the order to get track_id from metadata
-    const SQUARE_ACCESS_TOKEN = Deno.env.get("SQUARE_ACCESS_TOKEN");
     const orderRes = await fetch(`https://connect.squareup.com/v2/orders/${orderId}`, {
       headers: {
         'Authorization': `Bearer ${SQUARE_ACCESS_TOKEN}`,
@@ -54,15 +83,14 @@ Deno.serve(async (req) => {
     });
     const orderData = await orderRes.json();
     const order = orderData.order;
-
     const trackId = order?.metadata?.track_id;
+
     if (!trackId) {
       console.warn('No track_id in order metadata for order:', orderId);
       return Response.json({ received: true });
     }
 
     // Get the track from the database
-    const base44 = createClientFromRequest(req);
     const tracks = await base44.asServiceRole.entities.MusicTrack.filter({ id: trackId }, '-created_date', 1);
     const track = tracks?.[0];
 
@@ -70,6 +98,15 @@ Deno.serve(async (req) => {
       console.error('Track not found or no file_url for track_id:', trackId);
       return Response.json({ received: true });
     }
+
+    // Record the purchase
+    await base44.asServiceRole.entities.Purchase.create({
+      track_id: trackId,
+      stripe_session_id: payment.id,
+      customer_email: buyerEmail || '',
+      amount_paid: payment.amount_money?.amount || 0,
+      status: 'completed',
+    });
 
     // Send download email if we have a buyer email
     const email = buyerEmail || order?.fulfillments?.[0]?.shipment_details?.recipient?.email_address;
@@ -83,30 +120,24 @@ Deno.serve(async (req) => {
     <h1 style="color: #D4AF37; font-size: 24px; margin: 0;">Prophet Gad Music</h1>
     <p style="color: #888; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; margin: 6px 0 0;">Threadbare Music · Remnant Seed LLC</p>
   </div>
-
   <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 24px; margin-bottom: 24px;">
     <p style="color: #aaa; font-size: 14px; margin: 0 0 8px;">Your purchase:</p>
     <h2 style="color: #fff; font-size: 20px; margin: 0 0 4px;">${track.title}</h2>
     <p style="color: #D4AF37; font-size: 14px; margin: 0;">${track.artist || 'Prophet Gad'}</p>
   </div>
-
   <div style="text-align: center; margin-bottom: 24px;">
-    <a href="${track.file_url}"
-       style="display: inline-block; background: linear-gradient(to right, #D4AF37, #b22222); color: #fff; font-weight: bold; font-size: 16px; padding: 14px 32px; border-radius: 50px; text-decoration: none;">
+    <a href="${track.file_url}" style="display: inline-block; background: linear-gradient(to right, #D4AF37, #b22222); color: #fff; font-weight: bold; font-size: 16px; padding: 14px 32px; border-radius: 50px; text-decoration: none;">
       ⬇ Download Your Track
     </a>
   </div>
-
   <p style="color: #555; font-size: 12px; text-align: center;">
     If the button doesn't work, copy this link:<br/>
     <span style="color: #888; word-break: break-all;">${track.file_url}</span>
   </p>
-
   <p style="color: #333; font-size: 11px; text-align: center; margin-top: 30px; border-top: 1px solid #1a1a1a; padding-top: 16px;">
     Thank you for supporting the ministry. Shalom.
   </p>
-</div>
-        `.trim()
+</div>`.trim()
       });
       console.log(`Download email sent to ${email} for track "${track.title}"`);
     } else {

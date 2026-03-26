@@ -1,29 +1,16 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
-
 const SQUARE_ACCESS_TOKEN = Deno.env.get("SQUARE_ACCESS_TOKEN");
 const SQUARE_LOCATION_ID = Deno.env.get("SQUARE_LOCATION_ID");
 const SQUARE_API_BASE = "https://connect.squareup.com/v2";
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { track_id, track_title, track_artist, price_cents, cover_art_url } = await req.json();
 
-    // Determine redirect URLs from origin header
     const origin = req.headers.get("origin") || "https://app.base44.com";
     const successUrl = `${origin}/PurchaseSuccess?track_id=${track_id}&source=square`;
-    const cancelUrl = `${origin}/`;
-
-    // Create Square payment link
-    const idempotencyKey = crypto.randomUUID();
 
     const body = {
-      idempotency_key: idempotencyKey,
+      idempotency_key: crypto.randomUUID(),
       order: {
         location_id: SQUARE_LOCATION_ID,
         line_items: [
@@ -38,16 +25,12 @@ Deno.serve(async (req) => {
           }
         ],
         metadata: {
-          track_id: track_id,
-          user_email: user.email
+          track_id: track_id
         }
       },
       checkout_options: {
         redirect_url: successUrl,
         ask_for_shipping_address: false
-      },
-      pre_populated_data: {
-        buyer_email: user.email
       }
     };
 
@@ -69,22 +52,8 @@ Deno.serve(async (req) => {
     }
 
     const checkoutUrl = data.payment_link?.url;
-    const orderId = data.payment_link?.order_id;
-
-    // Record the purchase (non-blocking — don't let this break checkout)
-    try {
-      await base44.asServiceRole.entities.Purchase.create({
-        track_id,
-        stripe_session_id: orderId,
-        customer_email: user.email,
-        amount_paid: price_cents,
-        status: "completed"
-      });
-    } catch (recordErr) {
-      console.error("Purchase record error (non-fatal):", recordErr.message);
-    }
-
     return Response.json({ url: checkoutUrl });
+
   } catch (error) {
     console.error("Error:", error.message);
     return Response.json({ error: error.message }, { status: 500 });

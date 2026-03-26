@@ -39,7 +39,7 @@ function LayoutContent({ children, currentPageName }) {
                   Prophet Gad Music
                 </span>
                 <span className="text-[0.6rem] tracking-[0.2em] uppercase text-slate-500 mt-0.5">
-                  Threadbare Music &mdash; Remnant Seed LLC
+                  Thread Bare Music &mdash; Remnant Seed LLC
                 </span>
               </div>
 

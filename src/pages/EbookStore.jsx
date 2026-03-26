@@ -110,28 +110,33 @@ function EbookCover({ book }) {
 export default function EbookStore() {
   return (
     <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
-      <div className="flex items-center justify-center gap-6 mb-6">
-        <div className="flex flex-col items-center">
+      <div className="max-w-7xl mx-auto flex items-center gap-6">
+        {/* Author box — left of books */}
+        <div className="flex flex-col items-center flex-shrink-0">
           <div className="w-[90px] h-[120px] rounded-lg overflow-hidden border border-amber-500/40 shadow-lg">
             <img
-              src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/8715a9883_image.png"
+              src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/1e2633946_smallGadup1.jpg"
               alt="Author"
               className="w-full h-full object-cover object-top"
             />
           </div>
           <p className="text-[0.6rem] tracking-[0.2em] uppercase text-amber-400/80 mt-1">Author</p>
         </div>
-        <div className="text-left">
-          <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning</h2>
-          <p className="text-xs text-amber-400/70 tracking-wider uppercase">Instant Download</p>
-        </div>
-      </div>
-      <div className="max-w-7xl mx-auto flex gap-6 overflow-x-auto pb-2 justify-center" style={{scrollbarWidth: 'none'}}>
-        {EBOOKS.map(book => (
-          <div key={book.id} className="flex-shrink-0 cursor-pointer" onClick={() => window.open('https://prophetgad.com', '_blank')}>
-            <EbookCover book={book} />
+
+        {/* Books panel — right */}
+        <div className="flex-1 min-w-0">
+          <div className="mb-3">
+            <h2 className="text-xl font-black tracking-wider" style={{color: '#D4AF37'}}>Remnant Warning</h2>
+            <p className="text-xs text-white/60 tracking-wider uppercase">Instant Download</p>
           </div>
-        ))}
+          <div className="flex gap-4 overflow-x-auto pb-2" style={{scrollbarWidth: 'none'}}>
+            {EBOOKS.map(book => (
+              <div key={book.id} className="flex-shrink-0 cursor-pointer" onClick={() => window.open('https://prophetgad.com', '_blank')}>
+                <EbookCover book={book} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

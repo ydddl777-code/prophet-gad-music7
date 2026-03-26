@@ -18,14 +18,14 @@ export default function PurchaseSuccess() {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id');
   const trackId = params.get('track_id');
-  const source = params.get('source'); // 'square' or null (stripe)
+  const source = params.get('source');
+  const urlEmail = params.get('email') || '';
   const title = params.get('title') || 'Your track';
 
   useEffect(() => {
     if (source === 'square' && trackId) {
-      // Square payment — fetch track directly and provide download
       base44.entities.MusicTrack.filter({ id: trackId }, '-created_date', 1)
-        .then(results => {
+        .then(async results => {
           const track = results?.[0];
           if (track?.file_url) {
             setDownloadUrl(track.file_url);
@@ -33,6 +33,18 @@ export default function PurchaseSuccess() {
             setTrackArtist(track.artist || 'Prophet Gad');
             if (track.cover_art_url) setCoverArt(track.cover_art_url);
             setStatus('ready');
+            // Auto-send email if provided at checkout
+            if (urlEmail) {
+              setEmail(urlEmail);
+              await base44.functions.invoke('sendDownloadEmail', {
+                email: urlEmail,
+                track_id: trackId,
+                track_title: track.title,
+                track_artist: track.artist || 'Prophet Gad',
+                file_url: track.file_url,
+              }).catch(() => {});
+              setEmailSent(true);
+            }
           } else {
             setStatus('error');
           }

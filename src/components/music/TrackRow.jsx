@@ -20,6 +20,8 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [showRelated, setShowRelated] = useState(false);
   const [purchasing, setPurchasing] = useState(false);
+  const [showEmailPrompt, setShowEmailPrompt] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
 
   const handlePlay = () => {
     if (isCurrentTrack) {
@@ -31,9 +33,14 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
     }
   };
 
-  const handleBuy = async () => {
+  const handleBuy = () => {
     const isInIframe = window.self !== window.top;
     if (isInIframe) { alert("Purchase is only available from the published app."); return; }
+    setShowEmailPrompt(true);
+  };
+
+  const proceedToCheckout = async (email) => {
+    setShowEmailPrompt(false);
     setPurchasing(true);
     try {
       const res = await base44.functions.invoke('createSquareCheckout', {
@@ -42,6 +49,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
         track_artist: track.artist,
         price_cents: Math.round((track.price || 1.99) * 100),
         cover_art_url: track.cover_art_url || null,
+        customer_email: email || '',
       });
       if (res.data?.url) window.location.href = res.data.url;
     } catch { toast.error("Could not start checkout"); }
@@ -71,6 +79,40 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
 
   return (
     <>
+      {/* Email prompt modal */}
+      {showEmailPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4" onClick={() => setShowEmailPrompt(false)}>
+          <div className="bg-slate-900 border border-amber-500/40 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+            <h3 className="text-white font-bold text-lg mb-1">Where should we send your download?</h3>
+            <p className="text-slate-400 text-sm mb-4">Enter your email and we'll deliver the track link automatically after payment.</p>
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={emailInput}
+              onChange={e => setEmailInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && proceedToCheckout(emailInput)}
+              autoFocus
+              className="w-full bg-slate-800 border border-slate-600 text-white rounded-lg px-4 py-2.5 text-sm mb-3 outline-none focus:border-amber-400"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => proceedToCheckout(emailInput)}
+                className="flex-1 bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white font-bold py-2.5 rounded-lg text-sm"
+              >
+                Continue to Payment →
+              </button>
+              <button
+                onClick={() => proceedToCheckout('')}
+                className="text-slate-500 hover:text-slate-300 text-xs px-3"
+                title="Skip email"
+              >
+                Skip
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {editing && (
         <MetadataEditor
           track={track}

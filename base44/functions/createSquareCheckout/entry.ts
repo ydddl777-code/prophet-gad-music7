@@ -4,10 +4,11 @@ const SQUARE_API_BASE = "https://connect.squareup.com/v2";
 
 Deno.serve(async (req) => {
   try {
-    const { track_id, track_title, track_artist, price_cents, cover_art_url } = await req.json();
+    const { track_id, track_title, track_artist, price_cents, cover_art_url, customer_email } = await req.json();
 
     const origin = req.headers.get("origin") || "https://app.base44.com";
-    const successUrl = `${origin}/PurchaseSuccess?track_id=${track_id}&source=square`;
+    const emailParam = customer_email ? `&email=${encodeURIComponent(customer_email)}` : '';
+    const successUrl = `${origin}/PurchaseSuccess?track_id=${track_id}&source=square${emailParam}`;
 
     const body = {
       idempotency_key: crypto.randomUUID(),

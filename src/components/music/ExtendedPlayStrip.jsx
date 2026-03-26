@@ -44,16 +44,16 @@ export default function ExtendedPlayStrip() {
       </div>
 
       {/* Horizontal Scrollable Track Strip */}
-      <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide max-w-7xl mx-auto">
+      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide max-w-7xl mx-auto">
         {tracks.map((track) => {
           const isActive = player.currentTrack?.id === track.id;
           const isPlaying = isActive && player.isPlaying;
           const isVideo = track.file_url?.endsWith('.mp4');
 
           return (
-            <div key={track.id} className="flex-shrink-0 w-24 flex flex-col items-center gap-2 group">
+            <div key={track.id} className="flex-shrink-0 w-20 flex flex-col items-center gap-2 group">
               {/* Cover Art / Video */}
-              <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-amber-500/20 shadow-lg">
+              <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-amber-500/20 shadow-lg">
                 {isVideo ? (
                   <video
                     src={track.file_url}
@@ -78,7 +78,7 @@ export default function ExtendedPlayStrip() {
                     isActive ? 'bg-black/50' : 'bg-black/0 group-hover:bg-black/50'
                   }`}
                 >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
                     isActive ? 'bg-amber-500 opacity-100' : 'bg-amber-500 opacity-0 group-hover:opacity-100'
                   }`}>
                     {isPlaying

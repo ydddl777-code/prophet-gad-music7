@@ -71,14 +71,18 @@ Deno.serve(async (req) => {
     const checkoutUrl = data.payment_link?.url;
     const orderId = data.payment_link?.order_id;
 
-    // Record the pending purchase
-    await base44.asServiceRole.entities.Purchase.create({
-      track_id,
-      stripe_session_id: orderId, // reusing this field for Square order ID
-      customer_email: user.email,
-      amount_paid: price_cents,
-      status: "completed"
-    });
+    // Record the purchase (non-blocking — don't let this break checkout)
+    try {
+      await base44.asServiceRole.entities.Purchase.create({
+        track_id,
+        stripe_session_id: orderId,
+        customer_email: user.email,
+        amount_paid: price_cents,
+        status: "completed"
+      });
+    } catch (recordErr) {
+      console.error("Purchase record error (non-fatal):", recordErr.message);
+    }
 
     return Response.json({ url: checkoutUrl });
   } catch (error) {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Download, Music2, Loader2, Clock, ShieldCheck, Mail } from 'lucide-react';
+import { CheckCircle2, Download, Music2, Loader2, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function PurchaseSuccess() {
@@ -11,21 +11,17 @@ export default function PurchaseSuccess() {
   const [trackArtist, setTrackArtist] = useState('');
   const [coverArt, setCoverArt] = useState(null);
   const [downloading, setDownloading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [emailSent, setEmailSent] = useState(false);
-  const [emailSending, setEmailSending] = useState(false);
 
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id');
   const trackId = params.get('track_id');
   const source = params.get('source');
-  const urlEmail = params.get('email') || '';
   const title = params.get('title') || 'Your track';
 
   useEffect(() => {
     if (source === 'square' && trackId) {
       base44.entities.MusicTrack.filter({ id: trackId }, '-created_date', 1)
-        .then(async results => {
+        .then(results => {
           const track = results?.[0];
           if (track?.file_url) {
             setDownloadUrl(track.file_url);
@@ -33,18 +29,6 @@ export default function PurchaseSuccess() {
             setTrackArtist(track.artist || 'Prophet Gad');
             if (track.cover_art_url) setCoverArt(track.cover_art_url);
             setStatus('ready');
-            // Auto-send email if provided at checkout
-            if (urlEmail) {
-              setEmail(urlEmail);
-              await base44.functions.invoke('sendDownloadEmail', {
-                email: urlEmail,
-                track_id: trackId,
-                track_title: track.title,
-                track_artist: track.artist || 'Prophet Gad',
-                file_url: track.file_url,
-              }).catch(() => {});
-              setEmailSent(true);
-            }
           } else {
             setStatus('error');
           }
@@ -136,13 +120,10 @@ export default function PurchaseSuccess() {
               <p className="text-xs text-slate-500 mt-1">Thread Bear Music · Remnant Seed LLC</p>
             </div>
 
-            {/* Secure link notice */}
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl p-3 mb-5 text-left">
-              <ShieldCheck className="w-5 h-5 text-green-500 shrink-0" />
-              <div>
-                <p className="text-xs font-semibold text-slate-700">Secure download link</p>
-                <p className="text-xs text-slate-400 flex items-center gap-1"><Clock className="w-3 h-3" /> Expires in 1 hour</p>
-              </div>
+            {/* Email notice */}
+            <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl p-3 mb-5 text-left">
+              <Mail className="w-5 h-5 text-green-500 shrink-0" />
+              <p className="text-xs text-green-700 font-semibold">A download link has been sent to your email by Square.</p>
             </div>
 
             <Button
@@ -156,42 +137,6 @@ export default function PurchaseSuccess() {
                 <><Download className="w-4 h-4 mr-2" /> Download Track</>
               )}
             </Button>
-
-            {/* Email delivery option */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-3 text-left">
-              <p className="text-xs font-semibold text-slate-700 mb-2 flex items-center gap-1"><Mail className="w-3 h-3" /> Send download link to your email</p>
-              {emailSent ? (
-                <p className="text-green-600 text-sm font-semibold">✓ Email sent! Check your inbox.</p>
-              ) : (
-                <div className="flex gap-2">
-                  <input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    className="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-amber-400"
-                  />
-                  <button
-                    disabled={emailSending || !email}
-                    onClick={async () => {
-                      setEmailSending(true);
-                      await base44.functions.invoke('sendDownloadEmail', {
-                        email,
-                        track_id: trackId,
-                        track_title: trackTitle,
-                        track_artist: trackArtist,
-                        file_url: downloadUrl
-                      }).catch(() => {});
-                      setEmailSent(true);
-                      setEmailSending(false);
-                    }}
-                    className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-3 py-1.5 rounded-lg disabled:opacity-50"
-                  >
-                    {emailSending ? '...' : 'Send'}
-                  </button>
-                </div>
-              )}
-            </div>
 
             <Link to="/MusicLibrary">
               <Button variant="outline" className="w-full">

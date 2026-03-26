@@ -5,37 +5,43 @@ const EBOOKS = [
     id: 'remnant-vol-1',
     subtitle: 'The Frequency of Babylon',
     fullTitle: 'No Contemporary Praise Music for the Israelites',
-    tagline: 'When worship became performance and the altar became a stage'
+    tagline: 'When worship became performance and the altar became a stage',
+    price: 18
   },
   {
     id: 'remnant-vol-2',
     subtitle: 'No Dogs for the Israelites',
     fullTitle: 'No Dogs for the Israelites',
-    tagline: 'The snare of displaced intimacy and the idolatry of the creature'
+    tagline: 'The snare of displaced intimacy and the idolatry of the creature',
+    price: 18
   },
   {
     id: 'remnant-vol-3',
     subtitle: "The King's Table",
     fullTitle: "No King's Meat for the Israelites",
-    tagline: "Daniel's resolve and the divine wisdom of biblical dietary law"
+    tagline: "Daniel's resolve and the divine wisdom of biblical dietary law",
+    price: 9.99
   },
   {
     id: 'remnant-vol-4',
     subtitle: 'The Debt Trap',
     fullTitle: 'No False Wisdom for the Israelites',
-    tagline: "The borrower is servant to the lender — breaking free from Babylon's schools"
+    tagline: "The borrower is servant to the lender — breaking free from Babylon's schools",
+    price: 9.99
   },
   {
     id: 'twelve-tribes',
     subtitle: 'Our Forefathers & Their Seed',
     fullTitle: 'The Twelve Tribes of Israel',
-    tagline: 'The apple of His eye — a heritage for every generation'
+    tagline: 'The apple of His eye — a heritage for every generation',
+    price: 18
   },
   {
     id: 'eternal-oracle',
     subtitle: 'A Chosen People',
     fullTitle: 'The Eternal Oracle',
-    tagline: 'Always the same — if He chose then, He chooses now'
+    tagline: 'Always the same — if He chose then, He chooses now',
+    price: 38
   }
 ];
 
@@ -45,12 +51,6 @@ function EbookCover({ book }) {
 
   return (
     <div className="w-[180px] h-[270px] relative overflow-hidden flex-shrink-0">
-      {/* CONTROVERSIAL diagonal stamp */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none" style={{transform: 'rotate(-35deg)', top: '-10px'}}>
-        <span className="text-[0.55rem] font-black tracking-[0.18em] uppercase px-2 py-0.5 border border-red-600/70 text-red-500/80" style={{letterSpacing: '0.2em', whiteSpace: 'nowrap'}}>
-          CONTROVERSIAL
-        </span>
-      </div>
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#180a08] to-[#0a0a0a]">
         <div className="absolute inset-0" style={{background: 'radial-gradient(ellipse at 50% 20%, rgba(180,20,20,0.15) 0%, transparent 60%)'}} />
       </div>
@@ -86,6 +86,17 @@ function EbookCover({ book }) {
           <span className="text-[0.32rem] tracking-[0.18em] uppercase text-[#D4AF37]">Prophet Gad</span>
         </div>
       </div>
+      {/* CONTROVERSIAL diagonal stamp — on top of everything */}
+      <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none" style={{transform: 'rotate(-32deg)'}}>
+        <div className="flex flex-col items-center">
+          <span className="text-[0.6rem] font-black tracking-[0.22em] uppercase text-white/90" style={{whiteSpace: 'nowrap', textShadow: '0 0 8px rgba(0,0,0,0.9)'}}>CONTROVERSIAL</span>
+          <span className="text-[0.5rem] font-bold tracking-[0.18em] uppercase text-white/70" style={{whiteSpace: 'nowrap', textShadow: '0 0 8px rgba(0,0,0,0.9)'}}>DOCTRINE</span>
+        </div>
+      </div>
+      {/* Price badge */}
+      <div className="absolute top-2 right-2 z-20 bg-amber-500 text-black font-black text-[0.55rem] px-1.5 py-0.5 rounded">
+        ${book.price % 1 === 0 ? book.price : book.price.toFixed(2)}
+      </div>
     </div>
   );
 }
@@ -93,8 +104,19 @@ function EbookCover({ book }) {
 export default function EbookStore() {
   return (
     <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning</h2>
+      <div className="flex items-center justify-center gap-6 mb-6">
+        <div className="flex flex-col items-center">
+          <img
+            src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/8715a9883_image.png"
+            alt="Author"
+            className="w-16 h-20 object-cover object-top rounded-lg border border-amber-500/40 shadow-lg"
+          />
+          <p className="text-[0.6rem] tracking-[0.2em] uppercase text-amber-400/80 mt-1">Author</p>
+        </div>
+        <div className="text-left">
+          <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning</h2>
+          <p className="text-xs text-amber-400/70 tracking-wider uppercase">E-Books · Instant Download</p>
+        </div>
       </div>
       <div className="max-w-7xl mx-auto flex gap-6 overflow-x-auto pb-2 justify-center" style={{scrollbarWidth: 'none'}}>
         {EBOOKS.map(book => (

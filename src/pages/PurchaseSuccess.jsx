@@ -15,15 +15,35 @@ export default function PurchaseSuccess() {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id');
   const trackId = params.get('track_id');
+  const source = params.get('source'); // 'square' or null (stripe)
   const title = params.get('title') || 'Your track';
 
   useEffect(() => {
+    if (source === 'square' && trackId) {
+      // Square payment — fetch track directly and provide download
+      base44.entities.MusicTrack.filter({ id: trackId }, '-created_date', 1)
+        .then(results => {
+          const track = results?.[0];
+          if (track?.file_url) {
+            setDownloadUrl(track.file_url);
+            setTrackTitle(track.title || title);
+            setTrackArtist(track.artist || 'Prophet Gad');
+            if (track.cover_art_url) setCoverArt(track.cover_art_url);
+            setStatus('ready');
+          } else {
+            setStatus('error');
+          }
+        })
+        .catch(() => setStatus('error'));
+      return;
+    }
+
     if (!sessionId) {
       setStatus('error');
       return;
     }
 
-    // Get secure download link from backend (verifies Stripe payment server-side)
+    // Stripe flow — verify session server-side
     base44.functions.invoke('generateDownloadLink', { session_id: sessionId })
       .then(res => {
         if (res.data?.download_url) {
@@ -37,13 +57,12 @@ export default function PurchaseSuccess() {
       })
       .catch(() => setStatus('error'));
 
-    // Also fetch cover art
     if (trackId) {
       base44.entities.MusicTrack.filter({ id: trackId }, '-created_date', 1)
         .then(results => { if (results?.[0]?.cover_art_url) setCoverArt(results[0].cover_art_url); })
         .catch(() => {});
     }
-  }, [sessionId]);
+  }, [sessionId, trackId, source]);
 
   const handleDownload = () => {
     if (!downloadUrl) return;

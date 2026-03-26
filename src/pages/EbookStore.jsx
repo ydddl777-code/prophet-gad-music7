@@ -6,7 +6,7 @@ const EBOOKS = [
     subtitle: 'The Frequency of Babylon',
     fullTitle: 'No Contemporary Praise Music for the Israelites',
     tagline: 'When worship became performance and the altar became a stage',
-    price: 18,
+    price: 18.98,
     controversial: true
   },
   {
@@ -14,7 +14,7 @@ const EBOOKS = [
     subtitle: 'No Dogs for the Israelites',
     fullTitle: 'No Dogs for the Israelites',
     tagline: 'The snare of displaced intimacy and the idolatry of the creature',
-    price: 18,
+    price: 18.98,
     controversial: true
   },
   {
@@ -43,7 +43,7 @@ const EBOOKS = [
     subtitle: 'A Chosen People',
     fullTitle: 'The Eternal Oracle',
     tagline: 'Always the same — if He chose then, He chooses now',
-    price: 38
+    price: 38.98
   }
 ];
 
@@ -87,7 +87,7 @@ function EbookCover({ book }) {
         </div>
         <div className="w-full shrink-0">
           <div className="w-[28px] h-px mx-auto mb-1" style={{background: 'linear-gradient(to right, transparent, rgba(212,175,55,0.3), transparent)'}} />
-          <span className="text-[0.32rem] tracking-[0.18em] uppercase text-[#D4AF37]">Author</span>
+          <span className="text-[0.32rem] tracking-[0.18em] uppercase text-[#D4AF37]">Prophet Gad</span>
         </div>
       </div>
       {/* CONTROVERSIAL diagonal stamp — only on controversial books */}
@@ -115,7 +115,7 @@ export default function EbookStore() {
         <div className="flex flex-col items-center flex-shrink-0">
           <div className="w-[90px] h-[120px] rounded-lg overflow-hidden border border-amber-500/40 shadow-lg">
             <img
-              src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/1e2633946_smallGadup1.jpg"
+              src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/4ce5d0e0a_prophet-suit.jpg"
               alt="Author"
               className="w-full h-full object-cover object-top"
             />

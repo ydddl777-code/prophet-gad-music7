@@ -91,8 +91,9 @@ export function PlayerProvider({ children }) {
     const onTimeUpdate = () => {
       setCurrentTime(audio.currentTime);
       const track = queueRef.current[currentIndexRef.current];
-      const previewLimit = track?.is_free_listen ? 180 : 60;
-      if (track && !track.is_free_listen && audio.currentTime >= previewLimit) {
+      // Extended play = 2 min preview, regular = 90 sec preview
+      const previewLimit = track?.is_free_listen ? 120 : 90;
+      if (track && audio.currentTime >= previewLimit) {
         audio.pause();
         setIsPlaying(false);
         setPreviewEnded(true);

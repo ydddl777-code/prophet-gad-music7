@@ -126,13 +126,20 @@ export default function EbookStore() {
         {/* Books panel — right */}
         <div className="flex-1 min-w-0">
           <div className="mb-3">
-            <h2 className="text-xl font-black tracking-wider" style={{color: '#D4AF37'}}>Remnant Warning</h2>
+            <h2 className="text-xl font-black tracking-wider" style={{color: '#D4AF37'}}>Remnant Warning E-Books</h2>
             <p className="text-xs text-white/60 tracking-wider uppercase">Instant Download</p>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2" style={{scrollbarWidth: 'none'}}>
             {EBOOKS.map(book => (
-              <div key={book.id} className="flex-shrink-0 cursor-pointer" onClick={() => window.open('https://prophetgad.com', '_blank')}>
+              <div key={book.id} className="flex-shrink-0 cursor-pointer group relative"
+                onClick={() => alert('Post Production · Available Soon')}>
                 <EbookCover book={book} />
+                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded">
+                  <div className="text-center px-2">
+                    <p className="text-amber-400 font-black text-[0.55rem] tracking-widest uppercase">Post Production</p>
+                    <p className="text-white/70 text-[0.5rem] tracking-wider mt-0.5">Available Soon</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

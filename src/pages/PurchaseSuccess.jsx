@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Download, Music2, Loader2, Clock, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, Download, Music2, Loader2, Clock, ShieldCheck, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function PurchaseSuccess() {
@@ -11,6 +11,9 @@ export default function PurchaseSuccess() {
   const [trackArtist, setTrackArtist] = useState('');
   const [coverArt, setCoverArt] = useState(null);
   const [downloading, setDownloading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailSending, setEmailSending] = useState(false);
 
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id');
@@ -141,6 +144,42 @@ export default function PurchaseSuccess() {
                 <><Download className="w-4 h-4 mr-2" /> Download Track</>
               )}
             </Button>
+
+            {/* Email delivery option */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-3 text-left">
+              <p className="text-xs font-semibold text-slate-700 mb-2 flex items-center gap-1"><Mail className="w-3 h-3" /> Send download link to your email</p>
+              {emailSent ? (
+                <p className="text-green-600 text-sm font-semibold">✓ Email sent! Check your inbox.</p>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    className="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-amber-400"
+                  />
+                  <button
+                    disabled={emailSending || !email}
+                    onClick={async () => {
+                      setEmailSending(true);
+                      await base44.functions.invoke('sendDownloadEmail', {
+                        email,
+                        track_id: trackId,
+                        track_title: trackTitle,
+                        track_artist: trackArtist,
+                        file_url: downloadUrl
+                      }).catch(() => {});
+                      setEmailSent(true);
+                      setEmailSending(false);
+                    }}
+                    className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-3 py-1.5 rounded-lg disabled:opacity-50"
+                  >
+                    {emailSending ? '...' : 'Send'}
+                  </button>
+                </div>
+              )}
+            </div>
 
             <Link to="/MusicLibrary">
               <Button variant="outline" className="w-full">

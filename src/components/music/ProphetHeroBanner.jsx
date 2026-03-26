@@ -16,7 +16,7 @@ const AVATARS = [
   },
   {
     url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/9cab1d068_Superheropoisedinelegantdiningroom.png",
-    caption: "Hebrew Israelite Prophetess Hualdh",
+    caption: "Prophet Gad — The Watchman",
     type: "image"
   },
   {
@@ -67,7 +67,6 @@ loadVideos();
 
 export default function ProphetHeroBanner() {
   const [muted, setMuted] = useState(true);
-  const [videoMuted, setVideoMuted] = useState(true);
   const [avatarIndex, setAvatarIndex] = useState(0);
   const [allMedia, setAllMedia] = useState(AVATARS);
   const audioRef = useRef(null);
@@ -148,7 +147,7 @@ export default function ProphetHeroBanner() {
                 key={i}
                 src={avatar.url}
                 autoPlay
-                muted={videoMuted}
+                muted
                 loop
                 playsInline
                 className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
@@ -167,25 +166,6 @@ export default function ProphetHeroBanner() {
             </div>
           </div>
 
-          {/* Mute controls right under carousel */}
-          <div className="flex gap-2 flex-wrap justify-center mt-1">
-            <button
-              onClick={toggleMute}
-              className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
-            >
-              <span>{muted ? '🔇' : '🔊'}</span>
-              <span>{muted ? 'Unmute music' : 'Mute music'}</span>
-            </button>
-            {allMedia[avatarIndex]?.type === 'video' && (
-              <button
-                onClick={() => setVideoMuted(v => !v)}
-                className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500/50 rounded-full px-3 py-1"
-              >
-                <span>{videoMuted ? '🔇' : '🔊'}</span>
-                <span>{videoMuted ? 'Unmute video' : 'Mute video'}</span>
-              </button>
-            )}
-          </div>
           </div>
 
           {/* TEXT CONTENT */}

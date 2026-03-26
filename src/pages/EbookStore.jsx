@@ -88,10 +88,10 @@ export default function EbookStore() {
   return (
     <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
       <div className="text-center mb-6">
-        <p className="text-[0.6rem] tracking-[0.3em] uppercase text-red-500/70 mb-1">Doctrine They Don't Want You to Read</p>
-        <h2 className="text-xl font-black tracking-wider text-white">These Books Will Offend You.</h2>
-        <p className="text-sm text-slate-400 mt-2 italic">No dogs. No king's meat. No contemporary praise music. No false wisdom.<br/>Find out why — if you can handle it.</p>
-        <p className="text-lg font-black text-amber-400 mt-3 uppercase" style={{letterSpacing:'0.15em'}}>prophetgad.com</p>
+        <h2 className="text-xl font-black tracking-wider text-white">Remnant Warning Books</h2>
+        <p className="text-[0.6rem] tracking-[0.3em] uppercase text-red-500/70 mt-1 mb-2">Doctrine They Don't Want You to Read</p>
+        <p className="text-sm text-slate-400 italic">No dogs. No king's meat. No contemporary praise music. No false wisdom.<br/>Find out why — if you can handle it.</p>
+        <p className="text-lg font-black text-amber-400 mt-3 uppercase" style={{letterSpacing:'0.15em'}}>Prophet Gad · prophetgad.com</p>
       </div>
       <div className="max-w-7xl mx-auto flex gap-6 overflow-x-auto pb-2 justify-center" style={{scrollbarWidth: 'none'}}>
         {EBOOKS.map(book => (

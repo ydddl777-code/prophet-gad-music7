@@ -11,6 +11,7 @@ import CoverArtManager from './pages/CoverArtManager';
 import EbookStore from './pages/EbookStore';
 import MusicLibrary from './pages/MusicLibrary';
 import BookCoversGallery from './pages/BookCoversGallery';
+import ComingSoon from './pages/ComingSoon';
 
 const { Pages, Layout } = pagesConfig;
 
@@ -63,6 +64,7 @@ const AuthenticatedApp = () => {
       <Route path="/CoverArtManager" element={<LayoutWrapper currentPageName="CoverArtManager"><CoverArtManager /></LayoutWrapper>} />
       <Route path="/EbookStore" element={<LayoutWrapper currentPageName="EbookStore"><EbookStore /></LayoutWrapper>} />
       <Route path="/BookCoversGallery" element={<LayoutWrapper currentPageName="BookCoversGallery"><BookCoversGallery /></LayoutWrapper>} />
+      <Route path="/ComingSoon" element={<LayoutWrapper currentPageName="ComingSoon"><ComingSoon /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

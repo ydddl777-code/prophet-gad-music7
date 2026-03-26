@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const EBOOKS = [
   {
@@ -108,6 +109,7 @@ function EbookCover({ book }) {
 }
 
 export default function EbookStore() {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
       <div className="max-w-7xl mx-auto flex items-center gap-6">
@@ -131,15 +133,9 @@ export default function EbookStore() {
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2" style={{scrollbarWidth: 'none'}}>
             {EBOOKS.map(book => (
-              <div key={book.id} className="flex-shrink-0 cursor-pointer group relative"
-                onClick={() => alert('Post Production · Available Soon')}>
+              <div key={book.id} className="flex-shrink-0 cursor-pointer"
+                onClick={() => navigate('/ComingSoon')}>
                 <EbookCover book={book} />
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded">
-                  <div className="text-center px-2">
-                    <p className="text-amber-400 font-black text-[0.55rem] tracking-widest uppercase">Post Production</p>
-                    <p className="text-white/70 text-[0.5rem] tracking-wider mt-0.5">Available Soon</p>
-                  </div>
-                </div>
               </div>
             ))}
           </div>

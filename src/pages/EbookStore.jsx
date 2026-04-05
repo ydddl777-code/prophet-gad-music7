@@ -33,6 +33,16 @@ const EBOOKS = [
     price: 9.89
   },
   {
+    id: 'eternal-oracle',
+    subtitle: 'A Chosen People',
+    fullTitle: 'The Eternal Oracle',
+    tagline: 'Always the same — if He chose then, He chooses now',
+    price: 38.98
+  }
+];
+
+const FREE_EBOOKS = [
+  {
     id: 'twelve-tribes',
     subtitle: 'Our Forefathers & Their Seed',
     fullTitle: 'The Twelve Tribes of Israel',
@@ -40,11 +50,12 @@ const EBOOKS = [
     price: 0
   },
   {
-    id: 'eternal-oracle',
-    subtitle: 'A Chosen People',
-    fullTitle: 'The Eternal Oracle',
-    tagline: 'Always the same — if He chose then, He chooses now',
-    price: 38.98
+    id: 'remnant-vol-5',
+    subtitle: 'Levi in the Thicket',
+    fullTitle: 'Fruit of the Poison Tree',
+    tagline: 'A Prophetic Warning to the Haitian Diaspora',
+    price: 0,
+    volNum: 'V'
   }
 ];
 
@@ -112,27 +123,47 @@ export default function EbookStore() {
   const navigate = useNavigate();
   return (
     <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
-      <div className="max-w-7xl mx-auto flex items-center gap-6">
-        {/* Author box — left of books */}
-        <div className="flex flex-col items-center flex-shrink-0">
-          <div className="w-[90px] h-[120px] rounded-lg overflow-hidden border border-amber-500/40 shadow-lg">
-            <img
-              src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/4ce5d0e0a_prophet-suit.jpg"
-              alt="Author"
-              className="w-full h-full object-cover object-top"
-            />
+      <div className="max-w-7xl mx-auto">
+
+        {/* PAID BOOKS ROW */}
+        <div className="flex items-center gap-6 mb-6">
+          {/* Author photo */}
+          <div className="flex flex-col items-center flex-shrink-0">
+            <div className="w-[90px] h-[120px] rounded-lg overflow-hidden border border-amber-500/40 shadow-lg">
+              <img
+                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/4ce5d0e0a_prophet-suit.jpg"
+                alt="Author"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+            <p className="text-[0.6rem] tracking-[0.2em] uppercase text-amber-400/80 mt-1">Author</p>
           </div>
-          <p className="text-[0.6rem] tracking-[0.2em] uppercase text-amber-400/80 mt-1">Author</p>
+
+          {/* Paid books */}
+          <div className="flex-1 min-w-0">
+            <div className="mb-3">
+              <h2 className="text-xl font-black tracking-wider" style={{color: '#D4AF37'}}>Remnant Warning E-Books</h2>
+              <p className="text-xs text-white/60 tracking-wider uppercase">Instant Download</p>
+            </div>
+            <div className="flex gap-4 overflow-x-auto pb-2" style={{scrollbarWidth: 'none'}}>
+              {EBOOKS.map(book => (
+                <div key={book.id} className="flex-shrink-0 cursor-pointer"
+                  onClick={() => navigate('/ComingSoon')}>
+                  <EbookCover book={book} />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Books panel — right */}
-        <div className="flex-1 min-w-0">
-          <div className="mb-3">
-            <h2 className="text-xl font-black tracking-wider" style={{color: '#D4AF37'}}>Remnant Warning E-Books</h2>
-            <p className="text-xs text-white/60 tracking-wider uppercase">Instant Download</p>
+        {/* FREE BOOKS ROW */}
+        <div className="border-t border-amber-500/10 pt-6">
+          <div className="mb-3 flex items-center gap-3">
+            <span className="text-[0.6rem] tracking-[0.25em] uppercase text-green-400/80 font-bold bg-green-900/30 border border-green-700/40 px-2 py-0.5 rounded-full">Free Downloads</span>
+            <span className="text-xs text-white/40">No purchase required</span>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2" style={{scrollbarWidth: 'none'}}>
-            {EBOOKS.map(book => (
+            {FREE_EBOOKS.map(book => (
               <div key={book.id} className="flex-shrink-0 cursor-pointer"
                 onClick={() => navigate('/ComingSoon')}>
                 <EbookCover book={book} />
@@ -140,6 +171,7 @@ export default function EbookStore() {
             ))}
           </div>
         </div>
+
       </div>
     </div>
   );

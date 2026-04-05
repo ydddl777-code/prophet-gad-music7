@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { usePlayer } from './PlayerContext';
 import { Sparkles, X, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { base44 } from "@/api/base44Client";
 import TrackRow from './TrackRow';
 
 export default function RelatedTracks({ track, allTracks, onClose }) {
+  const player = usePlayer();
   const [relatedTracks, setRelatedTracks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -121,8 +123,6 @@ Do NOT include the current track itself.`;
                       onUpdate={() => {}}
                       onDelete={() => {}}
                       onPlay={(t) => {
-                        const { usePlayer } = require('./PlayerContext');
-                        const player = usePlayer();
                         player.play(t, allTracks);
                       }}
                       isAdmin={false}

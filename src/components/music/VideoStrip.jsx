@@ -89,11 +89,12 @@ export default function VideoStrip() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-3 mb-1">
-            <div className="h-px w-12 bg-amber-500/40" />
-            <span className="text-[0.6rem] tracking-[0.35em] uppercase text-amber-500/70 font-semibold">Full Video</span>
-            <div className="h-px w-12 bg-amber-500/40" />
+            <div className="h-px w-16 bg-amber-500/40" />
+            <span className="text-[0.6rem] tracking-[0.35em] uppercase text-amber-500/70 font-semibold">Exclusive</span>
+            <div className="h-px w-16 bg-amber-500/40" />
           </div>
-          <h2 className="text-xl font-black tracking-wider text-white">Prophetic Music Videos</h2>
+          <h2 className="text-2xl font-black tracking-wider" style={{color: '#D4AF37'}}>Full Screen Music Videos</h2>
+          <p className="text-xs text-white/50 tracking-widest uppercase mt-1">With Lyrics &mdash; Prophetic Messages in Full Cinematic View</p>
         </div>
 
         <div className="flex gap-5 overflow-x-auto pb-2 justify-center flex-wrap">

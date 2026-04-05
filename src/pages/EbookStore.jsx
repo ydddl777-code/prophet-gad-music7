@@ -56,6 +56,15 @@ const FREE_EBOOKS = [
     tagline: 'A Prophetic Warning to the Haitian Diaspora',
     price: 0,
     volNum: 'V'
+  },
+  {
+    id: 'remnant-vol-5-creole',
+    subtitle: 'Levi nan Raje a',
+    fullTitle: 'Frè Pye Pwazon an',
+    tagline: 'Yon Avètisman Pwofètik pou Dyaspora Ayisyen an',
+    price: 0,
+    volNum: 'V',
+    language: 'Haitian Creole'
   }
 ];
 

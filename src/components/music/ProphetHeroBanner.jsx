@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import ExtendedPlayStrip from './ExtendedPlayStrip';
 import EbookStore from '../../pages/EbookStore';
-import VideoStrip from './VideoStrip';
+
 
 const AVATARS = [
   {
@@ -78,18 +78,17 @@ export default function ProphetHeroBanner() {
       try {
         const allTracks = await base44.entities.MusicTrack.list('title', 1000).catch(() => []);
         const videoTracks = allTracks.filter(t => {
-          const title = t.title?.toUpperCase() || '';
           const url = t.file_url?.toLowerCase() || '';
-          return (title.match(/^H[2-5]$/i) || title.includes('H2') || title.includes('H3') || title.includes('H4') || title.includes('H5')) &&
-                 (url.endsWith('.mp4') || url.endsWith('.webm'));
+          return url.endsWith('.mp4') || url.endsWith('.webm');
         });
         
         const newMedia = [
           ...AVATARS,
           ...videoTracks.map(t => ({
-            url: t.file_url,
-            caption: t.title || 'Prophecy Video',
-            type: 'video'
+            url: t.cover_art_url || t.file_url,
+            videoUrl: t.file_url,
+            caption: t.title || 'Music Video',
+            type: t.cover_art_url ? 'image' : 'video'
           }))
         ];
         
@@ -193,8 +192,7 @@ export default function ProphetHeroBanner() {
       {/* E-BOOKS — above Extended Play */}
       <EbookStore />
 
-      {/* VIDEO STRIP */}
-      <VideoStrip />
+
 
       {/* EXTENDED PLAY STRIP */}
       <ExtendedPlayStrip />

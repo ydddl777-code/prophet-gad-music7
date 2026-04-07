@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { base44 } from '@/api/base44Client';
+import React, { useState, useEffect } from 'react';
 import ExtendedPlayStrip from './ExtendedPlayStrip';
 import EbookStore from '../../pages/EbookStore';
 
@@ -32,94 +31,19 @@ const AVATARS = [
   },
 ];
 
-// Fetch video clips from database and add dynamically
-let videoClips = [];
 
-// Function to load videos from database
-const loadVideos = async () => {
-  try {
-    const tracks = await base44.entities.MusicTrack.filter(
-      { tags: { $elemMatch: { $eq: "H2" } } },
-      'title',
-      10
-    ).catch(() => []);
-    
-    // Also search by title pattern
-    const allTracks = await base44.entities.MusicTrack.list('title', 1000).catch(() => []);
-    const videoTracks = allTracks.filter(t => {
-      const title = t.title?.toUpperCase() || '';
-      const url = t.file_url?.toLowerCase() || '';
-      return (title.match(/^H[2-5]$/i) || title.includes('H2') || title.includes('H3') || title.includes('H4') || title.includes('H5')) &&
-             (url.endsWith('.mp4') || url.endsWith('.webm'));
-    });
-    
-    videoClips = videoTracks.map((t, idx) => ({
-      url: t.file_url,
-      caption: t.title || `Prophecy Video ${idx + 1}`,
-      type: 'video'
-    }));
-  } catch (err) {
-    console.log('Video loading skipped');
-  }
-};
-
-// Call this once during component mount
-loadVideos();
 
 export default function ProphetHeroBanner() {
-  const [muted, setMuted] = useState(true);
   const [avatarIndex, setAvatarIndex] = useState(0);
-  const [allMedia, setAllMedia] = useState(AVATARS);
-  const audioRef = useRef(null);
-
-  useEffect(() => {
-    // Load video clips and combine with images
-    const loadMedia = async () => {
-      try {
-        const allTracks = await base44.entities.MusicTrack.list('title', 1000).catch(() => []);
-        const videoTracks = allTracks.filter(t => {
-          const url = t.file_url?.toLowerCase() || '';
-          return url.endsWith('.mp4') || url.endsWith('.webm');
-        });
-        
-        const newMedia = [
-          ...AVATARS,
-          ...videoTracks.map(t => ({
-            url: t.cover_art_url || t.file_url,
-            videoUrl: t.file_url,
-            caption: t.title || 'Music Video',
-            type: t.cover_art_url ? 'image' : 'video'
-          }))
-        ];
-        
-        setAllMedia(newMedia);
-      } catch (err) {
-        setAllMedia(AVATARS);
-      }
-    };
-    
-    loadMedia();
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setAvatarIndex(i => (i + 1) % allMedia.length);
+      setAvatarIndex(i => (i + 1) % AVATARS.length);
     }, 13000);
     return () => clearInterval(interval);
-  }, [allMedia.length]);
+  }, []);
 
-  // Audio disabled — sorting out audio experience
-  // useEffect(() => { ... }, []);
 
-  const toggleMute = () => {
-    if (!audioRef.current) return;
-    const newMuted = !muted;
-    audioRef.current.muted = newMuted;
-    setMuted(newMuted);
-    if (!newMuted && audioRef.current.paused) {
-      audioRef.current.play().catch(() => {});
-    }
-  };
 
   return (
     <div className="mb-10">
@@ -141,28 +65,16 @@ export default function ProphetHeroBanner() {
           {/* CAROUSEL PORTRAIT */}
           <div className="flex flex-col items-center gap-2">
           <div className="relative w-56 h-72 rounded-xl overflow-hidden border-2 border-amber-500/60 shadow-2xl shadow-amber-900/40 shrink-0">
-            {allMedia.map((avatar, i) => (
-            avatar.type === 'video' ? (
-              <video
-                key={i}
-                src={avatar.url}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
-              />
-            ) : (
+            {AVATARS.map((avatar, i) => (
               <img
                 key={i}
                 src={avatar.url}
                 alt={avatar.caption}
                 className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
               />
-            )
-          ))}
+            ))}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-center">
-              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{allMedia[avatarIndex]?.caption || 'Prophet Gad'}</p>
+              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{AVATARS[avatarIndex]?.caption || 'Prophet Gad'}</p>
             </div>
           </div>
 

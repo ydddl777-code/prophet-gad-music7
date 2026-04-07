@@ -1,0 +1,126 @@
+{
+  "name": "MusicTrack",
+  "type": "object",
+  "rls": {
+    "read": true,
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Track title"
+    },
+    "artist": {
+      "type": "string",
+      "description": "Artist name"
+    },
+    "album": {
+      "type": "string",
+      "description": "Album name"
+    },
+    "genre": {
+      "type": "string",
+      "description": "Music genre"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "English",
+        "Dominican Spanish",
+        "Haitian Creole"
+      ],
+      "description": "Song language"
+    },
+    "version_group": {
+      "type": "string",
+      "description": "Groups different versions of the same song together"
+    },
+    "is_best_version": {
+      "type": "boolean",
+      "default": false,
+      "description": "Marks this as the best version in its group"
+    },
+    "is_free_listen": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, full track plays free. Otherwise 30-second preview only."
+    },
+    "is_dormant": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, this record is a cover art placeholder waiting for its audio file. Hidden from the main library."
+    },
+    "year": {
+      "type": "number",
+      "description": "Release year"
+    },
+    "rating": {
+      "type": "number",
+      "description": "User rating 1-10",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "duration": {
+      "type": "string",
+      "description": "Track duration"
+    },
+    "lyrics": {
+      "type": "string",
+      "description": "Song lyrics"
+    },
+    "description": {
+      "type": "string",
+      "description": "Prophetic track description - the meaning and message behind the song"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Custom tags"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "URL to the music file"
+    },
+    "file_size": {
+      "type": "number",
+      "description": "File size in bytes"
+    },
+    "cover_art_url": {
+      "type": "string",
+      "description": "Album cover art URL"
+    },
+    "bpm": {
+      "type": "number",
+      "description": "Beats per minute"
+    },
+    "rhythm_style": {
+      "type": "string",
+      "enum": [
+        "Bachata",
+        "Kompa",
+        "Reggae",
+        "Reggaeton",
+        "Gospel",
+        "Salsa",
+        "Merengue",
+        "Pop",
+        "R&B",
+        "Hip-Hop",
+        "Other"
+      ],
+      "description": "Detected rhythm and dance style"
+    },
+    "price": {
+      "type": "number",
+      "description": "Track price in USD (default $2.99)",
+      "default": 2.99
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

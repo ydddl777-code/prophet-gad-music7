@@ -71,20 +71,23 @@ export default function ExtendedPlayStrip() {
                   </div>
                 )}
 
-                {/* Play Button Overlay */}
+                {/* Play Button Overlay — subtle always, clear on hover/active */}
                 <button
                   onClick={() => handlePlay(track)}
                   className={`absolute inset-0 flex items-center justify-center transition-all ${
-                    isActive ? 'bg-black/50' : 'bg-black/0 group-hover:bg-black/50'
+                    isActive ? 'bg-black/30' : 'bg-black/0 hover:bg-black/40'
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                    isActive ? 'bg-amber-500 opacity-100' : 'bg-amber-500 opacity-0 group-hover:opacity-100'
+                    isActive && isPlaying
+                      ? 'bg-amber-500/50 opacity-80 hover:opacity-100 hover:bg-amber-500/80'
+                      : isActive
+                      ? 'bg-white/20 opacity-70 hover:opacity-100 hover:bg-white/40'
+                      : 'bg-white/15 opacity-30 hover:opacity-90 hover:bg-black/50'
                   }`}>
                     {isPlaying
-                      ? <Pause className="w-5 h-5 text-black" />
-                      : <Play className="w-5 h-5 text-black ml-0.5" />
-                    }
+                      ? <Pause className="w-4 h-4 text-white" />
+                      : <Play className="w-4 h-4 text-white ml-0.5" />}
                   </div>
                 </button>
 

@@ -125,30 +125,26 @@ Return enhanced metadata.`,
         <CardContent className="p-6 space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">Title *</label>
-            <Input
-              value={editData.title || ''}
-              onChange={(e) => setEditData({...editData, title: e.target.value})}
-              placeholder="Track title"
-            />
+            <div className="flex gap-2 items-center">
+              <Input
+                value={editData.title || ''}
+                onChange={(e) => setEditData({...editData, title: e.target.value})}
+                placeholder="Track title"
+                className="flex-1"
+              />
+              {editData.duration && (
+                <span className="text-xs text-amber-400 font-mono whitespace-nowrap bg-slate-900 border border-slate-700 px-2 py-1.5 rounded">{editData.duration}</span>
+              )}
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Artist</label>
-              <Input
-                value={editData.artist || ''}
-                onChange={(e) => setEditData({...editData, artist: e.target.value})}
-                placeholder="Artist name"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Album</label>
-              <Input
-                value={editData.album || ''}
-                onChange={(e) => setEditData({...editData, album: e.target.value})}
-                placeholder="Album name"
-              />
-            </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Artist</label>
+            <Input
+              value={editData.artist || ''}
+              onChange={(e) => setEditData({...editData, artist: e.target.value})}
+              placeholder="Artist name"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -179,18 +175,6 @@ Return enhanced metadata.`,
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Version Group (Optional)</label>
-            <Input
-              value={editData.version_group || ''}
-              onChange={(e) => setEditData({...editData, version_group: e.target.value})}
-              placeholder="e.g., 'Amazing Grace' - groups different versions together"
-            />
-            <p className="text-xs text-slate-500">
-              Use the same name for different versions of the same song to group them
-            </p>
-          </div>
-
-          <div className="space-y-2">
             <label className="text-sm font-medium">Price (USD)</label>
             <Input
               type="number"
@@ -198,39 +182,18 @@ Return enhanced metadata.`,
               min="0"
               value={editData.price || ''}
               onChange={(e) => setEditData({...editData, price: parseFloat(e.target.value) || null})}
-              placeholder="e.g. 1.99"
+              placeholder="e.g. 2.99"
             />
-            <p className="text-xs text-slate-500">Leave blank for default $1.99</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Year</label>
-              <Input
-                type="number"
-                value={editData.year || ''}
-                onChange={(e) => setEditData({...editData, year: parseInt(e.target.value) || ''})}
-                placeholder="Release year"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Rating (1-10)</label>
-              <Input
-                type="number"
-                min="1"
-                max="10"
-                value={editData.rating || ''}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value);
-                  if (val >= 1 && val <= 10) {
-                    setEditData({...editData, rating: val});
-                  } else if (e.target.value === '') {
-                    setEditData({...editData, rating: null});
-                  }
-                }}
-                placeholder="Rate 1-10"
-              />
-            </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Year</label>
+            <Input
+              type="number"
+              value={editData.year || ''}
+              onChange={(e) => setEditData({...editData, year: parseInt(e.target.value) || ''})}
+              placeholder="Release year"
+            />
           </div>
 
           <div className="space-y-2">

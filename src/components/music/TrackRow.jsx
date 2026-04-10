@@ -138,8 +138,11 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
 
           {/* Title + Artist + Description */}
           <div className="flex-1 min-w-0">
-            <h3 className={`font-bold text-lg sm:text-xl leading-tight mb-1 ${isCurrentTrack ? 'text-amber-400' : 'text-white'}`}>
-              {track.title}
+            <h3 className={`font-bold text-lg sm:text-xl leading-tight mb-1 flex items-center gap-2 flex-wrap ${isCurrentTrack ? 'text-amber-400' : 'text-white'}`}>
+              <span>{track.title}</span>
+              {track.duration && (
+                <span className="text-xs font-mono font-normal text-slate-500 bg-slate-900/80 px-1.5 py-0.5 rounded">{track.duration}</span>
+              )}
             </h3>
             {displayArtist && (
               <p className="text-sm text-[#c9a84c] mb-1">{displayArtist}</p>

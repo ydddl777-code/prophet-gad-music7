@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ExtendedPlayStrip from './ExtendedPlayStrip';
+import VideoStrip from './VideoStrip';
 import EbookStore from '../../pages/EbookStore';
 
 
@@ -105,6 +106,9 @@ export default function ProphetHeroBanner() {
       <EbookStore />
 
 
+
+      {/* VIDEO STRIP */}
+      <VideoStrip />
 
       {/* EXTENDED PLAY STRIP */}
       <ExtendedPlayStrip />

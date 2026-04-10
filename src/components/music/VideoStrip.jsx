@@ -76,7 +76,7 @@ export default function VideoStrip() {
   useEffect(() => {
     base44.entities.MusicTrack.list('-created_date', 200)
       .then(tracks => {
-        const mp4s = tracks.filter(t => t.file_url?.toLowerCase().endsWith('.mp4') && !t.is_dormant);
+        const mp4s = tracks.filter(t => t.file_url?.toLowerCase().endsWith('.mp4') && !t.is_dormant && (t.file_size || 0) > 50000000);
         setVideos(mp4s);
       })
       .catch(() => {});

@@ -42,12 +42,13 @@ function VideoPlayer({ track }) {
         />
 
         {/* Play/Pause overlay */}
-        <div className={`absolute inset-0 flex items-center justify-center transition-opacity ${playing ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'} bg-black/30`}>
-          <div className="w-14 h-14 rounded-full bg-amber-500/90 flex items-center justify-center shadow-lg">
+        <div className={`absolute inset-0 flex items-center justify-center transition-opacity ${
+          playing ? 'opacity-0 group-hover:opacity-70' : 'opacity-40 group-hover:opacity-90'
+        } bg-black/20`}>
+          <div className="w-12 h-12 rounded-full bg-black/40 border border-white/30 flex items-center justify-center shadow-lg">
             {playing
-              ? <Pause className="w-7 h-7 text-black" />
-              : <Play className="w-7 h-7 text-black ml-0.5" />
-            }
+              ? <Pause className="w-6 h-6 text-white" />
+              : <Play className="w-6 h-6 text-white ml-0.5" />}
           </div>
         </div>
 

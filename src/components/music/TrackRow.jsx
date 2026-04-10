@@ -113,11 +113,26 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
             ) : (
               <div className="w-full h-full bg-[#8b0000]" />
             )}
+            {/* Always-visible subtle indicator, brighter on hover */}
             <button
               onClick={handlePlay}
-              className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity"
+              className={`absolute inset-0 flex items-center justify-center transition-all duration-200
+                ${isCurrentTrack
+                  ? 'bg-black/30'
+                  : 'bg-black/0 hover:bg-black/40'
+                }`}
             >
-              {isTrackPlaying ? <Pause className="w-8 h-8 text-white" /> : <Play className="w-8 h-8 text-white" />}
+              <div className={`rounded-full flex items-center justify-center transition-all duration-200
+                ${isCurrentTrack && isTrackPlaying
+                  ? 'w-9 h-9 bg-amber-500/40 opacity-80 group-hover:opacity-100 group-hover:bg-amber-500/70'
+                  : isCurrentTrack
+                  ? 'w-9 h-9 bg-white/20 opacity-70 group-hover:opacity-100 group-hover:bg-white/40'
+                  : 'w-9 h-9 bg-white/15 opacity-30 group-hover:opacity-90 group-hover:bg-black/50'
+                }`}>
+                {isTrackPlaying
+                  ? <Pause className="w-5 h-5 text-white" />
+                  : <Play className="w-5 h-5 text-white ml-0.5" />}
+              </div>
             </button>
           </div>
 

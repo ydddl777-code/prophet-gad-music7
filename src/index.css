@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  html, body, * {
+  html, body, *, pre, code, kbd, samp, input, textarea, select, button {
     font-family: Arial, Helvetica, sans-serif !important;
   }
 }

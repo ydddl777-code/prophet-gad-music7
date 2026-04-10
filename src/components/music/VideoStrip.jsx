@@ -28,9 +28,9 @@ function VideoPlayer({ track }) {
   };
 
   return (
-    <div className="flex-shrink-0 w-64 flex flex-col gap-2 group">
+    <div className="flex flex-col gap-2 group">
       <div
-        className="relative w-64 h-40 rounded-xl overflow-hidden border border-amber-500/30 shadow-lg cursor-pointer bg-black"
+        className="relative w-full aspect-video rounded-xl overflow-hidden border border-amber-500/30 shadow-lg cursor-pointer bg-black"
         onClick={toggle}
       >
         <video
@@ -43,21 +43,21 @@ function VideoPlayer({ track }) {
 
         {/* Play/Pause overlay */}
         <div className={`absolute inset-0 flex items-center justify-center transition-opacity ${playing ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'} bg-black/30`}>
-          <div className="w-12 h-12 rounded-full bg-amber-500/90 flex items-center justify-center shadow-lg">
+          <div className="w-14 h-14 rounded-full bg-amber-500/90 flex items-center justify-center shadow-lg">
             {playing
-              ? <Pause className="w-6 h-6 text-black" />
-              : <Play className="w-6 h-6 text-black ml-0.5" />
+              ? <Pause className="w-7 h-7 text-black" />
+              : <Play className="w-7 h-7 text-black ml-0.5" />
             }
           </div>
         </div>
 
         {/* Controls */}
         <div className="absolute bottom-2 right-2 flex gap-1.5">
-          <button onClick={toggleMute} className="w-6 h-6 rounded-full bg-black/60 flex items-center justify-center hover:bg-black/80">
-            {muted ? <VolumeX className="w-3 h-3 text-white" /> : <Volume2 className="w-3 h-3 text-white" />}
+          <button onClick={toggleMute} className="w-7 h-7 rounded-full bg-black/60 flex items-center justify-center hover:bg-black/80">
+            {muted ? <VolumeX className="w-3.5 h-3.5 text-white" /> : <Volume2 className="w-3.5 h-3.5 text-white" />}
           </button>
-          <button onClick={fullscreen} className="w-6 h-6 rounded-full bg-black/60 flex items-center justify-center hover:bg-black/80">
-            <Maximize2 className="w-3 h-3 text-white" />
+          <button onClick={fullscreen} className="w-7 h-7 rounded-full bg-black/60 flex items-center justify-center hover:bg-black/80">
+            <Maximize2 className="w-3.5 h-3.5 text-white" />
           </button>
         </div>
       </div>
@@ -97,7 +97,7 @@ export default function VideoStrip() {
           <p className="text-xs text-white/50 tracking-widest uppercase mt-1">With Lyrics &mdash; Prophetic Messages in Full Cinematic View</p>
         </div>
 
-        <div className="flex gap-5 overflow-x-auto pb-2 justify-center flex-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {videos.map(track => (
             <VideoPlayer key={track.id} track={track} />
           ))}

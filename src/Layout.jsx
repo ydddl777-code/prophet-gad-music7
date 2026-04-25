@@ -38,6 +38,7 @@ function LayoutContent({ children, currentPageName }) {
                 <span className="font-black tracking-tight text-4xl" style={{color: '#D4AF37'}}>
                   Prophet Gad Music
                 </span>
+                <span className="text-[0.5rem] font-bold tracking-widest uppercase bg-purple-700/80 text-white px-2 py-0.5 rounded-full self-center">BETA</span>
                 <span className="text-[0.6rem] tracking-[0.2em] uppercase text-slate-500 mt-0.5">
                   Thread Bare Music &mdash; Remnant Seed LLC
                 </span>

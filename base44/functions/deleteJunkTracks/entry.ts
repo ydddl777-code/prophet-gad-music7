@@ -7,10 +7,10 @@ Deno.serve(async (req) => {
     return Response.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  const allTracks = await base44.asServiceRole.entities.MusicTrack.list('-created_date', 10000);
+  const tracks = await base44.asServiceRole.entities.MusicTrack.list('-created_date', 200);
   const audioExts = ['.mp3', '.wav', '.mp4', '.aac', '.flac', '.ogg', '.m4a', '.wma'];
-  const junk = allTracks.filter(t => {
-    const url = (t.file_url || '').toLowerCase();
+  const junk = tracks.filter(t => {
+    const url = (t.file_url || '').toLowerCase().split('?')[0];
     return !audioExts.some(ext => url.endsWith(ext));
   });
 

@@ -179,6 +179,13 @@ export default function MusicLibrary() {
                 <>
                   <Button
                     variant="outline" size="sm"
+                    className="gap-2 border-green-700 text-green-400 hover:bg-green-950"
+                    onClick={() => window.location.href = '/AdminImport'}
+                  >
+                    🚀 Import from Supabase
+                  </Button>
+                  <Button
+                    variant="outline" size="sm"
                     className="gap-2 border-amber-800 text-amber-600 hover:bg-amber-950"
                     onClick={async () => {
                       if (!confirm('Mark all image-only placeholder records as dormant?')) return;

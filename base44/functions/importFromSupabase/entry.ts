@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const { offset = 0, limit = 100 } = await req.json().catch(() => ({}));
+    const { offset = 0, limit = 50 } = await req.json().catch(() => ({}));
 
     const conn = await base44.asServiceRole.connectors.getConnection("supabase");
     const accessToken = conn?.accessToken;
@@ -34,11 +34,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: "Failed to fetch songs", raw: songs }, { status: 500 });
     }
 
-    // Map and import each track
     const created = [];
     const failed = [];
-
-    // Helper: small delay to avoid rate limits
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
     for (const song of songs) {
@@ -60,27 +57,63 @@ Deno.serve(async (req) => {
           duration = `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        const track = await base44.asServiceRole.entities.MusicTrack.create({
-          title: song.title || `Track ${song.track_number}`,
+        // Try to fetch lyrics from song-lyrics bucket
+        // Try common filename patterns: lyrics_{n}.txt, track_{n}.txt, {n}.txt
+        let lyrics = song.lyrics_text || null;
+        if (!lyrics && song.track_number) {
+          const n = song.track_number;
+          const lyricUrls = [
+            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/lyrics_${n}.txt`,
+            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/track_${n}.txt`,
+            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/${n}.txt`,
+          ];
+          for (const url of lyricUrls) {
+            const lRes = await fetch(url);
+            if (lRes.ok) {
+              lyrics = await lRes.text();
+              break;
+            }
+          }
+        }
+
+        // Build cover art URL from song-covers bucket if not provided
+        const n = song.track_number;
+        let cover_art_url = song.cover_url || song.cover_image_url || null;
+        if (!cover_art_url && n) {
+          // Try common cover patterns
+          const coverPatterns = [
+            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-covers/cover_${n}.jpg`,
+            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-covers/cover_${n}.png`,
+            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-covers/${n}.jpg`,
+          ];
+          for (const url of coverPatterns) {
+            const cRes = await fetch(url, { method: 'HEAD' });
+            if (cRes.ok) { cover_art_url = url; break; }
+          }
+        }
+
+        await base44.asServiceRole.entities.MusicTrack.create({
+          title: song.title || `Track ${n}`,
           artist: 'Prophet Gad',
           album: song.album || null,
           genre: song.genre || null,
-          language: language,
-          rhythm_style: rhythm_style,
+          language,
+          rhythm_style,
           year: song.year || 2025,
-          duration: duration,
+          duration,
           file_url: song.file_url,
-          cover_art_url: song.cover_url || song.cover_image_url || null,
-          lyrics: song.lyrics_text || null,
+          cover_art_url,
+          lyrics,
           description: song.description || null,
           price: song.price && song.price > 0 ? song.price : 2.99,
           is_free_listen: song.is_free_listen || false,
           is_dormant: false,
-          track_number: song.track_number || null,
+          track_number: n || null,
           tags: [],
         });
-        created.push({ id: track.id, title: song.title });
-        await sleep(400); // throttle to avoid rate limits
+
+        created.push(song.title || `Track ${n}`);
+        await sleep(300);
       } catch (e) {
         failed.push({ title: song.title, error: e.message });
       }

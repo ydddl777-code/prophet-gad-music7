@@ -20,54 +20,33 @@ Deno.serve(async (req) => {
     const serviceKey = keys.find(k => k.name === 'service_role')?.api_key;
     const restHeaders = { "apikey": serviceKey, "Authorization": `Bearer ${serviceKey}`, "Accept": "application/json" };
 
-    // List song-lyrics bucket files
-    const lyricsRes = await fetch(
-      `https://${PROJECT_REF}.supabase.co/storage/v1/object/list/song-lyrics?limit=20&offset=0`,
-      {
-        method: 'POST',
-        headers: { ...restHeaders, "Content-Type": "application/json" },
-        body: JSON.stringify({ prefix: "", limit: 20, offset: 0, sortBy: { column: "name", order: "asc" } })
-      }
-    );
-    const lyricsFiles = await lyricsRes.json();
-
-    // Count total lyrics files
-    const lyricsTotalRes = await fetch(
-      `https://${PROJECT_REF}.supabase.co/storage/v1/object/list/song-lyrics?limit=1000&offset=0`,
-      {
-        method: 'POST',
-        headers: { ...restHeaders, "Content-Type": "application/json" },
-        body: JSON.stringify({ prefix: "", limit: 1000, offset: 0 })
-      }
-    );
-    const lyricsAll = await lyricsTotalRes.json();
-
-    // Fetch a sample lyrics file to see the content
-    let sampleLyricsContent = null;
-    if (Array.isArray(lyricsFiles) && lyricsFiles.length > 0) {
-      const firstName = lyricsFiles[0]?.name;
-      if (firstName) {
-        const txtRes = await fetch(
-          `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/${firstName}`
-        );
-        if (txtRes.ok) {
-          sampleLyricsContent = await txtRes.text();
+    // Try different possible naming patterns for lyrics files
+    const testNumbers = [1, 2, 3, 23, 100];
+    const patterns = [];
+    for (const n of testNumbers) {
+      for (const ext of ['.txt', '.pdf', '.TXT']) {
+        for (const prefix of ['lyrics_', 'track_', '']) {
+          const filename = `${prefix}${n}${ext}`;
+          const url = `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/${filename}`;
+          const res = await fetch(url, { method: 'HEAD' });
+          if (res.ok) {
+            patterns.push({ filename, status: res.status });
+          }
         }
       }
     }
 
-    // Also check a few songs table rows for lyrics_url
-    const songsWithLyricsRes = await fetch(
-      `https://${PROJECT_REF}.supabase.co/rest/v1/songs?select=track_number,title,lyrics_url,lyrics_text&lyrics_url=not.is.null&limit=5`,
-      { headers: restHeaders }
-    );
-    const songsWithLyrics = await songsWithLyricsRes.json();
+    // If we found a pattern, fetch the content of one
+    let sampleContent = null;
+    if (patterns.length > 0) {
+      const url = `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/${patterns[0].filename}`;
+      const txtRes = await fetch(url);
+      if (txtRes.ok) sampleContent = await txtRes.text();
+    }
 
     return Response.json({
-      song_lyrics_bucket_total: Array.isArray(lyricsAll) ? lyricsAll.length : lyricsAll,
-      first_20_lyrics_files: Array.isArray(lyricsFiles) ? lyricsFiles.map(f => f.name) : lyricsFiles,
-      sample_lyrics_content: sampleLyricsContent ? sampleLyricsContent.slice(0, 500) : null,
-      songs_with_lyrics_url: songsWithLyrics,
+      found_patterns: patterns,
+      sample_content: sampleContent ? sampleContent.slice(0, 300) : null,
     });
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });

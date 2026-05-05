@@ -1,11 +1,15 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 const PROJECT_REF = "swsmoebtnnyuqtnidmvn";
-const BASE_URL = `https://${PROJECT_REF}.supabase.co/storage/v1`;
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    if (user?.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const conn = await base44.asServiceRole.connectors.getConnection("supabase");
     const accessToken = conn?.accessToken;
 
@@ -14,43 +18,56 @@ Deno.serve(async (req) => {
     });
     const keys = await keysRes.json();
     const serviceKey = keys.find(k => k.name === 'service_role')?.api_key;
-    const storageHeaders = { "apikey": serviceKey, "Authorization": `Bearer ${serviceKey}`, "Content-Type": "application/json" };
     const restHeaders = { "apikey": serviceKey, "Authorization": `Bearer ${serviceKey}`, "Accept": "application/json" };
 
-    // Count total files in songs bucket by paginating
-    let allSongs = [];
-    let offset = 0;
-    const pageSize = 100;
-    while (true) {
-      const res = await fetch(`${BASE_URL}/object/list/songs`, {
-        method: "POST", headers: storageHeaders,
-        body: JSON.stringify({ limit: pageSize, offset, prefix: "", sortBy: { column: "name", order: "asc" } })
-      });
-      const page = await res.json();
-      if (!Array.isArray(page) || page.length === 0) break;
-      allSongs = allSongs.concat(page.map(f => f.name));
-      if (page.length < pageSize) break;
-      offset += pageSize;
+    // List song-lyrics bucket files
+    const lyricsRes = await fetch(
+      `https://${PROJECT_REF}.supabase.co/storage/v1/object/list/song-lyrics?limit=20&offset=0`,
+      {
+        method: 'POST',
+        headers: { ...restHeaders, "Content-Type": "application/json" },
+        body: JSON.stringify({ prefix: "", limit: 20, offset: 0, sortBy: { column: "name", order: "asc" } })
+      }
+    );
+    const lyricsFiles = await lyricsRes.json();
+
+    // Count total lyrics files
+    const lyricsTotalRes = await fetch(
+      `https://${PROJECT_REF}.supabase.co/storage/v1/object/list/song-lyrics?limit=1000&offset=0`,
+      {
+        method: 'POST',
+        headers: { ...restHeaders, "Content-Type": "application/json" },
+        body: JSON.stringify({ prefix: "", limit: 1000, offset: 0 })
+      }
+    );
+    const lyricsAll = await lyricsTotalRes.json();
+
+    // Fetch a sample lyrics file to see the content
+    let sampleLyricsContent = null;
+    if (Array.isArray(lyricsFiles) && lyricsFiles.length > 0) {
+      const firstName = lyricsFiles[0]?.name;
+      if (firstName) {
+        const txtRes = await fetch(
+          `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/${firstName}`
+        );
+        if (txtRes.ok) {
+          sampleLyricsContent = await txtRes.text();
+        }
+      }
     }
 
-    // Check if there are any DB tables with song metadata
-    const tablesRes = await fetch(`https://${PROJECT_REF}.supabase.co/rest/v1/`, {
-      headers: restHeaders
-    });
-    const tablesText = await tablesRes.text();
-
-    // Try to query a 'songs' or 'tracks' table
-    const tracksRes = await fetch(`https://${PROJECT_REF}.supabase.co/rest/v1/songs?limit=3`, {
-      headers: restHeaders
-    });
-    const tracksData = await tracksRes.json();
+    // Also check a few songs table rows for lyrics_url
+    const songsWithLyricsRes = await fetch(
+      `https://${PROJECT_REF}.supabase.co/rest/v1/songs?select=track_number,title,lyrics_url,lyrics_text&lyrics_url=not.is.null&limit=5`,
+      { headers: restHeaders }
+    );
+    const songsWithLyrics = await songsWithLyricsRes.json();
 
     return Response.json({
-      total_songs: allSongs.length,
-      first_10: allSongs.slice(0, 10),
-      last_10: allSongs.slice(-10),
-      db_tables_hint: tablesText.slice(0, 500),
-      tracks_table_sample: tracksData
+      song_lyrics_bucket_total: Array.isArray(lyricsAll) ? lyricsAll.length : lyricsAll,
+      first_20_lyrics_files: Array.isArray(lyricsFiles) ? lyricsFiles.map(f => f.name) : lyricsFiles,
+      sample_lyrics_content: sampleLyricsContent ? sampleLyricsContent.slice(0, 500) : null,
+      songs_with_lyrics_url: songsWithLyrics,
     });
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });

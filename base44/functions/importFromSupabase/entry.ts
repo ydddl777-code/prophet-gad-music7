@@ -38,6 +38,9 @@ Deno.serve(async (req) => {
     const created = [];
     const failed = [];
 
+    // Helper: small delay to avoid rate limits
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
     for (const song of songs) {
       try {
         // Determine language
@@ -76,6 +79,7 @@ Deno.serve(async (req) => {
           tags: [],
         });
         created.push({ id: track.id, title: song.title });
+        await sleep(150); // throttle to avoid rate limits
       } catch (e) {
         failed.push({ title: song.title, error: e.message });
       }

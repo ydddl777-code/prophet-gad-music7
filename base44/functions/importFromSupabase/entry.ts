@@ -85,7 +85,7 @@ Deno.serve(async (req) => {
         });
 
         created.push(song.title || `Track ${n}`);
-        await sleep(50);
+        await sleep(300);
       } catch (e) {
         failed.push({ title: song.title, error: e.message });
       }

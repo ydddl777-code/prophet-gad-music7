@@ -13,7 +13,7 @@ export default function AdminImport() {
     if (startOffset === 0) setLog([]);
 
     let offset = startOffset;
-    const batchSize = 25; // smaller batches to avoid timeouts
+    const batchSize = 10; // small batches to respect rate limits
     let totalImported = 0;
     let retries = 0;
     const maxRetries = 3;

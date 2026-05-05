@@ -79,7 +79,7 @@ Deno.serve(async (req) => {
           tags: [],
         });
         created.push({ id: track.id, title: song.title });
-        await sleep(150); // throttle to avoid rate limits
+        await sleep(400); // throttle to avoid rate limits
       } catch (e) {
         failed.push({ title: song.title, error: e.message });
       }

@@ -76,6 +76,7 @@ Deno.serve(async (req) => {
           price: song.price && song.price > 0 ? song.price : 2.99,
           is_free_listen: song.is_free_listen || false,
           is_dormant: false,
+          track_number: song.track_number || null,
           tags: [],
         });
         created.push({ id: track.id, title: song.title });

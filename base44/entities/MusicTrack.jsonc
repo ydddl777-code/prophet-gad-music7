@@ -52,6 +52,10 @@
       "default": false,
       "description": "If true, this record is a cover art placeholder waiting for its audio file. Hidden from the main library."
     },
+    "track_number": {
+      "type": "number",
+      "description": "Original track number from the source catalog (1\u2013623). Used for sorting \u2014 highest number = newest."
+    },
     "year": {
       "type": "number",
       "description": "Release year"

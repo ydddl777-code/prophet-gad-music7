@@ -8,31 +8,37 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Get all tracks sorted by creation date
+    // Get all tracks
     const allTracks = await base44.asServiceRole.entities.MusicTrack.list('created_date', 1000);
 
-    // Identify short/experimental tracks (before the main import batch)
-    // Main import started around 2026-05-05 15:12, so remove anything before 15:00
-    const cutoffTime = new Date('2026-05-05T15:00:00Z');
-    const toDelete = allTracks.filter(t => {
-      const createdDate = new Date(t.created_date);
-      return createdDate < cutoffTime;
-    });
+    // Find duplicates: same title + artist + duration
+    const seen = {};
+    const duplicates = [];
 
-    // Delete them
+    for (const track of allTracks) {
+      const key = `${track.title}|${track.artist}|${track.duration}`;
+      if (seen[key]) {
+        // Keep the first, mark others as duplicates
+        duplicates.push(track.id);
+      } else {
+        seen[key] = track.id;
+      }
+    }
+
+    // Delete duplicates
     let deleted = 0;
-    for (const track of toDelete) {
+    for (const id of duplicates) {
       try {
-        await base44.asServiceRole.entities.MusicTrack.delete(track.id);
+        await base44.asServiceRole.entities.MusicTrack.delete(id);
         deleted++;
       } catch (e) {
-        // Track already deleted or doesn't exist, skip
+        // Already deleted, skip
       }
     }
 
     return Response.json({
       deleted_count: deleted,
-      removed_titles: toDelete.map(t => t.title)
+      duplicates_found: duplicates.length
     });
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });

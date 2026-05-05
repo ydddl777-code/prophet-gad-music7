@@ -57,40 +57,12 @@ Deno.serve(async (req) => {
           duration = `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Try to fetch lyrics from song-lyrics bucket
-        // Try common filename patterns: lyrics_{n}.txt, track_{n}.txt, {n}.txt
-        let lyrics = song.lyrics_text || null;
-        if (!lyrics && song.track_number) {
-          const n = song.track_number;
-          const lyricUrls = [
-            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/lyrics_${n}.txt`,
-            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/track_${n}.txt`,
-            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-lyrics/${n}.txt`,
-          ];
-          for (const url of lyricUrls) {
-            const lRes = await fetch(url);
-            if (lRes.ok) {
-              lyrics = await lRes.text();
-              break;
-            }
-          }
-        }
+        // Use lyrics directly from DB field only (no slow file scanning)
+        const lyrics = song.lyrics_text || null;
 
-        // Build cover art URL from song-covers bucket if not provided
+        // Use cover art directly from DB fields only (no slow file scanning)
         const n = song.track_number;
-        let cover_art_url = song.cover_url || song.cover_image_url || null;
-        if (!cover_art_url && n) {
-          // Try common cover patterns
-          const coverPatterns = [
-            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-covers/cover_${n}.jpg`,
-            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-covers/cover_${n}.png`,
-            `https://${PROJECT_REF}.supabase.co/storage/v1/object/public/song-covers/${n}.jpg`,
-          ];
-          for (const url of coverPatterns) {
-            const cRes = await fetch(url, { method: 'HEAD' });
-            if (cRes.ok) { cover_art_url = url; break; }
-          }
-        }
+        const cover_art_url = song.cover_url || song.cover_image_url || null;
 
         await base44.asServiceRole.entities.MusicTrack.create({
           title: song.title || `Track ${n}`,
@@ -113,7 +85,7 @@ Deno.serve(async (req) => {
         });
 
         created.push(song.title || `Track ${n}`);
-        await sleep(300);
+        await sleep(50);
       } catch (e) {
         failed.push({ title: song.title, error: e.message });
       }

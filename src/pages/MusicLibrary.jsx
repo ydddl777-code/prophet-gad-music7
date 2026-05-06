@@ -126,12 +126,9 @@ export default function MusicLibrary() {
     return (
       <div className="mb-10">
         {/* Section Header */}
-        <div className="mb-3 px-1">
-          <div className="flex items-center gap-3 mb-1">
-            <span className="text-lg font-bold text-white">{icon} {title}</span>
-            <span className="text-slate-500 text-xs">{sectionTracks.length} tracks</span>
-          </div>
-          <p className="text-slate-500 text-xs italic">{subtitle}</p>
+        <div className="mb-3 text-center">
+          <span className="text-lg font-bold text-white">{icon} {title}</span>
+          <p className="text-slate-500 text-xs italic mt-1">{subtitle}</p>
         </div>
 
         {/* Track Rows */}
@@ -177,7 +174,7 @@ export default function MusicLibrary() {
 
 
       {/* Library Header */}
-      <div className="bg-[#111] border-b border-slate-900">
+      <div id="music-catalog" className="bg-[#111] border-b border-slate-900">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
@@ -187,12 +184,9 @@ export default function MusicLibrary() {
               <p className="text-slate-500 text-sm mt-1 italic">Hear the Visions — Listen to the Rhythm</p>
             </div>
             <div className="flex items-center gap-3">
-              {authChecked && isAdmin && (
+              {authChecked && isAdmin && tracks.filter(t => t.is_dormant).length > 0 && (
                 <div className="text-sm text-slate-400">
-                  <span className="font-bold text-white">{tracks.filter(t => !t.is_dormant).length}</span> tracks
-                  {tracks.filter(t => t.is_dormant).length > 0 && (
-                    <span className="ml-2 text-slate-600">· <span className="text-amber-700">{tracks.filter(t => t.is_dormant).length} dormant</span></span>
-                  )}
+                  <span className="text-slate-600"><span className="text-amber-700">{tracks.filter(t => t.is_dormant).length} dormant</span></span>
                 </div>
               )}
               {authChecked && isAdmin && (

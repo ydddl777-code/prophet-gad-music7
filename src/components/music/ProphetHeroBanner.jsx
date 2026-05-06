@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ExtendedPlayStrip from './ExtendedPlayStrip';
 import VideoStrip from './VideoStrip';
-import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, VolumeX, Volume2 } from 'lucide-react';
+import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, Music2, Users, Mail, ShoppingBag } from 'lucide-react';
 
 const FEATURED_TRACKS = [
   { title: "Thunder Road Gospel", url: "https://media.base44.com/files/public/698ae99a8f13115b248081e9/764554286_ThunderRoadGospel7.mp3" },
@@ -165,27 +164,44 @@ export default function ProphetHeroBanner() {
 
           {/* TEXT CONTENT */}
           <div className="flex-1 text-white text-center max-w-2xl">
+            {/* Tagline badge */}
             <div className="inline-flex items-center gap-2 bg-red-900/50 border border-red-700/50 rounded-full px-4 py-1.5 text-xs font-semibold text-red-300/90 mb-4">
               <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
               Prophet Gad comes in the same spirit of the ancient Hebrew Israelite prophets
             </div>
 
+            {/* Short bio */}
+            <p className="text-slate-300 text-sm leading-relaxed mb-6">
+              Prophetic music spanning spiritual oracles, gospel, bachata, kompa &amp; romantic — a large catalog of songs born from visions and consecrated at age four. <strong className="text-red-400">Repent or die.</strong>
+            </p>
 
-
-            <div className="text-slate-300 text-base leading-relaxed mb-5 text-justify">
-              <p>
-                In the spirit of ancient Hebrew seers, Prophet Gad has emerged as a prophetic voice for this generation. Born in a Caribbean nation rooted in biblical tradition, he was consecrated at age four and sent to the U.S. in secret for protection, where he was raised and educated in New York. Bearing the mantle of the biblical Prophet Gad, his life has mirrored the trials of the prophets of old, marked by exile and miraculous returns. Now, he delivers an urgent and uncompromising message: <strong className="text-red-500">repent or die.</strong>
-              </p>
-            </div>
-
-            {/* E-Books button */}
-            <div className="mt-4">
-              <a
-                href="/EbookStore"
-                className="inline-flex items-center gap-2 bg-amber-900/50 hover:bg-amber-800/60 border border-amber-700/50 text-amber-300 text-sm font-semibold px-5 py-2 rounded-full transition-colors"
+            {/* 4 Navigation Buttons */}
+            <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto">
+              <a href="#music-catalog"
+                onClick={e => { e.preventDefault(); document.getElementById('music-catalog')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-white px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
               >
-                <BookOpen className="w-4 h-4" />
-                Prophet Gad has E-Books for Sale
+                <Music2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                Music Catalog
+              </a>
+              <a href="/EbookStore"
+                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-amber-700/40 text-amber-300 px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
+              >
+                <BookOpen className="w-4 h-4 flex-shrink-0" />
+                E-Books
+              </a>
+              <a href="#about-gad"
+                onClick={e => { e.preventDefault(); document.getElementById('about-gad')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-white px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
+              >
+                <Users className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                Who Is Gad
+              </a>
+              <a href="mailto:prophetgadmusic@gmail.com"
+                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-slate-300 px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
+              >
+                <Mail className="w-4 h-4 text-green-400 flex-shrink-0" />
+                Contact
               </a>
             </div>
           </div>
@@ -194,9 +210,6 @@ export default function ProphetHeroBanner() {
 
       {/* VIDEO STRIP */}
       <VideoStrip />
-
-      {/* EXTENDED PLAY STRIP */}
-      <ExtendedPlayStrip />
     </div>
   );
 }

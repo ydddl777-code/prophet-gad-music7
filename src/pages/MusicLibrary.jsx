@@ -182,6 +182,13 @@ export default function MusicLibrary() {
                 <>
                   <Button
                     variant="outline" size="sm"
+                    className="gap-2 border-purple-700 text-purple-400 hover:bg-purple-950"
+                    onClick={() => window.location.href = '/SongFamilies'}
+                  >
+                    👨‍👩‍👧‍👦 Song Families
+                  </Button>
+                  <Button
+                    variant="outline" size="sm"
                     className="gap-2 border-green-700 text-green-400 hover:bg-green-950"
                     onClick={() => window.location.href = '/AdminImport'}
                   >

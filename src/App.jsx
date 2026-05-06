@@ -13,6 +13,7 @@ import MusicLibrary from './pages/MusicLibrary';
 import BookCoversGallery from './pages/BookCoversGallery';
 import ComingSoon from './pages/ComingSoon';
 import AdminImport from './pages/AdminImport';
+import SongFamilies from './pages/SongFamilies';
 
 const { Pages, Layout } = pagesConfig;
 
@@ -67,6 +68,7 @@ const AuthenticatedApp = () => {
       <Route path="/BookCoversGallery" element={<LayoutWrapper currentPageName="BookCoversGallery"><BookCoversGallery /></LayoutWrapper>} />
       <Route path="/ComingSoon" element={<LayoutWrapper currentPageName="ComingSoon"><ComingSoon /></LayoutWrapper>} />
       <Route path="/AdminImport" element={<AdminImport />} />
+      <Route path="/SongFamilies" element={<LayoutWrapper currentPageName="SongFamilies"><SongFamilies /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

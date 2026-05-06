@@ -63,17 +63,26 @@ export default function PurchaseSuccess() {
     }
   }, [sessionId, trackId, source]);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!downloadUrl) return;
     setDownloading(true);
-    const a = document.createElement('a');
-    a.href = downloadUrl;
-    a.download = `${trackTitle || 'track'}.mp3`;
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => setDownloading(false), 2000);
+    try {
+      const response = await fetch(downloadUrl);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `${trackTitle || 'track'}.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+    } catch {
+      // fallback: open directly
+      window.open(downloadUrl, '_blank');
+    } finally {
+      setDownloading(false);
+    }
   };
 
   return (

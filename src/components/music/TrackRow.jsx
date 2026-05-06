@@ -11,6 +11,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
   const isCurrentTrack = player?.currentTrack?.id === track.id;
   const isTrackPlaying = isCurrentTrack && player?.isPlaying;
 
+  const [showLyricsPanel, setShowLyricsPanel] = useState(false);
   const [editing, setEditing] = useState(false);
   const [purchasing, setPurchasing] = useState(false);
 
@@ -125,10 +126,23 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
               {track.duration && (
                 <span className="text-xs font-mono font-normal text-slate-500 bg-slate-900/80 px-1.5 py-0.5 rounded">{track.duration}</span>
               )}
+              {track.created_date && (
+                <span className="text-xs font-normal text-slate-600 bg-slate-900/60 px-1.5 py-0.5 rounded">
+                  {new Date(track.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </span>
+              )}
             </h3>
             {displayArtist && (
               <p className="text-sm text-[#c9a84c] mb-1">{displayArtist}</p>
             )}
+            <div className="flex items-center gap-2 flex-wrap mt-1 mb-1">
+              {track.language && (
+                <span className="text-xs text-amber-600/80 font-medium">{track.language}</span>
+              )}
+              {track.rhythm_style && (
+                <span className="text-xs text-slate-500">· {track.rhythm_style}</span>
+              )}
+            </div>
             {track.description && (
               <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{track.description}</p>
             )}
@@ -152,7 +166,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
             )}
 
             {/* User controls - visible on hover */}
-            {hovering && isAdmin && (
+            {hovering && (
               <div className="flex items-center gap-1 ml-2">
                 {isAdmin && (
                 <>
@@ -172,7 +186,20 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
           </div>
         </div>
 
-
+        {/* Collapsible Lyrics Panel */}
+        {showLyricsPanel && track.lyrics && (
+          <div className="mx-4 mb-3 bg-slate-900/80 border border-slate-700 rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold text-amber-400 uppercase tracking-widest">Lyrics</span>
+              <button onClick={() => setShowLyricsPanel(false)} className="text-slate-500 hover:text-slate-300 text-xs">
+                Hide ↑
+              </button>
+            </div>
+            <pre className="text-sm text-slate-300 whitespace-pre-wrap font-sans leading-relaxed max-h-72 overflow-y-auto">
+              {track.lyrics}
+            </pre>
+          </div>
+        )}
       </div>
     </>
   );

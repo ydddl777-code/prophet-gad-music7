@@ -134,11 +134,6 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
               {track.duration && (
                 <span className="text-xs font-mono font-normal text-slate-500 bg-slate-900/80 px-1.5 py-0.5 rounded">{track.duration}</span>
               )}
-              {track.created_date && (
-                <span className="text-xs font-normal text-slate-600 bg-slate-900/60 px-1.5 py-0.5 rounded">
-                  {new Date(track.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                </span>
-              )}
             </h3>
             {displayArtist && (
               <p className="text-sm text-[#c9a84c] mb-1">{displayArtist}</p>

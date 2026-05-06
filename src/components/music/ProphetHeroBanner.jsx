@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import VideoStrip from './VideoStrip';
-import ExtendedPlayStrip from './ExtendedPlayStrip';
-import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, Music2, Users, Mail } from 'lucide-react';
+import WhoIsGadPanel from './WhoIsGadPanel';
+import EcosystemApps from './EcosystemApps';
+import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, Users, Globe } from 'lucide-react';
 
 const FEATURED_TRACKS = [
   { title: "Thunder Road Gospel", url: "https://media.base44.com/files/public/698ae99a8f13115b248081e9/764554286_ThunderRoadGospel7.mp3" },
@@ -46,6 +47,8 @@ export default function ProphetHeroBanner() {
   const [trackIndex, setTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [showWhoIsGad, setShowWhoIsGad] = useState(false);
+  const [showEcosystem, setShowEcosystem] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -178,34 +181,28 @@ export default function ProphetHeroBanner() {
               </p>
             </div>
 
-            {/* 4 Navigation Buttons */}
+            {/* Navigation Buttons */}
             <div className="flex flex-wrap justify-center gap-3">
-              <a href="#music-catalog"
-                onClick={e => { e.preventDefault(); document.getElementById('music-catalog')?.scrollIntoView({ behavior: 'smooth' }); }}
+              <button
+                onClick={() => setShowWhoIsGad(true)}
                 className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-white px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
               >
-                <Music2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                Music Catalog
-              </a>
+                <Users className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                Who Is Prophet Gad
+              </button>
               <a href="/EbookStore"
                 className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-amber-700/40 text-amber-300 px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
               >
                 <BookOpen className="w-4 h-4 flex-shrink-0" />
                 E-Books
               </a>
-              <a href="#about-gad"
-                onClick={e => { e.preventDefault(); document.getElementById('about-gad')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-white px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
+              <button
+                onClick={() => setShowEcosystem(true)}
+                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-purple-700/40 text-purple-300 px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
               >
-                <Users className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                Who Is Gad
-              </a>
-              <a href="mailto:prophetgadmusic@gmail.com"
-                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-slate-300 px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
-              >
-                <Mail className="w-4 h-4 text-green-400 flex-shrink-0" />
-                Contact
-              </a>
+                <Globe className="w-4 h-4 flex-shrink-0" />
+                The Ecosystem
+              </button>
             </div>
           </div>
         </div>
@@ -214,8 +211,9 @@ export default function ProphetHeroBanner() {
       {/* VIDEO STRIP */}
       <VideoStrip />
 
-      {/* EXTENDED PLAY STRIP */}
-      <ExtendedPlayStrip />
+      {/* MODALS */}
+      {showWhoIsGad && <WhoIsGadPanel onClose={() => setShowWhoIsGad(false)} />}
+      {showEcosystem && <EcosystemApps onClose={() => setShowEcosystem(false)} />}
     </div>
   );
 }

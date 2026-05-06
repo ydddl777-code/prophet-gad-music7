@@ -1,0 +1,23 @@
+{
+  "name": "TrackComment",
+  "type": "object",
+  "properties": {
+    "track_id": {
+      "type": "string",
+      "description": "Reference to MusicTrack"
+    },
+    "author_name": {
+      "type": "string",
+      "description": "Display name of commenter"
+    },
+    "message": {
+      "type": "string",
+      "description": "Comment text (max 150 chars)"
+    }
+  },
+  "required": [
+    "track_id",
+    "author_name",
+    "message"
+  ]
+}

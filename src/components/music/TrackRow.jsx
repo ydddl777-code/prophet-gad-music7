@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Play, Pause, ShoppingCart, Pencil, Trash2, EyeOff, Eye, ChevronDown } from 'lucide-react';
+import { Play, Pause, ShoppingCart, Pencil, Trash2, EyeOff, Eye } from 'lucide-react';
 import { usePlayer } from './PlayerContext';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
 import MetadataEditor from './MetadataEditor';
+import { CommentButton } from './TrackComments';
 
 export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = false, allTracks = [] }) {
   const player = usePlayer();
@@ -150,6 +151,9 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
               <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{track.description}</p>
             )}
           </div>
+
+          {/* Comment Button */}
+          <CommentButton trackId={track.id} />
 
           {/* Price / Action Button */}
           <div className="flex items-center gap-2 flex-shrink-0">

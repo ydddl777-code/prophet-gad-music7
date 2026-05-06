@@ -45,16 +45,7 @@ export default function FeaturedCarousel() {
       });
     });
 
-    // Auto-start after 3 seconds
-    const timer = setTimeout(() => {
-      if (!startedRef.current) {
-        startedRef.current = true;
-        audio.play().then(() => setIsPlaying(true)).catch(() => {});
-      }
-    }, 3000);
-
     return () => {
-      clearTimeout(timer);
       audio.pause();
       audio.src = '';
     };

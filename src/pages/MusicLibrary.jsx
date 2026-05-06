@@ -9,7 +9,6 @@ import FilterBar from '../components/music/FilterBar';
 import ProphetHeroBanner from '../components/music/ProphetHeroBanner';
 import ProphetWelcome from '../components/welcome/ProphetWelcome.jsx';
 import EmailCapturePopup from '../components/welcome/EmailCapturePopup.jsx';
-import FeaturedCarousel from '../components/music/FeaturedCarousel.jsx';
 
 import { usePlayer } from '../components/music/PlayerContext';
 
@@ -148,6 +147,18 @@ export default function MusicLibrary() {
 
   return (
     <div className="min-h-screen bg-[#111]">
+      {/* Admin corner button */}
+      {authChecked && isAdmin && (
+        <div className="fixed bottom-4 left-4 z-50">
+          <button
+            onClick={() => document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' })}
+            className="bg-slate-800/80 hover:bg-slate-700 border border-slate-600 text-slate-400 hover:text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm transition-colors"
+          >
+            ⚙ Admin
+          </button>
+        </div>
+      )}
+
       <EmailCapturePopup />
 
       {/* Prophet Welcome Modal */}
@@ -161,8 +172,7 @@ export default function MusicLibrary() {
       {/* Prophet Hero Banner */}
       <ProphetHeroBanner />
 
-      {/* Featured Carousel - auto-plays after 3 seconds */}
-      <FeaturedCarousel />
+
 
 
 
@@ -235,7 +245,9 @@ export default function MusicLibrary() {
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Upload Section - Admin only */}
         {authChecked && isAdmin && (
-          <UploadSection onUploadComplete={handleUploadComplete} />
+          <div id="admin-panel">
+            <UploadSection onUploadComplete={handleUploadComplete} />
+          </div>
         )}
 
         {/* Filters */}

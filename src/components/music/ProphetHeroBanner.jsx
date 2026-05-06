@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ExtendedPlayStrip from './ExtendedPlayStrip';
 import VideoStrip from './VideoStrip';
-import EbookStore from '../../pages/EbookStore';
+import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, VolumeX, Volume2 } from 'lucide-react';
+
+const FEATURED_TRACKS = [
+  { title: "Thunder Road Gospel", url: "https://media.base44.com/files/public/698ae99a8f13115b248081e9/764554286_ThunderRoadGospel7.mp3" },
+  { title: "Nail on the Wall", url: "https://media.base44.com/files/public/698ae99a8f13115b248081e9/ffafd67b3_NailontheWall.mp3" },
+  { title: "Warning in the Dark", url: "https://media.base44.com/files/public/698ae99a8f13115b248081e9/80718d646_WarningintheDark.mp3" },
+  { title: "Watchman on Zion's Gate", url: "https://media.base44.com/files/public/698ae99a8f13115b248081e9/749a77171_WatchmanonZionsGate1.mp3" },
+];
 
 
 const AVATARS = [
@@ -36,6 +43,10 @@ const AVATARS = [
 
 export default function ProphetHeroBanner() {
   const [avatarIndex, setAvatarIndex] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,6 +54,58 @@ export default function ProphetHeroBanner() {
     }, 13000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const audio = new Audio();
+    audio.volume = 0.4;
+    audio.src = FEATURED_TRACKS[0].url;
+    audioRef.current = audio;
+
+    audio.addEventListener('ended', () => {
+      setTrackIndex(prev => {
+        const next = (prev + 1) % FEATURED_TRACKS.length;
+        audio.src = FEATURED_TRACKS[next].url;
+        audio.play().catch(() => {});
+        return next;
+      });
+    });
+
+    // Stop when main player starts
+    const onMainPlay = () => { audio.pause(); setIsPlaying(false); };
+    window.addEventListener('mainPlayerPlaying', onMainPlay);
+
+    return () => {
+      audio.pause();
+      audio.src = '';
+      window.removeEventListener('mainPlayerPlaying', onMainPlay);
+    };
+  }, []);
+
+  const handlePlayPause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+  };
+
+  const goToTrack = (idx) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    setTrackIndex(idx);
+    audio.src = FEATURED_TRACKS[idx].url;
+    audio.play().then(() => setIsPlaying(true)).catch(() => {});
+  };
+
+  const toggleMute = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
 
 
 
@@ -79,6 +142,25 @@ export default function ProphetHeroBanner() {
             </div>
           </div>
 
+            {/* Mini Player — right below portrait */}
+            <div className="flex items-center gap-2 bg-slate-900/80 border border-amber-800/40 rounded-full px-3 py-1.5 w-64">
+              <button onClick={() => goToTrack((trackIndex - 1 + FEATURED_TRACKS.length) % FEATURED_TRACKS.length)} className="text-slate-400 hover:text-white">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button onClick={handlePlayPause} className="w-7 h-7 rounded-full bg-amber-600 hover:bg-amber-500 flex items-center justify-center flex-shrink-0">
+                {isPlaying ? <Pause className="w-3.5 h-3.5 text-white" /> : <Play className="w-3.5 h-3.5 text-white ml-0.5" />}
+              </button>
+              <button onClick={() => goToTrack((trackIndex + 1) % FEATURED_TRACKS.length)} className="text-slate-400 hover:text-white">
+                <ChevronRight className="w-4 h-4" />
+              </button>
+              <p className="flex-1 text-white text-xs truncate">{FEATURED_TRACKS[trackIndex].title}</p>
+              <button
+                onClick={toggleMute}
+                className={`flex-shrink-0 rounded-full px-2 py-0.5 text-[0.6rem] font-bold transition-colors ${isMuted ? 'bg-slate-600 text-slate-300' : 'bg-red-600 text-white'}`}
+              >
+                {isMuted ? 'ON' : 'OFF'}
+              </button>
+            </div>
           </div>
 
           {/* TEXT CONTENT */}
@@ -96,16 +178,19 @@ export default function ProphetHeroBanner() {
               </p>
             </div>
 
-            {/* Auto-play mute button */}
-            {/* mute controls moved above */}
+            {/* E-Books button */}
+            <div className="mt-4">
+              <a
+                href="/EbookStore"
+                className="inline-flex items-center gap-2 bg-amber-900/50 hover:bg-amber-800/60 border border-amber-700/50 text-amber-300 text-sm font-semibold px-5 py-2 rounded-full transition-colors"
+              >
+                <BookOpen className="w-4 h-4" />
+                Prophet Gad has E-Books for Sale
+              </a>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* E-BOOKS — above Extended Play */}
-      <EbookStore />
-
-
 
       {/* VIDEO STRIP */}
       <VideoStrip />

@@ -143,7 +143,10 @@ export function PlayerProvider({ children }) {
     audio.src = track.file_url;
     initAudioContext();
     audio.play()
-      .then(() => setIsPlaying(true))
+      .then(() => {
+        setIsPlaying(true);
+        window.dispatchEvent(new Event('mainPlayerPlaying'));
+      })
       .catch(err => {
         console.error('Playback error:', err);
         setIsPlaying(false);

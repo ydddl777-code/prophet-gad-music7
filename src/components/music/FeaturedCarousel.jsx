@@ -26,7 +26,6 @@ export default function FeaturedCarousel() {
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(0.3);
   const audioRef = useRef(null);
-  const startedRef = useRef(false);
 
   // Init audio
   useEffect(() => {
@@ -36,7 +35,6 @@ export default function FeaturedCarousel() {
     audioRef.current = audio;
 
     audio.addEventListener('ended', () => {
-      // Auto-advance to next track
       setCurrentIndex(prev => {
         const next = (prev + 1) % FEATURED_TRACKS.length;
         audio.src = FEATURED_TRACKS[next].url;
@@ -45,9 +43,17 @@ export default function FeaturedCarousel() {
       });
     });
 
+    // Pause this carousel when the main player starts playing
+    const onMainPlayerPlay = () => {
+      audio.pause();
+      setIsPlaying(false);
+    };
+    window.addEventListener('mainPlayerPlaying', onMainPlayerPlay);
+
     return () => {
       audio.pause();
       audio.src = '';
+      window.removeEventListener('mainPlayerPlaying', onMainPlayerPlay);
     };
   }, []);
 

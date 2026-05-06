@@ -9,6 +9,7 @@ import FilterBar from '../components/music/FilterBar';
 import ProphetHeroBanner from '../components/music/ProphetHeroBanner';
 import ProphetWelcome from '../components/welcome/ProphetWelcome.jsx';
 import EmailCapturePopup from '../components/welcome/EmailCapturePopup.jsx';
+import FeaturedCarousel from '../components/music/FeaturedCarousel.jsx';
 
 import { usePlayer } from '../components/music/PlayerContext';
 
@@ -159,6 +160,9 @@ export default function MusicLibrary() {
 
       {/* Prophet Hero Banner */}
       <ProphetHeroBanner />
+
+      {/* Featured Carousel - auto-plays after 3 seconds */}
+      <FeaturedCarousel />
 
 
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import VideoStrip from './VideoStrip';
-import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, Music2, Users, Mail, ShoppingBag } from 'lucide-react';
+import ExtendedPlayStrip from './ExtendedPlayStrip';
+import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, Music2, Users, Mail } from 'lucide-react';
 
 const FEATURED_TRACKS = [
   { title: "Thunder Road Gospel", url: "https://media.base44.com/files/public/698ae99a8f13115b248081e9/764554286_ThunderRoadGospel7.mp3" },
@@ -178,7 +179,7 @@ export default function ProphetHeroBanner() {
             </div>
 
             {/* 4 Navigation Buttons */}
-            <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto">
+            <div className="flex flex-wrap justify-center gap-3">
               <a href="#music-catalog"
                 onClick={e => { e.preventDefault(); document.getElementById('music-catalog')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-white px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
@@ -212,6 +213,9 @@ export default function ProphetHeroBanner() {
 
       {/* VIDEO STRIP */}
       <VideoStrip />
+
+      {/* EXTENDED PLAY STRIP */}
+      <ExtendedPlayStrip />
     </div>
   );
 }

@@ -167,45 +167,44 @@ export default function MusicPlayer() {
         </div>
 
         <div className="px-4 py-2.5 pb-4 flex items-center gap-3">
-          {/* Cover art - left */}
-          <div className="flex-shrink-0">
-            {currentTrack.cover_art_url ? (
-              <img src={currentTrack.cover_art_url} alt="cover" className="w-10 h-10 rounded-lg object-cover shadow ring-1 ring-amber-500/40" />
-            ) : (
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-red-700 flex items-center justify-center shadow">
-                <Music className="w-5 h-5 text-white" />
-              </div>
-            )}
+          {/* Left: track name only */}
+          <div className="flex-shrink-0 min-w-0 hidden sm:block w-36">
+            <p className="font-semibold text-sm truncate text-white">{currentTrack.title}</p>
+            <p className="text-xs text-slate-400 truncate">{(!currentTrack.artist || currentTrack.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : currentTrack.artist}</p>
           </div>
 
-          {/* Center: track name + controls */}
-          <div className="flex-1 flex flex-col items-center gap-1 min-w-0">
-            <div className="text-center min-w-0 w-full">
-              <p className="font-semibold text-sm truncate text-white">{currentTrack.title}</p>
-              <p className="text-xs text-slate-400 truncate">{(!currentTrack.artist || currentTrack.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : currentTrack.artist}</p>
+          {/* Center: cover + rewind + play + forward + time */}
+          <div className="flex-1 flex items-center justify-center gap-2">
+            {/* Cover art right next to rewind */}
+            <div className="flex-shrink-0">
+              {currentTrack.cover_art_url ? (
+                <img src={currentTrack.cover_art_url} alt="cover" className="w-10 h-10 rounded-lg object-cover shadow ring-1 ring-amber-500/40" />
+              ) : (
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-red-700 flex items-center justify-center shadow">
+                  <Music className="w-5 h-5 text-white" />
+                </div>
+              )}
             </div>
-            <div className="flex items-center gap-1">
-              <Button variant="ghost" size="icon" onClick={previous} disabled={currentIndex <= 0} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
-                <SkipBack className="w-5 h-5" />
-              </Button>
-              <Button
-                onClick={togglePlayPause}
-                size="icon"
-                className="h-11 w-11 bg-gradient-to-br from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white rounded-full shadow-md"
-              >
-                {isLoading
-                  ? <Loader2 className="w-5 h-5 animate-spin" />
-                  : isPlaying
-                    ? <Pause className="w-5 h-5" />
-                    : <Play className="w-5 h-5" />}
-              </Button>
-              <Button variant="ghost" size="icon" onClick={next} disabled={currentIndex >= queueLength - 1} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
-                <SkipForward className="w-5 h-5" />
-              </Button>
-              <span className="text-xs text-slate-400 font-mono whitespace-nowrap ml-1">
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
-            </div>
+            <Button variant="ghost" size="icon" onClick={previous} disabled={currentIndex <= 0} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
+              <SkipBack className="w-5 h-5" />
+            </Button>
+            <Button
+              onClick={togglePlayPause}
+              size="icon"
+              className="h-11 w-11 bg-gradient-to-br from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white rounded-full shadow-md"
+            >
+              {isLoading
+                ? <Loader2 className="w-5 h-5 animate-spin" />
+                : isPlaying
+                  ? <Pause className="w-5 h-5" />
+                  : <Play className="w-5 h-5" />}
+            </Button>
+            <Button variant="ghost" size="icon" onClick={next} disabled={currentIndex >= queueLength - 1} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
+              <SkipForward className="w-5 h-5" />
+            </Button>
+            <span className="text-xs text-slate-400 font-mono whitespace-nowrap">
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </span>
           </div>
 
           {/* Right: volume + video */}

@@ -169,12 +169,14 @@ export default function MusicLibrary() {
               <p className="text-slate-500 text-sm mt-1 italic">Hear the Visions — Listen to the Rhythm</p>
             </div>
             <div className="flex items-center gap-3">
-              <div className="text-sm text-slate-400">
-                <span className="font-bold text-white">{tracks.filter(t => !t.is_dormant).length}</span> tracks
-                {isAdmin && tracks.filter(t => t.is_dormant).length > 0 && (
-                  <span className="ml-2 text-slate-600">· <span className="text-amber-700">{tracks.filter(t => t.is_dormant).length} dormant</span></span>
-                )}
-              </div>
+              {isAdmin && (
+                <div className="text-sm text-slate-400">
+                  <span className="font-bold text-white">{tracks.filter(t => !t.is_dormant).length}</span> tracks
+                  {tracks.filter(t => t.is_dormant).length > 0 && (
+                    <span className="ml-2 text-slate-600">· <span className="text-amber-700">{tracks.filter(t => t.is_dormant).length} dormant</span></span>
+                  )}
+                </div>
+              )}
               {isAdmin && (
                 <>
                   <Button

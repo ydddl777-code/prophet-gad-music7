@@ -170,10 +170,12 @@ export default function ProphetHeroBanner() {
               Prophet Gad comes in the same spirit of the ancient Hebrew Israelite prophets
             </div>
 
-            {/* Short bio */}
-            <p className="text-slate-300 text-sm leading-relaxed mb-6">
-              Prophetic music spanning spiritual oracles, gospel, bachata, kompa &amp; romantic — a large catalog of songs born from visions and consecrated at age four. <strong className="text-red-400">Repent or die.</strong>
-            </p>
+            {/* Bio */}
+            <div className="text-slate-300 text-base leading-relaxed mb-6 text-justify">
+              <p>
+                In the spirit of ancient Hebrew seers, Prophet Gad has emerged as a prophetic voice for this generation. Born in a Caribbean nation rooted in biblical tradition, he was consecrated at age four and sent to the U.S. in secret for protection, where he was raised and educated in New York. Bearing the mantle of the biblical Prophet Gad, his life has mirrored the trials of the prophets of old, marked by exile and miraculous returns. Now, he delivers an urgent and uncompromising message: <strong className="text-red-500">repent or die.</strong>
+              </p>
+            </div>
 
             {/* 4 Navigation Buttons */}
             <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto">

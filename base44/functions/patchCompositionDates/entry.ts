@@ -128,12 +128,15 @@ Deno.serve(async (req) => {
         const year = parseInt(catalogDate.split('-')[0]);
         if (!dryRun) {
           await base44.asServiceRole.entities.MusicTrack.update(track.id, {
+            composition_date: catalogDate,
             year: year,
-            // Store full date in description prefix if needed - for now just year
+            // version_group = composition_date so all songs from the same genesis date form one family
+            // Only set if not already manually assigned to a more specific group
+            version_group: track.version_group || catalogDate,
           });
           updated++;
         }
-        updates.push({ title: track.title, date: catalogDate, year });
+        updates.push({ title: track.title, date: catalogDate, year, version_group: track.version_group || catalogDate });
       } else {
         unmatched.push(track.title);
       }

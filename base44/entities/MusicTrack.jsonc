@@ -33,9 +33,13 @@
       ],
       "description": "Song language"
     },
+    "composition_date": {
+      "type": "string",
+      "description": "Exact date the lyric/oracle was first composed (YYYY-MM-DD). This is the genesis date \u2014 all versions of the same prophetic word share this date."
+    },
     "version_group": {
       "type": "string",
-      "description": "Groups different versions of the same song together"
+      "description": "Groups different versions of the same song together. Auto-set to composition_date so all songs born on the same day form one family."
     },
     "is_best_version": {
       "type": "boolean",

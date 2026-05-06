@@ -137,14 +137,14 @@ export default function MusicPlayer() {
                   track_id: currentTrack.id,
                   track_title: currentTrack.title,
                   track_artist: currentTrack.artist,
-                  price_cents: Math.round((currentTrack.price || 2.99) * 100),
+                  price_cents: Math.round((currentTrack.price || 1.99) * 100),
                   cover_art_url: currentTrack.cover_art_url || null,
                 });
                 if (res.data?.url) window.location.href = res.data.url;
               }}
               className="bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white font-bold text-sm px-4 py-2 rounded-full flex-shrink-0"
             >
-              Buy ${(currentTrack.price || 2.99).toFixed(2)}
+              Buy ${(currentTrack.price || 1.99).toFixed(2)}
             </button>
             <button onClick={dismissPreview} className="text-slate-500 hover:text-slate-300 text-lg leading-none">&times;</button>
           </div>
@@ -167,96 +167,65 @@ export default function MusicPlayer() {
         </div>
 
         <div className="px-4 py-2.5 pb-4 flex items-center gap-3">
-          {/* Cover / Track Info */}
-          <div className="flex items-center gap-3 flex-1 min-w-0">
+          {/* Cover art - left */}
+          <div className="flex-shrink-0">
             {currentTrack.cover_art_url ? (
-              <img src={currentTrack.cover_art_url} alt="cover" className="w-10 h-10 rounded-lg object-cover flex-shrink-0 shadow ring-1 ring-amber-500/40" />
+              <img src={currentTrack.cover_art_url} alt="cover" className="w-10 h-10 rounded-lg object-cover shadow ring-1 ring-amber-500/40" />
             ) : (
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-red-700 flex items-center justify-center flex-shrink-0 shadow">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-red-700 flex items-center justify-center shadow">
                 <Music className="w-5 h-5 text-white" />
               </div>
             )}
-            <div className="min-w-0 hidden sm:block">
+          </div>
+
+          {/* Center: track name + controls */}
+          <div className="flex-1 flex flex-col items-center gap-1 min-w-0">
+            <div className="text-center min-w-0 w-full">
               <p className="font-semibold text-sm truncate text-white">{currentTrack.title}</p>
               <p className="text-xs text-slate-400 truncate">{(!currentTrack.artist || currentTrack.artist.toLowerCase().includes('unknown')) ? 'Prophet Gad' : currentTrack.artist}</p>
             </div>
-          </div>
-
-          {/* Waveform Visualizer */}
-          <div className="hidden md:block">
-            <WaveformVisualizer analyserRef={analyserRef} isPlaying={isPlaying} />
-          </div>
-
-          {/* Playback Controls */}
-          <div className="flex items-center gap-1">
-            <div className="relative flex flex-col items-center">
+            <div className="flex items-center gap-1">
               <Button variant="ghost" size="icon" onClick={previous} disabled={currentIndex <= 0} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
                 <SkipBack className="w-5 h-5" />
               </Button>
-              {!currentTrack.is_free_listen && (
-                <span className="absolute -bottom-4 whitespace-nowrap text-[9px] text-amber-400/70 leading-none">
-                  replay sample
-                </span>
-              )}
+              <Button
+                onClick={togglePlayPause}
+                size="icon"
+                className="h-11 w-11 bg-gradient-to-br from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white rounded-full shadow-md"
+              >
+                {isLoading
+                  ? <Loader2 className="w-5 h-5 animate-spin" />
+                  : isPlaying
+                    ? <Pause className="w-5 h-5" />
+                    : <Play className="w-5 h-5" />}
+              </Button>
+              <Button variant="ghost" size="icon" onClick={next} disabled={currentIndex >= queueLength - 1} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
+                <SkipForward className="w-5 h-5" />
+              </Button>
+              <span className="text-xs text-slate-400 font-mono whitespace-nowrap ml-1">
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </span>
             </div>
-
-            <Button
-              onClick={togglePlayPause}
-              size="icon"
-              className="h-11 w-11 bg-gradient-to-br from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white rounded-full shadow-md"
-            >
-              {isLoading
-                ? <Loader2 className="w-5 h-5 animate-spin" />
-                : isPlaying
-                  ? <Pause className="w-5 h-5" />
-                  : <Play className="w-5 h-5" />}
-            </Button>
-
-            <Button variant="ghost" size="icon" onClick={next} disabled={currentIndex >= queueLength - 1} className="h-9 w-9 disabled:opacity-30 text-slate-300 hover:text-white hover:bg-slate-800">
-              <SkipForward className="w-5 h-5" />
-            </Button>
           </div>
 
-
-          {/* Time */}
-          <span className="text-xs text-slate-400 font-mono hidden lg:block whitespace-nowrap">
-            {formatTime(currentTime)} / {formatTime(duration)}
-          </span>
-
-          {/* Video Mode Button */}
-          {isVideoFile && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 text-slate-400 hover:text-white hover:bg-slate-800"
-              onClick={() => setShowVideoMode(true)}
-              title="Fullscreen Video"
-            >
-              <Maximize2 className="w-4 h-4" />
-            </Button>
-          )}
-
-          {/* EQ Button */}
-          <div className="relative hidden sm:flex items-center">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 text-slate-400 hover:text-white hover:bg-slate-800"
-              onClick={() => { setShowVolume(!showVolume); setShowEQ(false); }}
-            >
-              <VolumeIcon className="w-4 h-4" />
-            </Button>
-            {showVolume && (
-              <div className="absolute bottom-14 right-0 bg-slate-900 border border-slate-700 rounded-xl p-3 shadow-xl w-36 z-10">
-                <p className="text-xs text-slate-400 mb-2 text-center">{Math.round(volume * 100)}%</p>
-                <Slider
-                  value={[volume * 100]}
-                  onValueChange={([v]) => setVolume(v / 100)}
-                  max={100}
-                  step={1}
-                />
-              </div>
+          {/* Right: volume + video */}
+          <div className="flex items-center gap-1 flex-shrink-0">
+            {isVideoFile && (
+              <Button variant="ghost" size="icon" className="h-9 w-9 text-slate-400 hover:text-white hover:bg-slate-800" onClick={() => setShowVideoMode(true)} title="Fullscreen Video">
+                <Maximize2 className="w-4 h-4" />
+              </Button>
             )}
+            <div className="relative hidden sm:flex items-center">
+              <Button variant="ghost" size="icon" className="h-9 w-9 text-slate-400 hover:text-white hover:bg-slate-800" onClick={() => { setShowVolume(!showVolume); setShowEQ(false); }}>
+                <VolumeIcon className="w-4 h-4" />
+              </Button>
+              {showVolume && (
+                <div className="absolute bottom-14 right-0 bg-slate-900 border border-slate-700 rounded-xl p-3 shadow-xl w-36 z-10">
+                  <p className="text-xs text-slate-400 mb-2 text-center">{Math.round(volume * 100)}%</p>
+                  <Slider value={[volume * 100]} onValueChange={([v]) => setVolume(v / 100)} max={100} step={1} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

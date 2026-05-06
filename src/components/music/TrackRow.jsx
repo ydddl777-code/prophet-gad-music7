@@ -89,6 +89,14 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
       >
         {/* Main Row */}
         <div className="flex items-center gap-4 px-4 py-3">
+          {/* Catalog Number */}
+          <div className="flex-shrink-0 w-10 text-center hidden sm:block">
+            {track.track_number ? (
+              <span className="text-xs font-mono font-bold text-slate-600 leading-none">#{track.track_number}</span>
+            ) : (
+              <span className="text-xs text-slate-800">—</span>
+            )}
+          </div>
           {/* Large Cover Image */}
           <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded">
             {track.cover_art_url ? (

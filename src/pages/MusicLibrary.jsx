@@ -82,7 +82,8 @@ export default function MusicLibrary() {
     const matchesSearch = 
       track.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       track.artist?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      track.album?.toLowerCase().includes(searchTerm.toLowerCase());
+      track.album?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (track.track_number && String(track.track_number).includes(searchTerm.trim()));
     
     const matchesGenre = selectedGenre === 'all' || track.genre === selectedGenre;
     

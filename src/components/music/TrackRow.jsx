@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Play, Pause, ShoppingCart, ChevronDown, ChevronUp, Pencil, Trash2, FileText, Unlock, Brain, Share2 } from 'lucide-react';
+import { Play, Pause, ShoppingCart, ChevronDown, ChevronUp, Pencil, Trash2, FileText, Unlock, Brain, Share2, EyeOff, Eye } from 'lucide-react';
 import { usePlayer } from './PlayerContext';
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
@@ -62,6 +62,14 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
     try {
       await base44.entities.MusicTrack.update(track.id, { is_free_listen: !track.is_free_listen });
       toast.success(track.is_free_listen ? "Removed free listen" : "Marked as free full listen");
+      onUpdate();
+    } catch { toast.error("Update failed"); }
+  };
+
+  const toggleDormant = async () => {
+    try {
+      await base44.entities.MusicTrack.update(track.id, { is_dormant: !track.is_dormant });
+      toast.success(track.is_dormant ? "Track restored to library" : "Track hidden from library");
       onUpdate();
     } catch { toast.error("Update failed"); }
   };
@@ -191,14 +199,17 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
                   <Share2 className="w-4 h-4" />
                 </Button>
                 {isAdmin && (
-                  <>
-                    <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="w-8 h-8 text-slate-400 hover:text-white">
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                    <Button size="icon" variant="ghost" onClick={handleDelete} className="w-8 h-8 text-red-600 hover:text-red-400">
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </>
+                <>
+                  <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="w-8 h-8 text-slate-400 hover:text-white" title="Edit metadata">
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={toggleDormant} className="w-8 h-8 text-amber-500 hover:text-amber-300" title={track.is_dormant ? "Restore to library" : "Hide from library"}>
+                    {track.is_dormant ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={handleDelete} className="w-8 h-8 text-red-600 hover:text-red-400" title="Delete permanently">
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </>
                 )}
               </div>
             )}

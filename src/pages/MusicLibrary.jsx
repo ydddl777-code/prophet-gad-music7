@@ -17,6 +17,7 @@ export default function MusicLibrary() {
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [sortBy, setSortBy] = useState('-track_number');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -27,6 +28,7 @@ export default function MusicLibrary() {
     base44.auth.me()
       .then(user => {
         setIsAdmin(user?.role === 'admin');
+        setAuthChecked(true);
         setCurrentUser(user);
         
         // Check if user has seen welcome
@@ -37,6 +39,7 @@ export default function MusicLibrary() {
       })
       .catch(() => {
         setIsAdmin(false);
+        setAuthChecked(true);
         setCurrentUser(null);
       });
   }, []);
@@ -170,7 +173,7 @@ export default function MusicLibrary() {
               <p className="text-slate-500 text-sm mt-1 italic">Hear the Visions — Listen to the Rhythm</p>
             </div>
             <div className="flex items-center gap-3">
-              {isAdmin && (
+              {authChecked && isAdmin && (
                 <div className="text-sm text-slate-400">
                   <span className="font-bold text-white">{tracks.filter(t => !t.is_dormant).length}</span> tracks
                   {tracks.filter(t => t.is_dormant).length > 0 && (
@@ -178,7 +181,7 @@ export default function MusicLibrary() {
                   )}
                 </div>
               )}
-              {isAdmin && (
+              {authChecked && isAdmin && (
                 <>
                   <Button
                     variant="outline" size="sm"
@@ -227,7 +230,7 @@ export default function MusicLibrary() {
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Upload Section - Admin only */}
-        {isAdmin && (
+        {authChecked && isAdmin && (
           <UploadSection onUploadComplete={handleUploadComplete} />
         )}
 

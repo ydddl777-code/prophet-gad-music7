@@ -13,6 +13,7 @@ export default function FilterBar({ genres, onSearchChange, onGenreChange, onSor
           className="pl-10"
           onChange={(e) => onSearchChange(e.target.value)}
         />
+        <p className="text-xs text-slate-600 mt-1 pl-1">💡 Tip: If you heard a song on YouTube, search its catalog number (shown as #123 on each track)</p>
       </div>
       
       <Select onValueChange={onGenreChange} defaultValue="all">

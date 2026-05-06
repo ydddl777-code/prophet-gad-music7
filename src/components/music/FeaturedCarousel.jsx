@@ -144,11 +144,9 @@ export default function FeaturedCarousel() {
           ))}
         </div>
 
-        {/* Volume */}
+        {/* Volume slider */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <button onClick={handleMute} className="text-slate-400 hover:text-white transition-colors">
-            {isMuted || volume === 0 ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
+          <Volume2 className="w-4 h-4 text-slate-400" />
           <input
             type="range"
             min="0" max="1" step="0.05"
@@ -157,6 +155,18 @@ export default function FeaturedCarousel() {
             className="w-20 accent-amber-500 cursor-pointer"
           />
         </div>
+
+        {/* Big red STOP button */}
+        <button
+          onClick={handleMute}
+          className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs transition-all shadow-md ${
+            isMuted
+              ? 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+              : 'bg-red-600 hover:bg-red-500 text-white'
+          }`}
+        >
+          {isMuted ? <><Volume2 className="w-3.5 h-3.5" /> UNMUTE</> : <><VolumeX className="w-3.5 h-3.5" /> SILENCE</>}
+        </button>
       </div>
     </div>
   );

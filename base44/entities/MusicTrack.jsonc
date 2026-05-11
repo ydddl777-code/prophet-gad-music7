@@ -49,7 +49,7 @@
     "is_free_listen": {
       "type": "boolean",
       "default": false,
-      "description": "If true, full track plays free. Otherwise 30-second preview only."
+      "description": "If true, extended 2:30 preview plays. Otherwise 1:30 preview only."
     },
     "is_dormant": {
       "type": "boolean",
@@ -124,8 +124,8 @@
     },
     "price": {
       "type": "number",
-      "description": "Track price in USD (default $2.99)",
-      "default": 2.99
+      "description": "Track price in USD (default $1.99)",
+      "default": 1.99
     }
   },
   "required": [

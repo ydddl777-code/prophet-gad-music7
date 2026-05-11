@@ -12,31 +12,14 @@ const FEATURED_TRACKS = [
 
 
 const AVATARS = [
-  {
-    url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/1e2633946_smallGadup1.jpg",
-    caption: "The Seer — Breastplate of Judgment",
-    type: "image"
-  },
-  {
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/82e316e3e_ProphetGadinuniformupscale.jpg",
-    caption: "The Seer in Full Armor",
-    type: "image"
-  },
-  {
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/9cab1d068_Superheropoisedinelegantdiningroom.png",
-    caption: "Prophet Gad — The Watchman",
-    type: "image"
-  },
-  {
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/dde2b0bc7_Prophet_gad_trains_young_prophets_90390a5f07.jpg",
-    caption: "Training the Remnant",
-    type: "image"
-  },
-  {
-    url: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/698ae99a8f13115b248081e9/ec0f6728a_ProphetGadinblacksuitUpscale.jpg",
-    caption: "The Prophet in Modern Times",
-    type: "image"
-  },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/480b2a7d0_finalgad1ULR.PNG" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/4b9e78f19_Gadforulr.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/c6f7e7186_gadlookupULR.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/4befcf44e_Gemini_Generated_Image_kk8rs8kk8rs8kk8r.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/d0c3b4373_SuperstarAAE2.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/5ff6c6017_AAEinatuxedo.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/8cd8c38a4_Gadonanoutreachmissiontotherich1.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/f55557252_Screenshot2026-05-05025837.png" },
 ];
 
 
@@ -138,9 +121,7 @@ export default function ProphetHeroBanner() {
                 className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${i === avatarIndex ? 'opacity-100' : 'opacity-0'}`}
               />
             ))}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-center">
-              <p className="text-amber-400 text-[0.55rem] tracking-widest uppercase">{AVATARS[avatarIndex]?.caption || 'Prophet Gad'}</p>
-            </div>
+
           </div>
 
             {/* Mini Player — right below portrait */}

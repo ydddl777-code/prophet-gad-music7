@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import VideoStrip from './VideoStrip';
 import WhoIsGadPanel from './WhoIsGadPanel';
-import EcosystemApps from './EcosystemApps';
-import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, Users, Globe } from 'lucide-react';
+import { BookOpen, Play, Pause, ChevronLeft, ChevronRight, Users } from 'lucide-react';
 
 const FEATURED_TRACKS = [
   { title: "Thunder Road Gospel", url: "https://media.base44.com/files/public/698ae99a8f13115b248081e9/764554286_ThunderRoadGospel7.mp3" },
@@ -48,7 +47,6 @@ export default function ProphetHeroBanner() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [showWhoIsGad, setShowWhoIsGad] = useState(false);
-  const [showEcosystem, setShowEcosystem] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -181,8 +179,8 @@ export default function ProphetHeroBanner() {
               </p>
             </div>
 
-            {/* Navigation Buttons */}
-            <div className="flex flex-wrap justify-center gap-3">
+            {/* Who Is + E-Books */}
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
               <button
                 onClick={() => setShowWhoIsGad(true)}
                 className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-white px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
@@ -196,13 +194,37 @@ export default function ProphetHeroBanner() {
                 <BookOpen className="w-4 h-4 flex-shrink-0" />
                 E-Books
               </a>
-              <button
-                onClick={() => setShowEcosystem(true)}
-                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-purple-700/40 text-purple-300 px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
-              >
-                <Globe className="w-4 h-4 flex-shrink-0" />
-                The Ecosystem
-              </button>
+            </div>
+
+            {/* The 4 Apps — always visible */}
+            <div className="w-full">
+              <p className="text-xs tracking-[0.2em] uppercase text-slate-500 text-center mb-3 font-semibold">The Ecosystem</p>
+              <div className="grid grid-cols-2 gap-3">
+                <a href="https://prophetgadmusic.com" target="_blank" rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1 bg-amber-900/30 hover:bg-amber-900/50 border border-amber-700/40 rounded-xl px-3 py-3 transition-colors text-center">
+                  <span className="text-2xl">🎵</span>
+                  <span className="text-amber-300 font-bold text-xs uppercase tracking-wide">Music</span>
+                  <span className="text-slate-400 text-[0.6rem] leading-tight">Prophetic Catalog</span>
+                </a>
+                <a href="https://ferventcounsel.com" target="_blank" rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1 bg-purple-900/30 hover:bg-purple-900/50 border border-purple-700/40 rounded-xl px-3 py-3 transition-colors text-center">
+                  <span className="text-2xl">🙏</span>
+                  <span className="text-purple-300 font-bold text-xs uppercase tracking-wide">Counsel</span>
+                  <span className="text-slate-400 text-[0.6rem] leading-tight">Biblical Guidance</span>
+                </a>
+                <a href="https://clearsignalapp.ai" target="_blank" rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1 bg-blue-900/30 hover:bg-blue-900/50 border border-blue-700/40 rounded-xl px-3 py-3 transition-colors text-center">
+                  <span className="text-2xl">🔍</span>
+                  <span className="text-blue-300 font-bold text-xs uppercase tracking-wide">Technology</span>
+                  <span className="text-slate-400 text-[0.6rem] leading-tight">Music Discernment</span>
+                </a>
+                <a href="https://prophetgadspeaks.com" target="_blank" rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-1 bg-red-900/30 hover:bg-red-900/50 border border-red-800/40 rounded-xl px-3 py-3 transition-colors text-center">
+                  <span className="text-2xl">⚔️</span>
+                  <span className="text-red-300 font-bold text-xs uppercase tracking-wide">Warfare</span>
+                  <span className="text-slate-400 text-[0.6rem] leading-tight">Doctrinal Debate</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -213,7 +235,6 @@ export default function ProphetHeroBanner() {
 
       {/* MODALS */}
       {showWhoIsGad && <WhoIsGadPanel onClose={() => setShowWhoIsGad(false)} />}
-      {showEcosystem && <EcosystemApps onClose={() => setShowEcosystem(false)} />}
     </div>
   );
 }

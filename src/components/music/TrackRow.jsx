@@ -156,21 +156,27 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
           <CommentButton trackId={track.id} />
 
           {/* Price / Action Button */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {track.is_free_listen ? (
-              <div className="bg-amber-900/60 border border-amber-500/40 text-amber-400 font-bold text-xs px-3 py-1.5 rounded-full tracking-wider uppercase">
-                Extended Play
-              </div>
-            ) : (
-              <Button 
-                onClick={handleBuy} 
-                disabled={purchasing}
-                className="bg-[#8b0000] hover:bg-[#a00000] text-white font-semibold text-sm px-4 py-2 rounded-full flex items-center gap-2"
-              >
-                <ShoppingCart className="w-4 h-4" />
-                ${(track.price || 1.99).toFixed(2)}
-              </Button>
-            )}
+          <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+            {/* Preview / Extended Play badge */}
+            <button
+              onClick={handlePlay}
+              className={`font-bold text-xs px-3 py-1.5 rounded-full tracking-wider uppercase border transition-colors
+                ${track.is_free_listen
+                  ? 'bg-amber-900/60 border-amber-500/40 text-amber-400 hover:bg-amber-800/60'
+                  : 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700'
+                }`}
+            >
+              {track.is_free_listen ? 'Extended Play' : 'Preview'}
+            </button>
+            {/* Buy button — always shown */}
+            <Button 
+              onClick={handleBuy} 
+              disabled={purchasing}
+              className="bg-[#8b0000] hover:bg-[#a00000] text-white font-semibold text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5"
+            >
+              <ShoppingCart className="w-3.5 h-3.5" />
+              ${(track.price || 1.99).toFixed(2)}
+            </Button>
 
             {/* User controls - visible on hover */}
             {hovering && (

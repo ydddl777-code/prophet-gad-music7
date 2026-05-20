@@ -35,7 +35,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
         track_id: track.id,
         track_title: track.title,
         track_artist: track.artist,
-        price_cents: Math.round((track.price || 1.99) * 100),
+        price_cents: 199,
         cover_art_url: track.cover_art_url || null,
       });
       if (res.data?.url) window.location.href = res.data.url;
@@ -175,7 +175,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
               className="bg-[#8b0000] hover:bg-[#a00000] text-white font-semibold text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5"
             >
               <ShoppingCart className="w-3.5 h-3.5" />
-              ${(track.price || 1.99).toFixed(2)}
+              $1.99
             </Button>
 
             {/* User controls - visible on hover */}

@@ -157,16 +157,12 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
 
           {/* Price / Action Button */}
           <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-            {/* Preview / Extended Play badge */}
+            {/* Preview badge */}
             <button
               onClick={handlePlay}
-              className={`font-bold text-xs px-3 py-1.5 rounded-full tracking-wider uppercase border transition-colors
-                ${track.is_free_listen
-                  ? 'bg-amber-900/60 border-amber-500/40 text-amber-400 hover:bg-amber-800/60'
-                  : 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700'
-                }`}
+              className="font-bold text-xs px-3 py-1.5 rounded-full tracking-wider uppercase border transition-colors bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
             >
-              {track.is_free_listen ? 'Extended Play' : 'Preview'}
+              Preview
             </button>
             {/* Buy button — always shown */}
             <Button 

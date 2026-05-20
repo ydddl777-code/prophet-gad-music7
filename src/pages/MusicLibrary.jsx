@@ -7,6 +7,7 @@ import UploadSection from '../components/music/UploadSection';
 import TrackRow from '../components/music/TrackRow';
 import FilterBar from '../components/music/FilterBar';
 import ProphetHeroBanner from '../components/music/ProphetHeroBanner';
+import ExtendedPlayStrip from '../components/music/ExtendedPlayStrip';
 import ProphetWelcome from '../components/welcome/ProphetWelcome.jsx';
 import EmailCapturePopup from '../components/welcome/EmailCapturePopup.jsx';
 
@@ -169,8 +170,8 @@ export default function MusicLibrary() {
       {/* Prophet Hero Banner */}
       <ProphetHeroBanner />
 
-
-
+      {/* Extended Play Strip — free-listen featured tracks */}
+      <ExtendedPlayStrip />
 
 
       {/* Library Header */}

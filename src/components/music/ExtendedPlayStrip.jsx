@@ -120,7 +120,7 @@ export default function ExtendedPlayStrip() {
                       track_id: track.id,
                       track_title: track.title,
                       track_artist: track.artist,
-                      price_cents: Math.round((track.price || 1.99) * 100),
+                      price_cents: 199,
                       cover_art_url: track.cover_art_url || null,
                     });
                     if (res.data?.url) window.location.href = res.data.url;

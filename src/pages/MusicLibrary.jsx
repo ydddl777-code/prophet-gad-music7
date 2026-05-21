@@ -308,8 +308,8 @@ export default function MusicLibrary() {
           </div>
         ) : (
           <>
-            {renderSection(propheticTracks, 'Prophetic · Spiritual', 'Oracles set to rhythm · Prophecy · Judgment · Repentance · Awakening', '🔥')}
-            {renderSection(dominicanTracks, 'Dominican Memories', 'Dominican Spanish · Haitian Creole · Bachata · Love & Life', '🌴')}
+            {renderSection(propheticTracks, 'PGMC Archive', 'Prophet Gad Music Catalog — Oracles set to rhythm · Prophecy · Judgment · Awakening', '🔥')}
+            {renderSection(dominicanTracks, 'PGMC Channel', 'Dominican Spanish · Haitian Creole · Bachata · Love & Life', '🌴')}
           </>
         )}
 

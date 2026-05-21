@@ -200,9 +200,8 @@ export default function MusicLibrary() {
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <h2 className="text-2xl font-bold text-white">
-                Prophetic Music Library
+                Prophetic Music Catalog
               </h2>
-              <p className="text-slate-500 text-sm mt-1 italic">Hear the Visions — Listen to the Rhythm</p>
             </div>
             <div className="flex items-center gap-3">
               {authChecked && isAdmin && tracks.filter(t => t.is_dormant).length > 0 && (

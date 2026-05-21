@@ -80,9 +80,10 @@ export default function MusicLibrary() {
   // Get unique genres
   const genres = [...new Set(tracks.filter(t => t.genre).map(t => t.genre))].sort();
 
-  // Filter tracks — exclude dormant placeholders
+  // Filter tracks — exclude dormant placeholders and extended-play strip tracks
   const filteredTracks = tracks.filter(track => {
     if (track.is_dormant) return false;
+    if (track.is_free_listen) return false;
     const matchesSearch = 
       track.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       track.artist?.toLowerCase().includes(searchTerm.toLowerCase()) ||

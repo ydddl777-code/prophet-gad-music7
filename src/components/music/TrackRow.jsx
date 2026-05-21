@@ -143,7 +143,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
             <h3 className={`font-bold text-lg sm:text-xl leading-tight mb-1 flex items-center gap-2 flex-wrap ${isCurrentTrack ? 'text-amber-400' : 'text-white'}`}>
               <span>{track.title}</span>
               {track.duration && (
-                <span className="text-xs font-mono font-normal text-slate-500 bg-slate-900/80 px-1.5 py-0.5 rounded">{track.duration}</span>
+                <span className="text-xs font-mono font-normal text-amber-500/80 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700">{track.duration}</span>
               )}
               {track.composition_date && (
                 <span className="text-xs font-mono font-normal text-slate-600 bg-slate-900/80 px-1.5 py-0.5 rounded">{track.composition_date}</span>

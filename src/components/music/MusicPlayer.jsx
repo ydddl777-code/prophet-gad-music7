@@ -124,11 +124,23 @@ export default function MusicPlayer() {
       {/* Preview Ended — Buy Prompt */}
       {previewEnded && currentTrack && (
         <div className="fixed bottom-16 left-0 right-0 z-50 flex justify-center px-4">
-          <div className="bg-slate-900 border border-amber-500/60 rounded-2xl px-5 py-3 shadow-2xl flex items-center gap-4 max-w-sm w-full">
-            <div className="flex-1 min-w-0">
-              <p className="text-white font-bold text-sm truncate">{currentTrack.title}</p>
-              <p className="text-amber-400 text-xs">Preview ended — buy to hear the full song</p>
+          <div className="bg-slate-900 border border-amber-500/60 rounded-2xl px-5 py-4 shadow-2xl flex flex-col gap-3 max-w-md w-full">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-white font-bold text-sm truncate">{currentTrack.title}</p>
+                {currentTrack.file_url?.endsWith('.mp4') ? (
+                  <p className="text-amber-400 text-xs mt-0.5">🎬 Video preview ended — own the full music video!</p>
+                ) : (
+                  <p className="text-amber-400 text-xs mt-0.5">Preview ended — buy to hear the full song</p>
+                )}
+              </div>
+              <button onClick={dismissPreview} className="text-slate-500 hover:text-slate-300 text-lg leading-none flex-shrink-0">&times;</button>
             </div>
+            {currentTrack.file_url?.endsWith('.mp4') && (
+              <p className="text-slate-400 text-xs leading-relaxed">
+                To purchase and download the full music video, tap the <span className="text-amber-400 font-semibold">Buy</span> button below or find this track in the catalog and tap its purchase button.
+              </p>
+            )}
             <button
               onClick={async () => {
                 if (window.self !== window.top) { alert('Purchase only available from the published app.'); return; }
@@ -142,11 +154,10 @@ export default function MusicPlayer() {
                 });
                 if (res.data?.url) window.location.href = res.data.url;
               }}
-              className="bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white font-bold text-sm px-4 py-2 rounded-full flex-shrink-0"
+              className="w-full bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white font-bold text-sm px-4 py-2.5 rounded-full"
             >
-              Buy ${(currentTrack.price || 1.99).toFixed(2)}
+              🛒 Buy Full {currentTrack.file_url?.endsWith('.mp4') ? 'Music Video' : 'Song'} — ${(currentTrack.price || 1.99).toFixed(2)}
             </button>
-            <button onClick={dismissPreview} className="text-slate-500 hover:text-slate-300 text-lg leading-none">&times;</button>
           </div>
         </div>
       )}

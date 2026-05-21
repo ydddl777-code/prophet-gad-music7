@@ -37,7 +37,7 @@ export default function ExtendedPlayStrip() {
           <span className="text-[0.6rem] tracking-[0.35em] uppercase text-amber-500/70 font-semibold">New Releases</span>
           <div className="h-px w-12 bg-amber-500/40" />
         </div>
-        <h2 className="text-xl font-black tracking-wider text-white">Extended Play</h2>
+        <h2 className="text-xl font-black tracking-wider text-white">Extended Play Channel</h2>
       </div>
 
       {/* Horizontal Scrollable Track Strip */}

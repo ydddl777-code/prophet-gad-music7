@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import MetadataEditor from './MetadataEditor';
 import { CommentButton } from './TrackComments';
 
-export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = false, allTracks = [] }) {
+export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = false, allTracks = [], selectable = false, selected = false, onSelect }) {
   const player = usePlayer();
   const isCurrentTrack = player?.currentTrack?.id === track.id;
   const isTrackPlaying = isCurrentTrack && player?.isPlaying;
@@ -90,6 +90,16 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
       >
         {/* Main Row */}
         <div className="flex items-center gap-4 px-4 py-3">
+          {/* Checkbox for multi-select */}
+          {selectable && (
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={() => onSelect(track.id)}
+              className="w-4 h-4 accent-red-600 flex-shrink-0 cursor-pointer"
+              onClick={e => e.stopPropagation()}
+            />
+          )}
           {/* Catalog Number */}
           <div className="flex-shrink-0 w-10 text-center hidden sm:block">
             {track.track_number ? (
@@ -134,6 +144,9 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
               <span>{track.title}</span>
               {track.duration && (
                 <span className="text-xs font-mono font-normal text-slate-500 bg-slate-900/80 px-1.5 py-0.5 rounded">{track.duration}</span>
+              )}
+              {track.composition_date && (
+                <span className="text-xs font-mono font-normal text-slate-600 bg-slate-900/80 px-1.5 py-0.5 rounded">{track.composition_date}</span>
               )}
             </h3>
             {displayArtist && (

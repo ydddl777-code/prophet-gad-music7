@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from "@/api/base44Client";
-import { Disc3, LogIn, Download } from 'lucide-react';
+import { Disc3, LogIn, Download, Trash2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import UploadSection from '../components/music/UploadSection';
 import TrackRow from '../components/music/TrackRow';
@@ -21,6 +21,8 @@ export default function MusicLibrary() {
   const [authChecked, setAuthChecked] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [bulkDeleting, setBulkDeleting] = useState(false);
 
   const queryClient = useQueryClient();
   const { play } = usePlayer();
@@ -74,6 +76,25 @@ export default function MusicLibrary() {
   };
 
   const handleDelete = () => {
+    queryClient.invalidateQueries({ queryKey: ['music-tracks'] });
+  };
+
+  const handleSelect = (id) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    if (!confirm(`Permanently delete ${selectedIds.size} track(s)?`)) return;
+    setBulkDeleting(true);
+    for (const id of selectedIds) {
+      await base44.entities.MusicTrack.delete(id);
+    }
+    setSelectedIds(new Set());
+    setBulkDeleting(false);
     queryClient.invalidateQueries({ queryKey: ['music-tracks'] });
   };
 
@@ -137,7 +158,8 @@ export default function MusicLibrary() {
         <div className="rounded-lg overflow-hidden border border-slate-900">
           {sectionTracks.map((track) => (
             <TrackRow key={track.id} track={track} onUpdate={handleUpdate}
-              onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} allTracks={tracks} />
+              onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} allTracks={tracks}
+              selectable={isAdmin} selected={selectedIds.has(track.id)} onSelect={handleSelect} />
           ))}
         </div>
       </div>
@@ -254,6 +276,21 @@ export default function MusicLibrary() {
             onGenreChange={setSelectedGenre}
             onSortChange={setSortBy}
           />
+        )}
+
+        {/* Bulk Delete Toolbar — admin only, shows when tracks are selected */}
+        {isAdmin && selectedIds.size > 0 && (
+          <div className="flex items-center gap-3 bg-red-950/40 border border-red-800/50 rounded-lg px-4 py-2">
+            <span className="text-red-400 text-sm font-semibold">{selectedIds.size} selected</span>
+            <Button size="sm" variant="ghost" onClick={() => setSelectedIds(new Set())} className="text-slate-400 hover:text-white text-xs">
+              Clear
+            </Button>
+            <Button size="sm" onClick={handleBulkDelete} disabled={bulkDeleting}
+              className="bg-red-700 hover:bg-red-600 text-white text-xs ml-auto">
+              <Trash2 className="w-3.5 h-3.5 mr-1" />
+              {bulkDeleting ? 'Deleting...' : `Delete ${selectedIds.size}`}
+            </Button>
+          </div>
         )}
 
         {/* Tracks Display */}

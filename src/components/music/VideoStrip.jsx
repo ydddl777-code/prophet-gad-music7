@@ -1,17 +1,38 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+
+// Global registry so any playing video can stop the others
+const playingVideos = new Set();
 
 function VideoPlayer({ track }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
 
+  const stopSelf = useCallback(() => {
+    const v = videoRef.current;
+    if (v && !v.paused) { v.pause(); }
+    setPlaying(false);
+  }, []);
+
+  useEffect(() => {
+    playingVideos.add(stopSelf);
+    return () => playingVideos.delete(stopSelf);
+  }, [stopSelf]);
+
   const toggle = () => {
     const v = videoRef.current;
     if (!v) return;
-    if (playing) { v.pause(); setPlaying(false); }
-    else { v.play(); setPlaying(true); }
+    if (playing) {
+      v.pause();
+      setPlaying(false);
+    } else {
+      // Stop all other videos first
+      playingVideos.forEach(stop => stop !== stopSelf && stop());
+      v.play();
+      setPlaying(true);
+    }
   };
 
   const toggleMute = (e) => {
@@ -94,7 +115,7 @@ export default function VideoStrip() {
             <span className="text-[0.6rem] tracking-[0.35em] uppercase text-amber-500/70 font-semibold">Exclusive</span>
             <div className="h-px w-16 bg-amber-500/40" />
           </div>
-          <h2 className="text-2xl font-black tracking-wider" style={{color: '#D4AF37'}}>Full Screen Music Videos</h2>
+          <h2 className="text-2xl font-black tracking-wider" style={{color: '#D4AF37'}}>Extended Play — Full Screen Music Videos</h2>
           <p className="text-xs text-white/50 tracking-widest uppercase mt-1">With Lyrics &mdash; Prophetic Messages in Full Cinematic View</p>
         </div>
 

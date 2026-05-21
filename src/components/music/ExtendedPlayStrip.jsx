@@ -9,14 +9,11 @@ export default function ExtendedPlayStrip() {
   const player = usePlayer();
 
   useEffect(() => {
-    base44.entities.MusicTrack.filter({ is_free_listen: true }, 'sort_order', 20)
+    // Show MP4 video tracks in the Extended Play strip
+    base44.entities.MusicTrack.list('-track_number', 200)
       .then(data => {
-        const sorted = [...data].sort((a, b) => {
-          const aOrder = a.sort_order ?? 999;
-          const bOrder = b.sort_order ?? 999;
-          return aOrder - bOrder;
-        });
-        setTracks(sorted);
+        const videoTracks = data.filter(t => t.file_url?.endsWith('.mp4') && !t.is_dormant);
+        setTracks(videoTracks);
       })
       .catch(() => {});
   }, []);

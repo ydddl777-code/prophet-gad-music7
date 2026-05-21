@@ -23,6 +23,7 @@ export default function MusicLibrary() {
   const [currentUser, setCurrentUser] = useState(null);
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('all');
 
   const queryClient = useQueryClient();
   const { play } = usePlayer();
@@ -112,8 +113,9 @@ export default function MusicLibrary() {
       (track.track_number && String(track.track_number).includes(searchTerm.trim()));
     
     const matchesGenre = selectedGenre === 'all' || track.genre === selectedGenre;
+    const matchesLanguage = selectedLanguage === 'all' || track.language === selectedLanguage;
     
-    return matchesSearch && matchesGenre;
+    return matchesSearch && matchesGenre && matchesLanguage;
   });
 
   const handlePlay = (track) => play(track, filteredTracks);
@@ -135,14 +137,10 @@ export default function MusicLibrary() {
     link.click();
   };
 
-  // Classify into two sections
-  const isDominicanMemories = (track) =>
-    track.language === 'Dominican Spanish' ||
-    track.language === 'Haitian Creole' ||
-    (track.language === 'English' && ['Bachata', 'Kompa'].includes(track.rhythm_style));
-
-  const dominicanTracks = filteredTracks.filter(isDominicanMemories);
-  const propheticTracks = filteredTracks.filter(t => !isDominicanMemories(t));
+  // Split by language
+  const englishTracks = filteredTracks.filter(t => !t.language || t.language === 'English');
+  const spanishTracks = filteredTracks.filter(t => t.language === 'Dominican Spanish');
+  const creoleTracks = filteredTracks.filter(t => t.language === 'Haitian Creole');
 
   const renderSection = (sectionTracks, title, subtitle, icon) => {
     if (sectionTracks.length === 0) return null;
@@ -275,6 +273,7 @@ export default function MusicLibrary() {
             onSearchChange={setSearchTerm}
             onGenreChange={setSelectedGenre}
             onSortChange={setSortBy}
+            onLanguageChange={setSelectedLanguage}
           />
         )}
 
@@ -308,8 +307,9 @@ export default function MusicLibrary() {
           </div>
         ) : (
           <>
-            {renderSection(propheticTracks, 'PGMC Archive', 'Prophet Gad Music Catalog — Oracles set to rhythm · Prophecy · Judgment · Awakening', '🔥')}
-            {renderSection(dominicanTracks, 'PGMC Channel', 'Dominican Spanish · Haitian Creole · Bachata · Love & Life', '🌴')}
+            {renderSection(englishTracks, 'PGMC Catalog — English', 'Prophecy · Judgment · Repentance · Awakening', '🔥')}
+            {renderSection(spanishTracks, 'PGMC Catalog — Spanish', 'Dominican Spanish · Bachata · Amor y Vida', '🇩🇴')}
+            {renderSection(creoleTracks, 'PGMC Catalog — Haitian Creole', 'Kreyòl · Leve · Pwofesi', '🇭🇹')}
           </>
         )}
 

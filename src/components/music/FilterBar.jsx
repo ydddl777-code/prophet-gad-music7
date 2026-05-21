@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search } from 'lucide-react';
 
-export default function FilterBar({ genres, onSearchChange, onGenreChange, onSortChange }) {
+export default function FilterBar({ genres, onSearchChange, onGenreChange, onSortChange, onLanguageChange }) {
   return (
     <div className="flex flex-col md:flex-row gap-4">
       <div className="relative flex-1">
@@ -13,8 +13,21 @@ export default function FilterBar({ genres, onSearchChange, onGenreChange, onSor
           className="pl-10"
           onChange={(e) => onSearchChange(e.target.value)}
         />
-        <p className="text-xs text-slate-600 mt-1 pl-1">💡 Tip: If you heard a song on YouTube, search its catalog number (shown as #123 on each track)</p>
+        <p className="text-xs text-slate-600 mt-1 pl-1">💡 Tip: Search catalog # (e.g. 59) or title</p>
       </div>
+
+      {/* Language filter */}
+      <Select onValueChange={onLanguageChange} defaultValue="all">
+        <SelectTrigger className="w-full md:w-48">
+          <SelectValue placeholder="All Languages" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">🌐 All Languages</SelectItem>
+          <SelectItem value="English">🇺🇸 English</SelectItem>
+          <SelectItem value="Dominican Spanish">🇩🇴 Spanish</SelectItem>
+          <SelectItem value="Haitian Creole">🇭🇹 Haitian Creole</SelectItem>
+        </SelectContent>
+      </Select>
       
       <Select onValueChange={onGenreChange} defaultValue="all">
         <SelectTrigger className="w-full md:w-48">

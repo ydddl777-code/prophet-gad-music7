@@ -160,7 +160,7 @@ export default function ProphetHeroBanner() {
               </p>
             </div>
 
-            {/* Who Is + E-Books */}
+            {/* Who Is Prophet Gad */}
             <div className="flex flex-wrap justify-center gap-3 mb-6">
               <button
                 onClick={() => setShowWhoIsGad(true)}
@@ -169,42 +169,38 @@ export default function ProphetHeroBanner() {
                 <Users className="w-4 h-4 text-blue-400 flex-shrink-0" />
                 Who Is Prophet Gad
               </button>
-              <a href="/EbookStore"
-                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-amber-700/40 text-amber-300 px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
-              >
-                <BookOpen className="w-4 h-4 flex-shrink-0" />
-                E-Books
-              </a>
             </div>
 
-            {/* The 4 Apps — always visible */}
+            {/* The Ecosystem — 5 boxes in one row */}
             <div className="w-full">
               <p className="text-xs tracking-[0.2em] uppercase text-slate-500 text-center mb-3 font-semibold">The Ecosystem</p>
-              <div className="grid grid-cols-2 gap-3">
-                <a href="https://prophetgadmusic.com" target="_blank" rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1 bg-amber-900/30 hover:bg-amber-900/50 border border-amber-700/40 rounded-xl px-3 py-3 transition-colors text-center">
-                  <span className="text-2xl">🎵</span>
-                  <span className="text-amber-300 font-bold text-xs uppercase tracking-wide">Music</span>
-                  <span className="text-slate-400 text-[0.6rem] leading-tight">Prophetic Catalog</span>
-                </a>
-                <a href="https://ferventcounsel.com" target="_blank" rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1 bg-purple-900/30 hover:bg-purple-900/50 border border-purple-700/40 rounded-xl px-3 py-3 transition-colors text-center">
-                  <span className="text-2xl">🙏</span>
-                  <span className="text-purple-300 font-bold text-xs uppercase tracking-wide">Counsel</span>
-                  <span className="text-slate-400 text-[0.6rem] leading-tight">Biblical Guidance</span>
-                </a>
-                <a href="https://clearsignalapp.ai" target="_blank" rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1 bg-blue-900/30 hover:bg-blue-900/50 border border-blue-700/40 rounded-xl px-3 py-3 transition-colors text-center">
-                  <span className="text-2xl">🔍</span>
-                  <span className="text-blue-300 font-bold text-xs uppercase tracking-wide">Technology</span>
-                  <span className="text-slate-400 text-[0.6rem] leading-tight">Music Discernment</span>
-                </a>
-                <a href="https://prophetgadspeaks.com" target="_blank" rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1 bg-red-900/30 hover:bg-red-900/50 border border-red-800/40 rounded-xl px-3 py-3 transition-colors text-center">
-                  <span className="text-2xl">⚔️</span>
-                  <span className="text-red-300 font-bold text-xs uppercase tracking-wide">Warfare</span>
-                  <span className="text-slate-400 text-[0.6rem] leading-tight">Doctrinal Debate</span>
-                </a>
+              <div className="flex gap-2 justify-center flex-wrap">
+                {[
+                  { href: 'https://prophetgad.com', emoji: '👤', label: 'Prophet Gad', sub: 'The Man & Mission', color: 'amber', desc: 'Learn who Prophet Gad is — his calling, his mission, and the message he carries for this generation.' },
+                  { href: '/EbookStore', emoji: '📖', label: 'E-Books', sub: 'Written Word', color: 'yellow', desc: 'Prophetic writings, doctrinal studies, and spirit-filled books from Prophet Gad.' },
+                  { href: 'https://ferventcounsel.com', emoji: '🙏', label: 'Fervent', sub: 'Biblical Counsel', color: 'purple', desc: 'Bring your troubles and receive biblical guidance and prayer. Worldwide. Anyone. Anytime.' },
+                  { href: 'https://pgplaysignal.ai', emoji: '🔍', label: 'PG Play Signal', sub: 'Music Discernment', color: 'blue', desc: 'Analyze any song for spiritual content. Know what you\'re feeding your spirit.' },
+                  { href: 'https://pgdd.ai', emoji: '🛡️', label: 'Defense', sub: 'Doctrinal Defense', color: 'red', desc: 'Bible doctrinal defense. Prophet Gad takes on all challengers from the Word of the God of Israel — chapter and verse.' },
+                ].map(app => (
+                  <div key={app.label} className="relative group/eco">
+                    <a
+                      href={app.href}
+                      target={app.href.startsWith('http') ? '_blank' : '_self'}
+                      rel="noopener noreferrer"
+                      className={`flex flex-col items-center gap-0.5 bg-${app.color}-900/30 hover:bg-${app.color}-900/50 border border-${app.color}-700/40 rounded-lg px-2.5 py-2 transition-colors text-center w-[72px]`}
+                    >
+                      <span className="text-lg">{app.emoji}</span>
+                      <span className={`text-${app.color}-300 font-bold text-[0.55rem] uppercase tracking-wide leading-tight`}>{app.label}</span>
+                      <span className="text-slate-500 text-[0.5rem] leading-tight">{app.sub}</span>
+                    </a>
+                    {/* Tooltip */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-44 bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-xs text-slate-300 leading-relaxed shadow-xl opacity-0 group-hover/eco:opacity-100 pointer-events-none transition-opacity z-50 text-left">
+                      <p className="font-bold text-white mb-1">{app.label}</p>
+                      <p>{app.desc}</p>
+                      <p className="text-amber-400 mt-1.5 text-[0.6rem] font-semibold">Click to visit →</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

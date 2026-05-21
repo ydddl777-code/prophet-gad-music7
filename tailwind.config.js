@@ -85,5 +85,12 @@ module.exports = {
   		}
   	}
   },
+  safelist: [
+    'bg-amber-900/30','bg-amber-900/50','border-amber-700/40','text-amber-300',
+    'bg-yellow-900/30','bg-yellow-900/50','border-yellow-700/40','text-yellow-300',
+    'bg-purple-900/30','bg-purple-900/50','border-purple-700/40','text-purple-300',
+    'bg-blue-900/30','bg-blue-900/50','border-blue-700/40','text-blue-300',
+    'bg-red-900/30','bg-red-900/50','border-red-700/40','text-red-300',
+  ],
   plugins: [require("tailwindcss-animate")],
 }

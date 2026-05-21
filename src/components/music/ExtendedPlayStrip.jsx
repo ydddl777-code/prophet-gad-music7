@@ -10,7 +10,7 @@ export default function ExtendedPlayStrip() {
 
   useEffect(() => {
     // Show MP4 video tracks in the Extended Play strip
-    base44.entities.MusicTrack.list('-track_number', 200)
+    base44.entities.MusicTrack.list('-track_number', 190)
       .then(data => {
         const videoTracks = data.filter(t => t.file_url?.endsWith('.mp4') && !t.is_dormant);
         setTracks(videoTracks);

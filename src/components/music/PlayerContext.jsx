@@ -91,10 +91,9 @@ export function PlayerProvider({ children }) {
     const onTimeUpdate = () => {
       setCurrentTime(audio.currentTime);
       const track = queueRef.current[currentIndexRef.current];
-      // MP4 video tracks: half duration + 30s. Regular tracks: 60s preview.
+      // MP4 video tracks: 30 minute extended preview. Regular tracks: 60s preview.
       const isVideo = track?.file_url?.endsWith('.mp4');
-      const halfPlusThirty = audio.duration ? audio.duration / 2 + 30 : 90;
-      const previewLimit = isVideo ? halfPlusThirty : 60;
+      const previewLimit = isVideo ? 1800 : 60;
       if (track && audio.currentTime >= previewLimit) {
         audio.pause();
         setIsPlaying(false);

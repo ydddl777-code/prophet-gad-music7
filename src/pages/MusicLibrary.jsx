@@ -177,8 +177,6 @@ export default function MusicLibrary() {
         </div>
       )}
 
-      <EmailCapturePopup />
-
       {/* Prophet Welcome Modal */}
       {showWelcome && currentUser && (
         <ProphetWelcome

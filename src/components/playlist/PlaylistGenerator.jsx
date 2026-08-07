@@ -125,10 +125,10 @@ Return a playlist with creative name, description, and track IDs in optimal play
   };
 
   return (
-    <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200">
+    <Card className="bg-white border-2 border-[#7a1f30]/30">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-purple-600" />
+          <Sparkles className="w-5 h-5" style={{color: '#7a1f30'}} />
           AI Playlist Generator
         </CardTitle>
       </CardHeader>
@@ -226,7 +226,7 @@ Return a playlist with creative name, description, and track IDs in optimal play
         <Button 
           onClick={handleGenerate}
           disabled={generating || !theme.trim()}
-          className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+          className="w-full bg-[#7a1f30] hover:bg-[#6a1828]"
         >
           {generating ? (
             <>

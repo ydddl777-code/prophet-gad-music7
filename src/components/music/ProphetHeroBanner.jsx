@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import VideoStrip from './VideoStrip';
 import WhoIsGadPanel from './WhoIsGadPanel';
 import { Users } from 'lucide-react';
@@ -97,31 +98,37 @@ export default function ProphetHeroBanner() {
               <p className="text-xs tracking-[0.2em] uppercase text-slate-600 text-center mb-3 font-semibold">The Ecosystem</p>
               <div className="flex gap-2 justify-center flex-wrap">
                 {[
-                  { href: 'https://prophetgad.com', emoji: '👤', label: 'Prophet Gad', sub: 'The Man & Mission', color: 'amber', desc: 'Learn who Prophet Gad is — his calling, his mission, and the message he carries for this generation.' },
-                  { href: '/EbookStore', emoji: '📖', label: 'E-Books', sub: 'Written Word', color: 'yellow', desc: 'Prophetic writings, doctrinal studies, and spirit-filled books from Prophet Gad.' },
-                  { href: 'https://ferventcounsel.com', emoji: '🙏', label: 'Fervent', sub: 'Biblical Counsel', color: 'purple', desc: 'Bring your troubles and receive biblical guidance and prayer. Worldwide. Anyone. Anytime.' },
-                  { href: 'https://pgplaysignal.ai', emoji: '🔍', label: 'PG Play Signal', sub: 'Music Discernment', color: 'blue', desc: 'Analyze any song for spiritual content. Know what you\'re feeding your spirit.' },
-                  { href: 'https://pgdd.ai', emoji: '🛡️', label: 'Defense', sub: 'Doctrinal Defense', color: 'red', desc: 'Bible doctrinal defense. Prophet Gad takes on all challengers from the Word of the God of Israel — chapter and verse.' },
-                ].map(app => (
-                  <div key={app.label} className="relative group/eco">
-                    <a
-                      href={app.href}
-                      target={app.href.startsWith('http') ? '_blank' : '_self'}
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center gap-0.5 bg-white hover:bg-[#7a1f30]/10 border border-[#7a1f30]/40 rounded-lg px-2.5 py-2 transition-colors text-center w-[72px] shadow-sm"
-                    >
-                      <span className="text-lg">{app.emoji}</span>
-                      <span className="font-bold text-[0.55rem] uppercase tracking-wide leading-tight" style={{color: '#7a1f30'}}>{app.label}</span>
-                      <span className="text-slate-600 text-[0.5rem] leading-tight">{app.sub}</span>
-                    </a>
-                    {/* Tooltip */}
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-44 bg-white border border-[#7a1f30]/30 rounded-lg p-2.5 text-xs text-slate-700 leading-relaxed shadow-xl opacity-0 group-hover/eco:opacity-100 pointer-events-none transition-opacity z-50 text-left">
-                      <p className="font-bold mb-1" style={{color: '#7a1f30'}}>{app.label}</p>
-                      <p>{app.desc}</p>
-                      <p className="mt-1.5 text-[0.6rem] font-semibold" style={{color: '#7a1f30'}}>Click to visit →</p>
+                  { href: 'https://prophetgad.com', emoji: '👤', label: 'About', sub: 'The Man & Mission', desc: 'Learn who Prophet Gad is — his calling, his mission, and the message he carries for this generation.' },
+                  { href: 'https://pgmc.ai', emoji: '🎵', label: 'Music', sub: 'Prophetic Catalog', desc: 'The full prophetic music catalog — oracles set to rhythm. Stream previews and purchase full downloads.' },
+                  { href: 'https://pgfc.ai', emoji: '🙏', label: 'Fervent Counsel', sub: 'Biblical Counsel', desc: 'Bring your troubles and receive biblical guidance and prayer. Worldwide. Anyone. Anytime.' },
+                  { href: 'https://pgcs.ai', emoji: '🔍', label: 'Clear Signal', sub: 'Music Discernment', desc: 'Analyze any song for spiritual content. Know what you\'re feeding your spirit.' },
+                  { href: 'https://pgdd.ai', emoji: '🛡️', label: 'Doctrinal Defense', sub: 'Doctrinal Defense', desc: 'Bible doctrinal defense. Prophet Gad takes on all challengers from the Word of the God of Israel — chapter and verse.' },
+                  { internal: '/ComingSoon', emoji: '📖', label: 'E-Books', sub: 'Written Word', desc: 'Prophetic writings, doctrinal studies, and spirit-filled books from Prophet Gad. Coming soon.' },
+                ].map(app => {
+                  const tileClass = "flex flex-col items-center gap-0.5 bg-white hover:bg-[#7a1f30]/10 border border-[#7a1f30]/40 rounded-lg px-2.5 py-2 transition-colors text-center w-[72px] shadow-sm";
+                  const Tile = app.internal
+                    ? <Link to={app.internal} className={tileClass}>
+                        <span className="text-lg">{app.emoji}</span>
+                        <span className="font-bold text-[0.55rem] uppercase tracking-wide leading-tight" style={{color: '#7a1f30'}}>{app.label}</span>
+                        <span className="text-slate-600 text-[0.5rem] leading-tight">{app.sub}</span>
+                      </Link>
+                    : <a href={app.href} target="_blank" rel="noopener noreferrer" className={tileClass}>
+                        <span className="text-lg">{app.emoji}</span>
+                        <span className="font-bold text-[0.55rem] uppercase tracking-wide leading-tight" style={{color: '#7a1f30'}}>{app.label}</span>
+                        <span className="text-slate-600 text-[0.5rem] leading-tight">{app.sub}</span>
+                      </a>;
+                  return (
+                    <div key={app.label} className="relative group/eco">
+                      {Tile}
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-44 bg-white border border-[#7a1f30]/30 rounded-lg p-2.5 text-xs text-slate-700 leading-relaxed shadow-xl opacity-0 group-hover/eco:opacity-100 pointer-events-none transition-opacity z-50 text-left">
+                        <p className="font-bold mb-1" style={{color: '#7a1f30'}}>{app.label}</p>
+                        <p>{app.desc}</p>
+                        <p className="mt-1.5 text-[0.6rem] font-semibold" style={{color: '#7a1f30'}}>{app.internal ? 'Coming soon' : 'Click to visit →'}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

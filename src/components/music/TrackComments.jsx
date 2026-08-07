@@ -23,7 +23,7 @@ export function CommentButton({ trackId }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors text-xs"
+        className="flex items-center gap-1 text-slate-500 hover:text-[#7a1f30] transition-colors text-xs"
         title="Comments"
       >
         <MessageCircle className="w-4 h-4" />
@@ -62,17 +62,17 @@ function CommentsPanel({ trackId, comments, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60" onClick={onClose}>
       <div
-        className="bg-slate-900 border border-slate-700 rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col"
+        className="bg-white border border-slate-200 rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
           <div className="flex items-center gap-2">
-            <MessageCircle className="w-4 h-4 text-amber-400" />
-            <span className="font-semibold text-white text-sm">Comments</span>
+            <MessageCircle className="w-4 h-4" style={{color: '#7a1f30'}} />
+            <span className="font-semibold text-slate-900 text-sm">Comments</span>
             <span className="text-slate-500 text-xs">({comments.length})</span>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-white">
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-900">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -84,12 +84,12 @@ function CommentsPanel({ trackId, comments, onClose }) {
           ) : (
             comments.map(c => (
               <div key={c.id} className="flex gap-3">
-                <div className="w-7 h-7 rounded-full bg-amber-900/60 flex items-center justify-center flex-shrink-0 text-xs font-bold text-amber-400">
+                <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style={{backgroundColor: 'rgba(122,31,48,0.15)', color: '#7a1f30'}}>
                   {c.author_name[0]?.toUpperCase()}
                 </div>
                 <div>
-                  <span className="text-amber-400 text-xs font-semibold">{c.author_name}</span>
-                  <p className="text-slate-300 text-sm leading-relaxed">{c.message}</p>
+                  <span className="text-xs font-semibold" style={{color: '#7a1f30'}}>{c.author_name}</span>
+                  <p className="text-slate-700 text-sm leading-relaxed">{c.message}</p>
                 </div>
               </div>
             ))
@@ -97,14 +97,14 @@ function CommentsPanel({ trackId, comments, onClose }) {
         </div>
 
         {/* Input form */}
-        <form onSubmit={handleSubmit} className="border-t border-slate-800 px-5 py-4 space-y-2">
-          {error && <p className="text-red-400 text-xs">{error}</p>}
+        <form onSubmit={handleSubmit} className="border-t border-slate-200 px-5 py-4 space-y-2">
+          {error && <p className="text-xs" style={{color: '#a01828'}}>{error}</p>}
           <input
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Your name"
             maxLength={40}
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-600"
+            className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#7a1f30]"
           />
           <div className="flex gap-2">
             <input
@@ -112,12 +112,13 @@ function CommentsPanel({ trackId, comments, onClose }) {
               onChange={e => setMessage(e.target.value)}
               placeholder="Leave a message... (150 chars)"
               maxLength={150}
-              className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-600"
+              className="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#7a1f30]"
             />
             <button
               type="submit"
               disabled={isPending || !name.trim() || !message.trim()}
-              className="w-9 h-9 flex items-center justify-center bg-amber-700 hover:bg-amber-600 disabled:opacity-40 rounded-lg flex-shrink-0"
+              className="w-9 h-9 flex items-center justify-center disabled:opacity-40 rounded-lg flex-shrink-0"
+              style={{backgroundColor: '#7a1f30'}}
             >
               <Send className="w-4 h-4 text-white" />
             </button>

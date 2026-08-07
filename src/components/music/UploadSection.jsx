@@ -70,18 +70,18 @@ export default function UploadSection({ onUploadComplete }) {
   };
 
   return (
-    <Card className="border border-slate-700 bg-slate-900">
+    <Card className="border border-slate-200 bg-white">
       <CardContent className="p-6">
-        <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-          <Upload className="w-4 h-4 text-amber-400" /> Upload New Tracks
+        <h3 className="text-slate-900 font-semibold mb-4 flex items-center gap-2">
+          <Upload className="w-4 h-4" style={{color: '#7a1f30'}} /> Upload New Tracks
         </h3>
 
         {/* Default settings */}
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div>
-            <label className="text-xs text-slate-400 mb-1 block">Language</label>
+            <label className="text-xs text-slate-600 mb-1 block">Language</label>
             <Select value={defaults.language} onValueChange={v => setDefaults(d => ({ ...d, language: v }))}>
-              <SelectTrigger className="bg-slate-800 border-slate-700 text-white text-sm">
+              <SelectTrigger className="bg-white border-slate-300 text-slate-900 text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -92,9 +92,9 @@ export default function UploadSection({ onUploadComplete }) {
             </Select>
           </div>
           <div>
-            <label className="text-xs text-slate-400 mb-1 block">Rhythm Style</label>
+            <label className="text-xs text-slate-600 mb-1 block">Rhythm Style</label>
             <Select value={defaults.rhythm_style} onValueChange={v => setDefaults(d => ({ ...d, rhythm_style: v }))}>
-              <SelectTrigger className="bg-slate-800 border-slate-700 text-white text-sm">
+              <SelectTrigger className="bg-white border-slate-300 text-slate-900 text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -105,32 +105,32 @@ export default function UploadSection({ onUploadComplete }) {
             </Select>
           </div>
           <div>
-            <label className="text-xs text-slate-400 mb-1 block">Price ($)</label>
+            <label className="text-xs text-slate-600 mb-1 block">Price ($)</label>
             <Input
               type="number"
               step="0.01"
               value={defaults.price}
               onChange={e => setDefaults(d => ({ ...d, price: e.target.value }))}
-              className="bg-slate-800 border-slate-700 text-white text-sm"
+              className="bg-white border-slate-300 text-slate-900 text-sm"
             />
           </div>
         </div>
 
         <label htmlFor="file-upload" className="cursor-pointer">
-          <div className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center hover:border-amber-500 transition-colors">
+          <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-[#7a1f30] transition-colors">
             {uploading ? (
               <div className="flex flex-col items-center gap-2">
-                <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
-                <p className="text-slate-300 text-sm">Processing {progress.current}/{progress.total}...</p>
-                <div className="w-48 h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-amber-500 transition-all" style={{ width: `${(progress.current / progress.total) * 100}%` }} />
+                <Loader2 className="w-8 h-8 animate-spin" style={{color: '#7a1f30'}} />
+                <p className="text-slate-700 text-sm">Processing {progress.current}/{progress.total}...</p>
+                <div className="w-48 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                  <div className="h-full transition-all" style={{ width: `${(progress.current / progress.total) * 100}%`, backgroundColor: '#7a1f30' }} />
                 </div>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-2">
-                <Music className="w-8 h-8 text-slate-500" />
-                <p className="text-slate-400 text-sm">Click to select audio files</p>
-                <p className="text-slate-600 text-xs">All tracks attributed to Prophet Gad</p>
+                <Music className="w-8 h-8 text-slate-400" />
+                <p className="text-slate-600 text-sm">Click to select audio files</p>
+                <p className="text-slate-500 text-xs">All tracks attributed to Prophet Gad</p>
               </div>
             )}
           </div>

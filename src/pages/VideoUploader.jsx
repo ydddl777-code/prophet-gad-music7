@@ -4,6 +4,7 @@ import { Upload, CheckCircle, AlertCircle, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import NavArrow from '@/components/NavArrow';
 
 export default function VideoUploader() {
   const [tracks, setTracks] = useState([]);
@@ -46,10 +47,10 @@ export default function VideoUploader() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 p-6 text-white">
+    <div className="min-h-screen bg-white p-6 text-slate-900">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl font-black text-amber-400 mb-1">Video Uploader</h1>
-        <p className="text-slate-400 text-sm mb-6">
+        <h1 className="text-2xl font-black mb-1" style={{color: '#7a1f30'}}>Video Uploader</h1>
+        <p className="text-slate-600 text-sm mb-6">
           Upload MP4 videos for Extended Play tracks (tracks marked as free listen).
           Each video replaces the audio file URL for that track.
         </p>
@@ -57,7 +58,7 @@ export default function VideoUploader() {
         <div className="relative mb-4">
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
           <Input
-            className="pl-9 bg-slate-900 border-slate-700 text-white"
+            className="pl-9 bg-white border-slate-300 text-slate-900"
             placeholder="Search tracks..."
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -66,12 +67,12 @@ export default function VideoUploader() {
 
         <div className="space-y-2 mb-8">
           {filteredTracks.length === 0 && (
-            <p className="text-slate-500 text-sm text-center py-8">
+            <p className="text-slate-600 text-sm text-center py-8">
               No free-listen tracks found. Mark tracks as "free listen" in the catalog first.
             </p>
           )}
           {filteredTracks.map(track => (
-            <div key={track.id} className="flex items-center gap-4 bg-slate-900 border border-slate-800 rounded-lg px-4 py-3">
+            <div key={track.id} className="flex items-center gap-4 bg-white border border-slate-200 rounded-lg px-4 py-3">
               {track.cover_art_url && (
                 <img src={track.cover_art_url} alt="" className="w-12 h-12 rounded object-cover flex-shrink-0" />
               )}
@@ -89,8 +90,8 @@ export default function VideoUploader() {
 
               <label className={`cursor-pointer flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-full border transition-colors
                 ${uploading === track.id
-                  ? 'bg-slate-700 border-slate-600 text-slate-400 cursor-not-allowed'
-                  : 'bg-amber-900/40 border-amber-600/40 text-amber-400 hover:bg-amber-800/60'
+                  ? 'bg-slate-200 border-slate-300 text-slate-500 cursor-not-allowed'
+                  : 'bg-[#7a1f30]/10 border-[#7a1f30]/40 text-[#7a1f30] hover:bg-[#7a1f30]/20'
                 }`}>
                 {uploading === track.id ? (
                   <span className="animate-pulse">Uploading...</span>
@@ -114,16 +115,17 @@ export default function VideoUploader() {
 
         {/* Log */}
         {log.length > 0 && (
-          <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Upload Log</p>
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+            <p className="text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Upload Log</p>
             <div className="space-y-1 max-h-48 overflow-y-auto">
               {log.map((line, i) => (
-                <p key={i} className="text-xs font-mono text-slate-300">{line}</p>
+                <p key={i} className="text-xs font-mono text-slate-700">{line}</p>
               ))}
             </div>
           </div>
         )}
       </div>
+      <NavArrow />
     </div>
   );
 }

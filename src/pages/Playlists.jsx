@@ -67,7 +67,7 @@ export default function Playlists() {
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{backgroundColor: '#7a1f30'}}>
               <ListMusic className="w-7 h-7 text-white" />
             </div>
             <div>

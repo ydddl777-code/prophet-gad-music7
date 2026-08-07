@@ -131,26 +131,26 @@ function EbookCover({ book }) {
 export default function EbookStore() {
   const navigate = useNavigate();
   return (
-    <div className="bg-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
+    <div className="bg-white border-y border-slate-200 py-8 px-6">
       <div className="max-w-7xl mx-auto">
 
         {/* PAID BOOKS ROW */}
         <div className="flex flex-col items-center mb-6">
           {/* Author photo */}
           <div className="flex flex-col items-center mb-4">
-            <div className="w-[90px] h-[120px] rounded-lg overflow-hidden border border-amber-500/40 shadow-lg">
+            <div className="w-[90px] h-[120px] rounded-lg overflow-hidden border border-[#7a1f30]/30 shadow-lg">
               <img
                 src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/4ce5d0e0a_prophet-suit.jpg"
                 alt="Author"
                 className="w-full h-full object-cover object-top"
               />
             </div>
-            <p className="text-[0.6rem] tracking-[0.2em] uppercase text-amber-400/80 mt-1">Author</p>
+            <p className="text-[0.6rem] tracking-[0.2em] uppercase text-slate-600 mt-1">Author</p>
           </div>
 
           <div className="text-center mb-4">
-            <h2 className="text-xl font-black tracking-wider" style={{color: '#D4AF37'}}>Remnant Warning E-Books</h2>
-            <p className="text-xs text-white/60 tracking-wider uppercase">Instant Download</p>
+            <h2 className="text-xl font-black tracking-wider" style={{color: '#7a1f30'}}>Remnant Warning E-Books</h2>
+            <p className="text-xs text-slate-600 tracking-wider uppercase">Instant Download</p>
           </div>
 
           {/* Paid books - centered */}
@@ -165,11 +165,11 @@ export default function EbookStore() {
         </div>
 
         {/* FREE BOOKS ROW */}
-        <div className="border-t border-amber-500/10 pt-6">
+        <div className="border-t border-slate-200 pt-6">
 
           <div className="mb-3 flex items-center justify-center gap-3">
-            <span className="text-[0.6rem] tracking-[0.25em] uppercase text-green-400/80 font-bold bg-green-900/30 border border-green-700/40 px-2 py-0.5 rounded-full">Free Downloads</span>
-            <span className="text-xs text-white/40">No purchase required</span>
+            <span className="text-[0.6rem] tracking-[0.25em] uppercase font-bold px-2 py-0.5 rounded-full" style={{color: '#7a1f30', backgroundColor: 'rgba(122,31,48,0.1)', border: '1px solid rgba(122,31,48,0.4)'}}>Free Downloads</span>
+            <span className="text-xs text-slate-500">No purchase required</span>
           </div>
           <div className="flex flex-wrap justify-center gap-4 px-8">
             {FREE_EBOOKS.map(book => (

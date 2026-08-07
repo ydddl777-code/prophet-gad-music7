@@ -331,21 +331,21 @@ export default function CoverArtManager() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-4">
+    <div className="min-h-screen bg-white text-slate-900 p-4">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold text-amber-400 mb-6">Cover Art Manager</h1>
+        <h1 className="text-2xl font-bold mb-6" style={{color: '#7a1f30'}}>Cover Art Manager</h1>
 
         <div className="flex gap-4 h-[calc(100vh-120px)]">
           {/* LEFT: Track List */}
-          <div className="w-72 shrink-0 bg-slate-900 rounded-xl flex flex-col overflow-hidden border border-slate-800">
-            <div className="p-3 border-b border-slate-800">
+          <div className="w-72 shrink-0 bg-white rounded-xl flex flex-col overflow-hidden border border-slate-200">
+            <div className="p-3 border-b border-slate-200">
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 w-4 h-4 text-slate-400" />
                 <Input
                   placeholder="Search tracks..."
                   value={trackSearch}
                   onChange={e => setTrackSearch(e.target.value)}
-                  className="pl-8 bg-slate-800 border-slate-700 text-white text-sm h-9"
+                  className="pl-8 bg-white border-slate-300 text-slate-900 text-sm h-9"
                 />
               </div>
             </div>
@@ -354,16 +354,16 @@ export default function CoverArtManager() {
                 <button
                   key={track.id}
                   onClick={() => setSelectedTrack(track)}
-                  className={`w-full flex items-center gap-2 p-2.5 text-left hover:bg-slate-800 transition-colors border-b border-slate-800/50 ${selectedTrack?.id === track.id ? 'bg-amber-500/10 border-l-2 border-l-amber-500' : ''}`}
+                  className={`w-full flex items-center gap-2 p-2.5 text-left hover:bg-slate-50 transition-colors border-b border-slate-100 ${selectedTrack?.id === track.id ? 'bg-[#7a1f30]/10 border-l-2 border-l-[#7a1f30]' : ''}`}
                 >
                   {track.cover_art_url ? (
                     <img src={track.cover_art_url} alt="" className="w-10 h-10 rounded object-cover shrink-0" onError={e => e.target.style.display='none'} />
                   ) : (
-                    <div className="w-10 h-10 rounded bg-slate-700 shrink-0 flex items-center justify-center text-slate-500 text-xs">?</div>
+                    <div className="w-10 h-10 rounded bg-slate-100 shrink-0 flex items-center justify-center text-slate-400 text-xs">?</div>
                   )}
                   <div className="min-w-0">
-                    <p className="text-xs font-medium truncate text-white">{track.title}</p>
-                    <p className="text-xs text-slate-400 truncate">{track.artist || 'Unknown'}</p>
+                    <p className="text-xs font-medium truncate text-slate-900">{track.title}</p>
+                    <p className="text-xs text-slate-500 truncate">{track.artist || 'Unknown'}</p>
                   </div>
                   {track.cover_art_url && <Check className="w-3 h-3 text-green-400 shrink-0 ml-auto" />}
                 </button>
@@ -375,18 +375,18 @@ export default function CoverArtManager() {
           <div className="flex-1 flex flex-col overflow-hidden">
             {/* Selected track header */}
             {selectedTrack ? (
-              <div className="bg-slate-900 rounded-xl p-3 mb-3 border border-amber-500/30 flex items-center gap-3">
+              <div className="bg-white rounded-xl p-3 mb-3 border border-[#7a1f30]/30 flex items-center gap-3">
                 {selectedTrack.cover_art_url && (
                   <img src={selectedTrack.cover_art_url} alt="" className="w-14 h-14 rounded object-cover" onError={e => e.target.style.display='none'} />
                 )}
                 <div>
-                  <p className="font-bold text-amber-400">{selectedTrack.title}</p>
-                  <p className="text-slate-400 text-sm">Click any image below to assign as cover art</p>
+                  <p className="font-bold" style={{color: '#7a1f30'}}>{selectedTrack.title}</p>
+                  <p className="text-slate-600 text-sm">Click any image below to assign as cover art</p>
                 </div>
                 {savedMsg && <span className="ml-auto text-green-400 font-bold text-sm">{savedMsg}</span>}
               </div>
             ) : (
-              <div className="bg-slate-900 rounded-xl p-3 mb-3 border border-slate-800 text-slate-400 text-sm text-center">
+              <div className="bg-white rounded-xl p-3 mb-3 border border-slate-200 text-slate-500 text-sm text-center">
                 ← Select a track from the list to assign cover art
               </div>
             )}
@@ -398,7 +398,7 @@ export default function CoverArtManager() {
                 placeholder="Filter images..."
                 value={imageSearch}
                 onChange={e => setImageSearch(e.target.value)}
-                className="pl-9 bg-slate-900 border-slate-700 text-white"
+                className="pl-9 bg-white border-slate-300 text-slate-900"
               />
             </div>
 
@@ -413,7 +413,7 @@ export default function CoverArtManager() {
                       onClick={() => assignCover(url)}
                       disabled={!selectedTrack || saving}
                       className={`relative aspect-square rounded-lg overflow-hidden group border-2 transition-all ${
-                        isCurrent ? 'border-amber-500 ring-2 ring-amber-500/50' : 'border-transparent hover:border-amber-500/50'
+                        isCurrent ? 'border-[#7a1f30] ring-2 ring-[#7a1f30]/50' : 'border-transparent hover:border-[#7a1f30]/50'
                       } ${!selectedTrack ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                     >
                       <img
@@ -423,8 +423,8 @@ export default function CoverArtManager() {
                         loading="lazy"
                       />
                       {isCurrent && (
-                        <div className="absolute inset-0 bg-amber-500/20 flex items-center justify-center">
-                          <Check className="w-6 h-6 text-amber-400" />
+                        <div className="absolute inset-0 bg-[#7a1f30]/20 flex items-center justify-center">
+                          <Check className="w-6 h-6" style={{color: '#7a1f30'}} />
                         </div>
                       )}
                     </button>

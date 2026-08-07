@@ -1,5 +1,5 @@
 {
-  "name": "File Harvester Pro",
+  "name": "Prophet Gad",
   "site": {
     "installCommand": "npm install",
     "buildCommand": "npm run build",

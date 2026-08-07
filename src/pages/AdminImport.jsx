@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
+import NavArrow from '@/components/NavArrow';
 
 export default function AdminImport() {
   const [running, setRunning] = useState(false);
@@ -51,16 +52,16 @@ export default function AdminImport() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-8">
+    <div className="min-h-screen bg-white text-slate-900 p-8">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold text-amber-400 mb-2">Supabase Catalog Import</h1>
-        <p className="text-slate-400 mb-6 text-sm">Imports all Prophet Gad tracks from Supabase into the music library. Run once.</p>
+        <h1 className="text-2xl font-bold mb-2" style={{color: '#7a1f30'}}>Supabase Catalog Import</h1>
+        <p className="text-slate-600 mb-6 text-sm">Imports all Prophet Gad tracks from Supabase into the music library. Run once.</p>
 
         <div className="flex gap-3 items-center mb-6">
           <Button
             onClick={() => runImport(0)}
             disabled={running}
-            className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-8 py-3 rounded-lg"
+            className="bg-[#7a1f30] hover:bg-[#6a1828] text-white font-bold px-8 py-3 rounded-lg"
           >
             {running ? '⏳ Importing...' : '🚀 Start Full Import'}
           </Button>
@@ -71,24 +72,25 @@ export default function AdminImport() {
             }}
             disabled={running}
             variant="outline"
-            className="border-slate-600 text-slate-300 px-6 py-3 rounded-lg"
+            className="border-[#7a1f30] text-[#7a1f30] px-6 py-3 rounded-lg"
           >
             ↩️ Resume from offset
           </Button>
         </div>
 
         {log.length > 0 && (
-          <div className="bg-slate-900 rounded-lg p-4 font-mono text-xs text-slate-300 space-y-1 max-h-96 overflow-y-auto">
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-xs text-slate-700 space-y-1 max-h-96 overflow-y-auto">
             {log.map((line, i) => <div key={i}>{line}</div>)}
           </div>
         )}
 
         {done && (
-          <div className="mt-4 p-4 bg-green-900/40 border border-green-600 rounded-lg text-green-400 font-bold">
+          <div className="mt-4 p-4 bg-green-50 border border-green-300 rounded-lg text-green-700 font-bold">
             Import complete! Go back to the <a href="/" className="underline">Music Library</a>.
           </div>
         )}
       </div>
+      <NavArrow />
     </div>
   );
 }

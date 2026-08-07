@@ -64,18 +64,18 @@ export default function SongFamilies() {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#111] flex items-center justify-center">
-        <p className="text-slate-400">Admin access required.</p>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-slate-600">Admin access required.</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#111] text-white px-4 py-8">
+    <div className="min-h-screen bg-white text-slate-900 px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-amber-400">Song Families</h1>
-          <p className="text-slate-400 mt-1 text-sm">Grouped by genesis date — rate versions and crown the best one for YouTube.</p>
+          <h1 className="text-3xl font-bold" style={{color: '#7a1f30'}}>Song Families</h1>
+          <p className="text-slate-600 mt-1 text-sm">Grouped by genesis date — rate versions and crown the best one for YouTube.</p>
           <p className="text-slate-600 text-xs mt-1">{families.length} families · {tracks.filter(t => t.composition_date && !t.is_dormant).length} songs mapped</p>
         </div>
 
@@ -93,22 +93,22 @@ export default function SongFamilies() {
               const sorted = [...familyTracks].sort((a, b) => (b.rating || 0) - (a.rating || 0));
 
               return (
-                <div key={date} className="border border-slate-800 rounded-xl overflow-hidden">
+                <div key={date} className="border border-slate-200 rounded-xl overflow-hidden">
                   {/* Family Header */}
                   <button
                     onClick={() => toggleExpand(date)}
-                    className="w-full flex items-center justify-between px-5 py-4 bg-slate-900 hover:bg-slate-800 transition-colors text-left"
+                    className="w-full flex items-center justify-between px-5 py-4 bg-white hover:bg-slate-50 transition-colors text-left"
                   >
                     <div className="flex items-center gap-4">
-                      {isOpen ? <ChevronDown className="w-4 h-4 text-slate-400" /> : <ChevronRight className="w-4 h-4 text-slate-400" />}
+                      {isOpen ? <ChevronDown className="w-4 h-4 text-slate-500" /> : <ChevronRight className="w-4 h-4 text-slate-500" />}
                       <div>
-                        <span className="font-bold text-white text-lg">{date}</span>
+                        <span className="font-bold text-slate-900 text-lg">{date}</span>
                         <span className="ml-3 text-slate-500 text-sm">{familyTracks.length} version{familyTracks.length !== 1 ? 's' : ''}</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       {bestVersion && (
-                        <span className="flex items-center gap-1.5 text-amber-400 text-xs font-semibold bg-amber-950/60 border border-amber-700/40 px-3 py-1 rounded-full">
+                        <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full" style={{color: '#7a1f30', backgroundColor: 'rgba(122,31,48,0.1)', border: '1px solid rgba(122,31,48,0.4)'}}>
                           <Crown className="w-3 h-3" /> {bestVersion.title}
                         </span>
                       )}
@@ -117,25 +117,25 @@ export default function SongFamilies() {
 
                   {/* Expanded Track List */}
                   {isOpen && (
-                    <div className="divide-y divide-slate-900">
+                    <div className="divide-y divide-slate-200">
                       {sorted.map(track => {
                         const isPlaying = player?.currentTrack?.id === track.id && player?.isPlaying;
                         return (
-                          <div key={track.id} className={`flex items-center gap-4 px-5 py-3 ${track.is_best_version ? 'bg-amber-950/10' : 'bg-[#111] hover:bg-slate-900/60'} transition-colors`}>
+                          <div key={track.id} className={`flex items-center gap-4 px-5 py-3 ${track.is_best_version ? 'bg-[#7a1f30]/5' : 'bg-white hover:bg-slate-50'} transition-colors`}>
                             {/* Play button */}
                             <button
                               onClick={() => handlePlay(track, familyTracks)}
                               disabled={!track.file_url}
-                              className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex-shrink-0"
+                              className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200 disabled:opacity-30 flex-shrink-0"
                             >
-                              {isPlaying ? <Pause className="w-3.5 h-3.5 text-amber-400" /> : <Play className="w-3.5 h-3.5 text-slate-300 ml-0.5" />}
+                              {isPlaying ? <Pause className="w-3.5 h-3.5" style={{color: '#7a1f30'}} /> : <Play className="w-3.5 h-3.5 text-slate-700 ml-0.5" />}
                             </button>
 
                             {/* Track info */}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 flex-wrap">
-                                {track.is_best_version && <Crown className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />}
-                                <span className={`font-semibold text-sm truncate ${track.is_best_version ? 'text-amber-300' : 'text-white'}`}>{track.title}</span>
+                                {track.is_best_version && <Crown className="w-3.5 h-3.5 flex-shrink-0" style={{color: '#7a1f30'}} />}
+                                <span className={`font-semibold text-sm truncate ${track.is_best_version ? 'text-[#7a1f30]' : 'text-slate-900'}`}>{track.title}</span>
                                 {track.language && <span className="text-xs text-slate-500">{track.language}</span>}
                                 {track.rhythm_style && <span className="text-xs text-slate-600">· {track.rhythm_style}</span>}
                                 {track.duration && <span className="text-xs font-mono text-slate-600">{track.duration}</span>}
@@ -148,7 +148,7 @@ export default function SongFamilies() {
                                 <button
                                   key={n}
                                   onClick={() => setRating(track, n)}
-                                  className={`w-4 h-4 transition-colors ${(track.rating || 0) >= n ? 'text-amber-400' : 'text-slate-700 hover:text-slate-500'}`}
+                                  className={`w-4 h-4 transition-colors ${(track.rating || 0) >= n ? 'text-[#7a1f30]' : 'text-slate-300 hover:text-slate-400'}`}
                                 >
                                   <Star className="w-3.5 h-3.5 fill-current" />
                                 </button>
@@ -161,7 +161,7 @@ export default function SongFamilies() {
                               size="sm"
                               variant="ghost"
                               onClick={() => setBestVersion(track, familyTracks)}
-                              className={`flex-shrink-0 h-7 px-2 text-xs gap-1 ${track.is_best_version ? 'text-amber-400 bg-amber-950/40' : 'text-slate-500 hover:text-amber-400'}`}
+                              className={`flex-shrink-0 h-7 px-2 text-xs gap-1 ${track.is_best_version ? 'text-[#7a1f30] bg-[#7a1f30]/10' : 'text-slate-500 hover:text-[#7a1f30]'}`}
                               title="Mark as best version"
                             >
                               <Crown className="w-3 h-3" />

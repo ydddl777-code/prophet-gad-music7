@@ -51,7 +51,7 @@ function VideoPlayer({ track }) {
   return (
     <div className="flex flex-col gap-2 group">
       <div
-        className="relative w-full aspect-video rounded-xl overflow-hidden border border-amber-500/30 shadow-lg cursor-pointer bg-black"
+        className="relative w-full aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-lg cursor-pointer bg-black"
         onClick={toggle}
       >
         <video
@@ -85,8 +85,8 @@ function VideoPlayer({ track }) {
       </div>
 
       <div className="text-center px-1">
-        <p className="text-sm font-semibold text-white leading-tight line-clamp-1">{track.title}</p>
-        <p className="text-[0.6rem] text-slate-500 mt-0.5">Prophet Gad · Full Video</p>
+        <p className="text-sm font-semibold text-slate-900 leading-tight line-clamp-1">{track.title}</p>
+        <p className="text-[0.6rem] text-slate-600 mt-0.5">Prophet Gad · Full Video</p>
       </div>
     </div>
   );
@@ -107,16 +107,16 @@ export default function VideoStrip() {
   if (videos.length === 0) return null;
 
   return (
-    <div className="bg-gradient-to-b from-[#0a0a0a] to-slate-950 border-y border-amber-500/20 py-8 px-6">
+    <div className="bg-white border-y border-slate-200 py-8 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-3 mb-1">
-            <div className="h-px w-16 bg-amber-500/40" />
-            <span className="text-[0.6rem] tracking-[0.35em] uppercase text-amber-500/70 font-semibold">Exclusive</span>
-            <div className="h-px w-16 bg-amber-500/40" />
+            <div className="h-px w-16 bg-[#7a1f30]/40" />
+            <span className="text-[0.6rem] tracking-[0.35em] uppercase font-semibold" style={{color: '#7a1f30'}}>Exclusive</span>
+            <div className="h-px w-16 bg-[#7a1f30]/40" />
           </div>
-          <h2 className="text-2xl font-black tracking-wider" style={{color: '#D4AF37'}}>Extended Play — Full Screen Music Videos</h2>
-          <p className="text-xs text-white/50 tracking-widest uppercase mt-1">With Lyrics &mdash; Prophetic Messages in Full Cinematic View</p>
+          <h2 className="text-2xl font-black tracking-wider" style={{color: '#7a1f30'}}>Extended Play — Full Screen Music Videos</h2>
+          <p className="text-xs text-slate-600 tracking-widest uppercase mt-1">With Lyrics &mdash; Prophetic Messages in Full Cinematic View</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

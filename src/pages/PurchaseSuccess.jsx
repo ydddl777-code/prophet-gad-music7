@@ -138,7 +138,7 @@ export default function PurchaseSuccess() {
             <Button
               onClick={handleDownload}
               disabled={downloading}
-              className="w-full bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-600 hover:to-red-700 text-white font-semibold py-3 mb-3"
+              className="w-full bg-[#7a1f30] hover:bg-[#6a1828] text-white font-semibold py-3 mb-3"
             >
               {downloading ? (
                 <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Downloading...</>

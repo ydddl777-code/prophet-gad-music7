@@ -11,16 +11,16 @@ export default function BookCoversGallery() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 p-8">
-      <h1 className="text-3xl font-bold text-white mb-2 text-center">Book Covers Gallery</h1>
-      <p className="text-slate-400 text-center mb-10">Right-click any cover → Save image as to download as PNG</p>
+    <div className="min-h-screen bg-white p-8">
+      <h1 className="text-3xl font-bold mb-2 text-center" style={{color: '#7a1f30'}}>Book Covers Gallery</h1>
+      <p className="text-slate-600 text-center mb-10">Right-click any cover → Save image as to download as PNG</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {books.map((book) => (
           <div key={book.id} className="flex flex-col items-center">
             {/* Book Cover */}
             <div
-              className="w-64 h-96 rounded-lg shadow-2xl border-2 border-amber-700 flex flex-col justify-between p-6 overflow-hidden relative"
+              className="w-64 h-96 rounded-lg shadow-2xl border-2 flex flex-col justify-between p-6 overflow-hidden relative" style={{borderColor: '#7a1f30'}}
               style={{
                 background: `linear-gradient(135deg, ${book.color}dd 0%, ${book.color} 50%, #1a1a1a 100%)`,
               }}
@@ -51,7 +51,7 @@ export default function BookCoversGallery() {
             </div>
 
             {/* Title below */}
-            <p className="text-center text-white text-sm mt-4 font-semibold">{book.title}</p>
+            <p className="text-center text-slate-900 text-sm mt-4 font-semibold">{book.title}</p>
           </div>
         ))}
       </div>

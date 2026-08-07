@@ -133,7 +133,7 @@ Return enhanced metadata.`,
                 className="flex-1"
               />
               {editData.duration && (
-                <span className="text-xs text-amber-400 font-mono whitespace-nowrap bg-slate-900 border border-slate-700 px-2 py-1.5 rounded">{editData.duration}</span>
+                <span className="text-xs font-mono whitespace-nowrap bg-slate-100 border border-slate-200 px-2 py-1.5 rounded" style={{color: '#7a1f30'}}>{editData.duration}</span>
               )}
             </div>
           </div>

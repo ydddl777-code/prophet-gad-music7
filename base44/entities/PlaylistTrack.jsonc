@@ -1,0 +1,22 @@
+{
+  "name": "PlaylistTrack",
+  "type": "object",
+  "properties": {
+    "playlist_id": {
+      "type": "string",
+      "description": "Reference to Playlist"
+    },
+    "track_id": {
+      "type": "string",
+      "description": "Reference to MusicTrack"
+    },
+    "position": {
+      "type": "number",
+      "description": "Order in playlist"
+    }
+  },
+  "required": [
+    "playlist_id",
+    "track_id"
+  ]
+}

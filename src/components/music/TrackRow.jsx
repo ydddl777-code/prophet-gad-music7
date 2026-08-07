@@ -84,7 +84,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
 
 
       <div 
-        className={`group border-b border-slate-900 transition-colors ${isCurrentTrack ? 'bg-amber-950/10' : 'hover:bg-slate-900'}`}
+        className={`group border-b border-slate-200 transition-colors ${isCurrentTrack ? 'bg-[#7a1f30]/5' : 'hover:bg-slate-50'}`}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
       >
@@ -113,7 +113,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
             {track.cover_art_url ? (
               <img src={track.cover_art_url} alt={track.title} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full bg-[#8b0000]" />
+              <div className="w-full h-full bg-[#7a1f30]" />
             )}
             {/* Always-visible subtle indicator, brighter on hover */}
             <button
@@ -140,28 +140,28 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
 
           {/* Title + Artist + Description */}
           <div className="flex-1 min-w-0">
-            <h3 className={`font-bold text-lg sm:text-xl leading-tight mb-1 flex items-center gap-2 flex-wrap ${isCurrentTrack ? 'text-amber-400' : 'text-white'}`}>
+            <h3 className={`font-bold text-lg sm:text-xl leading-tight mb-1 flex items-center gap-2 flex-wrap ${isCurrentTrack ? 'text-[#7a1f30]' : 'text-slate-900'}`}>
               <span>{track.title}</span>
               {track.duration && (
-                <span className="text-xs font-mono font-normal text-amber-500/80 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700">{track.duration}</span>
+                <span className="text-xs font-mono font-normal bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200" style={{color: '#7a1f30'}}>{track.duration}</span>
               )}
               {track.composition_date && (
-                <span className="text-xs font-mono font-normal text-slate-600 bg-slate-900/80 px-1.5 py-0.5 rounded">{track.composition_date}</span>
+                <span className="text-xs font-mono font-normal text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">{track.composition_date}</span>
               )}
             </h3>
             {displayArtist && (
-              <p className="text-sm text-[#c9a84c] mb-1">{displayArtist}</p>
+              <p className="text-sm mb-1" style={{color: '#7a1f30'}}>{displayArtist}</p>
             )}
             <div className="flex items-center gap-2 flex-wrap mt-1 mb-1">
               {track.language && (
-                <span className="text-xs text-amber-600/80 font-medium">{track.language}</span>
+                <span className="text-xs font-medium" style={{color: '#7a1f30'}}>{track.language}</span>
               )}
               {track.rhythm_style && (
                 <span className="text-xs text-slate-500">· {track.rhythm_style}</span>
               )}
             </div>
             {track.description && (
-              <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{track.description}</p>
+              <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">{track.description}</p>
             )}
           </div>
 
@@ -173,7 +173,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
             {/* Preview badge */}
             <button
               onClick={handlePlay}
-              className="font-bold text-xs px-3 py-1.5 rounded-full tracking-wider uppercase border transition-colors bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
+              className="font-bold text-xs px-3 py-1.5 rounded-full tracking-wider uppercase border transition-colors bg-white border-[#7a1f30] text-[#7a1f30] hover:bg-[#7a1f30]/10"
             >
               Preview
             </button>
@@ -181,7 +181,7 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
             <Button 
               onClick={handleBuy} 
               disabled={purchasing}
-              className="bg-[#8b0000] hover:bg-[#a00000] text-white font-semibold text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5"
+              className="bg-[#7a1f30] hover:bg-[#6a1828] text-white font-semibold text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5"
             >
               <ShoppingCart className="w-3.5 h-3.5" />
               $1.99
@@ -192,13 +192,13 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
               <div className="flex items-center gap-1 ml-2">
                 {isAdmin && (
                 <>
-                  <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="w-8 h-8 text-slate-400 hover:text-white" title="Edit metadata">
+                  <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="w-8 h-8 text-slate-500 hover:text-[#7a1f30]" title="Edit metadata">
                     <Pencil className="w-4 h-4" />
                   </Button>
-                  <Button size="icon" variant="ghost" onClick={toggleDormant} className="w-8 h-8 text-amber-500 hover:text-amber-300" title={track.is_dormant ? "Restore to library" : "Hide from library"}>
+                  <Button size="icon" variant="ghost" onClick={toggleDormant} className="w-8 h-8 text-[#7a1f30] hover:text-[#6a1828]" title={track.is_dormant ? "Restore to library" : "Hide from library"}>
                     {track.is_dormant ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                   </Button>
-                  <Button size="icon" variant="ghost" onClick={handleDelete} className="w-8 h-8 text-red-600 hover:text-red-400" title="Delete permanently">
+                  <Button size="icon" variant="ghost" onClick={handleDelete} className="w-8 h-8 text-[#a01828] hover:text-[#8a1422]" title="Delete permanently">
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </>
@@ -210,14 +210,14 @@ export default function TrackRow({ track, onUpdate, onDelete, onPlay, isAdmin = 
 
         {/* Collapsible Lyrics Panel */}
         {showLyricsPanel && track.lyrics && (
-          <div className="mx-4 mb-3 bg-slate-900/80 border border-slate-700 rounded-lg p-4">
+          <div className="mx-4 mb-3 bg-slate-50 border border-slate-200 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-amber-400 uppercase tracking-widest">Lyrics</span>
-              <button onClick={() => setShowLyricsPanel(false)} className="text-slate-500 hover:text-slate-300 text-xs">
+              <span className="text-xs font-semibold uppercase tracking-widest" style={{color: '#7a1f30'}}>Lyrics</span>
+              <button onClick={() => setShowLyricsPanel(false)} className="text-slate-500 hover:text-slate-800 text-xs">
                 Hide ↑
               </button>
             </div>
-            <pre className="text-sm text-slate-300 whitespace-pre-wrap font-sans leading-relaxed max-h-72 overflow-y-auto">
+            <pre className="text-sm text-slate-700 whitespace-pre-wrap font-sans leading-relaxed max-h-72 overflow-y-auto">
               {track.lyrics}
             </pre>
           </div>

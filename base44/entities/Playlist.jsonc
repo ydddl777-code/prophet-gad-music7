@@ -1,0 +1,34 @@
+{
+  "name": "Playlist",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Playlist name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Playlist description"
+    },
+    "theme": {
+      "type": "string",
+      "description": "Theme or mood used to generate the playlist"
+    },
+    "target_duration": {
+      "type": "number",
+      "description": "Target duration in minutes"
+    },
+    "cover_image_url": {
+      "type": "string",
+      "description": "AI-generated cover art URL"
+    },
+    "cover_color": {
+      "type": "string",
+      "description": "Hex color for playlist cover",
+      "default": "#3b82f6"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

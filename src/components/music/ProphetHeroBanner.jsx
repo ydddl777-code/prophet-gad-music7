@@ -40,22 +40,22 @@ export default function ProphetHeroBanner() {
   return (
     <div className="mb-10">
       {/* TICKER */}
-      <div className="bg-red-900 text-white py-4 px-6 relative">
+      <div className="bg-white border-y border-[#7a1f30]/30 py-4 px-6 relative">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-lg sm:text-xl font-black tracking-wide uppercase text-white leading-tight mb-1">Earth's Last Day Final Warning Message</p>
-          <p className="text-xs sm:text-sm tracking-[0.2em] uppercase text-red-300/80 font-semibold">The Hour of His Judgment Is Come</p>
+          <p className="text-lg sm:text-xl font-black tracking-wide uppercase leading-tight mb-1" style={{color: '#a01828'}}>Earth's Last Day Final Warning Message</p>
+          <p className="text-xs sm:text-sm tracking-[0.2em] uppercase font-semibold" style={{color: '#7a1f30'}}>The Hour of His Judgment Is Come</p>
         </div>
-        <span className="absolute bottom-2 right-4 text-[0.55rem] text-red-400/60 tracking-widest uppercase">— Revelation 14:7</span>
+        <span className="absolute bottom-2 right-4 text-[0.55rem] tracking-widest uppercase" style={{color: '#a01828', opacity: 0.7}}>— Revelation 14:7</span>
       </div>
 
       {/* HERO */}
-      <div className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at 20% 50%, #f59e0b 0%, transparent 50%), radial-gradient(circle at 80% 50%, #dc2626 0%, transparent 50%)'}} />
+      <div className="relative bg-white overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage: 'radial-gradient(circle at 20% 50%, #7a1f30 0%, transparent 50%), radial-gradient(circle at 80% 50%, #a01828 0%, transparent 50%)'}} />
 
         <div className="relative max-w-7xl mx-auto px-6 pt-8 pb-10 flex flex-col items-center gap-8">
 
           {/* CAROUSEL PORTRAIT */}
-          <div className="relative w-56 h-72 rounded-xl overflow-hidden border-2 border-amber-500/60 shadow-2xl shadow-amber-900/40 shrink-0">
+          <div className="relative w-56 h-72 rounded-xl overflow-hidden border-2 border-[#7a1f30]/40 shadow-lg shadow-[#7a1f30]/15 shrink-0">
             {AVATARS.map((avatar, i) => (
               <img
                 key={i}
@@ -67,17 +67,17 @@ export default function ProphetHeroBanner() {
           </div>
 
           {/* TEXT CONTENT */}
-          <div className="flex-1 text-white text-center max-w-2xl">
+          <div className="flex-1 text-slate-800 text-center max-w-2xl">
             {/* Tagline badge */}
-            <div className="inline-flex items-center gap-2 bg-red-900/50 border border-red-700/50 rounded-full px-4 py-1.5 text-xs font-semibold text-red-300/90 mb-4">
-              <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
+            <div className="inline-flex items-center gap-2 bg-[#7a1f30]/5 border border-[#7a1f30]/40 rounded-full px-4 py-1.5 text-xs font-semibold mb-4" style={{color: '#7a1f30'}}>
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{backgroundColor: '#a01828'}} />
               Prophet Gad comes in the same spirit of the ancient Hebrew Israelite prophets
             </div>
 
             {/* Bio */}
-            <div className="text-slate-300 text-base leading-relaxed mb-6 text-justify">
+            <div className="text-slate-700 text-base leading-relaxed mb-6 text-justify">
               <p>
-                In the spirit of ancient Hebrew seers, Prophet Gad has emerged as a prophetic voice for this generation. Born in a Caribbean nation rooted in biblical tradition, he was consecrated at age four and sent to the U.S. in secret for protection, where he was raised and educated in New York. Bearing the mantle of the biblical Prophet Gad, his life has mirrored the trials of the prophets of old, marked by exile and miraculous returns. Now, he delivers an urgent and uncompromising message: <strong className="text-red-500">repent or die.</strong>
+                In the spirit of ancient Hebrew seers, Prophet Gad has emerged as a prophetic voice for this generation. Born in a Caribbean nation rooted in biblical tradition, he was consecrated at age four and sent to the U.S. in secret for protection, where he was raised and educated in New York. Bearing the mantle of the biblical Prophet Gad, his life has mirrored the trials of the prophets of old, marked by exile and miraculous returns. Now, he delivers an urgent and uncompromising message: <strong style={{color: '#a01828'}}>repent or die.</strong>
               </p>
             </div>
 
@@ -85,16 +85,16 @@ export default function ProphetHeroBanner() {
             <div className="flex flex-wrap justify-center gap-3 mb-6">
               <button
                 onClick={() => setShowWhoIsGad(true)}
-                className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-600/50 text-white px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
+                className="flex items-center gap-2 bg-white hover:bg-[#7a1f30]/10 border border-[#7a1f30] text-[#7a1f30] px-4 py-3 rounded-xl transition-colors text-sm font-semibold"
               >
-                <Users className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <Users className="w-4 h-4 flex-shrink-0" style={{color: '#7a1f30'}} />
                 Who Is Prophet Gad
               </button>
             </div>
 
             {/* The Ecosystem — 5 boxes in one row */}
             <div className="w-full">
-              <p className="text-xs tracking-[0.2em] uppercase text-slate-500 text-center mb-3 font-semibold">The Ecosystem</p>
+              <p className="text-xs tracking-[0.2em] uppercase text-slate-600 text-center mb-3 font-semibold">The Ecosystem</p>
               <div className="flex gap-2 justify-center flex-wrap">
                 {[
                   { href: 'https://prophetgad.com', emoji: '👤', label: 'Prophet Gad', sub: 'The Man & Mission', color: 'amber', desc: 'Learn who Prophet Gad is — his calling, his mission, and the message he carries for this generation.' },
@@ -108,17 +108,17 @@ export default function ProphetHeroBanner() {
                       href={app.href}
                       target={app.href.startsWith('http') ? '_blank' : '_self'}
                       rel="noopener noreferrer"
-                      className={`flex flex-col items-center gap-0.5 bg-${app.color}-900/30 hover:bg-${app.color}-900/50 border border-${app.color}-700/40 rounded-lg px-2.5 py-2 transition-colors text-center w-[72px]`}
+                      className="flex flex-col items-center gap-0.5 bg-white hover:bg-[#7a1f30]/10 border border-[#7a1f30]/40 rounded-lg px-2.5 py-2 transition-colors text-center w-[72px] shadow-sm"
                     >
                       <span className="text-lg">{app.emoji}</span>
-                      <span className={`text-${app.color}-300 font-bold text-[0.55rem] uppercase tracking-wide leading-tight`}>{app.label}</span>
-                      <span className="text-slate-500 text-[0.5rem] leading-tight">{app.sub}</span>
+                      <span className="font-bold text-[0.55rem] uppercase tracking-wide leading-tight" style={{color: '#7a1f30'}}>{app.label}</span>
+                      <span className="text-slate-600 text-[0.5rem] leading-tight">{app.sub}</span>
                     </a>
                     {/* Tooltip */}
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-44 bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-xs text-slate-300 leading-relaxed shadow-xl opacity-0 group-hover/eco:opacity-100 pointer-events-none transition-opacity z-50 text-left">
-                      <p className="font-bold text-white mb-1">{app.label}</p>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-44 bg-white border border-[#7a1f30]/30 rounded-lg p-2.5 text-xs text-slate-700 leading-relaxed shadow-xl opacity-0 group-hover/eco:opacity-100 pointer-events-none transition-opacity z-50 text-left">
+                      <p className="font-bold mb-1" style={{color: '#7a1f30'}}>{app.label}</p>
                       <p>{app.desc}</p>
-                      <p className="text-amber-400 mt-1.5 text-[0.6rem] font-semibold">Click to visit →</p>
+                      <p className="mt-1.5 text-[0.6rem] font-semibold" style={{color: '#7a1f30'}}>Click to visit →</p>
                     </div>
                   </div>
                 ))}

@@ -147,12 +147,12 @@ export default function MusicLibrary() {
       <div className="mb-10">
         {/* Section Header */}
         <div className="mb-3 text-center">
-          <span className="text-lg font-bold text-white">{icon} {title}</span>
-          <p className="text-slate-500 text-xs italic mt-1">{subtitle}</p>
+          <span className="text-lg font-bold" style={{color: '#7a1f30'}}>{icon} {title}</span>
+          <p className="text-slate-600 text-xs italic mt-1">{subtitle}</p>
         </div>
 
         {/* Track Rows */}
-        <div className="rounded-lg overflow-hidden border border-slate-900">
+        <div className="rounded-lg overflow-hidden border border-slate-200 bg-white">
           {sectionTracks.map((track) => (
             <TrackRow key={track.id} track={track} onUpdate={handleUpdate}
               onDelete={handleDelete} onPlay={handlePlay} isAdmin={isAdmin} allTracks={tracks}
@@ -164,13 +164,13 @@ export default function MusicLibrary() {
   };
 
   return (
-    <div className="min-h-screen bg-[#111]">
+    <div className="min-h-screen bg-white">
       {/* Admin corner button */}
       {authChecked && isAdmin && (
         <div className="fixed bottom-4 left-4 z-50">
           <button
             onClick={() => document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' })}
-            className="bg-slate-800/80 hover:bg-slate-700 border border-slate-600 text-slate-400 hover:text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm transition-colors"
+            className="bg-white hover:bg-slate-100 border border-[#7a1f30]/40 text-[#7a1f30] hover:text-[#6a1828] text-xs px-3 py-1.5 rounded-full backdrop-blur-sm transition-colors shadow-sm"
           >
             ⚙ Admin
           </button>
@@ -193,11 +193,11 @@ export default function MusicLibrary() {
 
 
       {/* Library Header */}
-      <div id="music-catalog" className="bg-[#111] border-b border-slate-900">
+      <div id="music-catalog" className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-2xl font-bold" style={{color: '#7a1f30'}}>
                 Prophetic Music Catalog
               </h2>
             </div>
@@ -211,21 +211,21 @@ export default function MusicLibrary() {
                 <>
                   <Button
                     variant="outline" size="sm"
-                    className="gap-2 border-purple-700 text-purple-400 hover:bg-purple-950"
+                    className="gap-2 border-[#7a1f30] text-[#7a1f30] hover:bg-[#7a1f30]/10"
                     onClick={() => window.location.href = '/SongFamilies'}
                   >
                     👨‍👩‍👧‍👦 Song Families
                   </Button>
                   <Button
                     variant="outline" size="sm"
-                    className="gap-2 border-green-700 text-green-400 hover:bg-green-950"
+                    className="gap-2 border-[#7a1f30] text-[#7a1f30] hover:bg-[#7a1f30]/10"
                     onClick={() => window.location.href = '/AdminImport'}
                   >
                     🚀 Import from Supabase
                   </Button>
                   <Button
                     variant="outline" size="sm"
-                    className="gap-2 border-amber-800 text-amber-600 hover:bg-amber-950"
+                    className="gap-2 border-[#7a1f30] text-[#7a1f30] hover:bg-[#7a1f30]/10"
                     onClick={async () => {
                       if (!confirm('Mark all image-only placeholder records as dormant?')) return;
                       try {
@@ -275,13 +275,13 @@ export default function MusicLibrary() {
 
         {/* Bulk Delete Toolbar — admin only, shows when tracks are selected */}
         {isAdmin && selectedIds.size > 0 && (
-          <div className="flex items-center gap-3 bg-red-950/40 border border-red-800/50 rounded-lg px-4 py-2">
-            <span className="text-red-400 text-sm font-semibold">{selectedIds.size} selected</span>
-            <Button size="sm" variant="ghost" onClick={() => setSelectedIds(new Set())} className="text-slate-400 hover:text-white text-xs">
+          <div className="flex items-center gap-3 bg-red-50 border border-red-300 rounded-lg px-4 py-2">
+            <span className="text-red-700 text-sm font-semibold">{selectedIds.size} selected</span>
+            <Button size="sm" variant="ghost" onClick={() => setSelectedIds(new Set())} className="text-slate-600 hover:text-slate-900 text-xs">
               Clear
             </Button>
             <Button size="sm" onClick={handleBulkDelete} disabled={bulkDeleting}
-              className="bg-red-700 hover:bg-red-600 text-white text-xs ml-auto">
+              className="bg-[#a01828] hover:bg-[#8a1422] text-white text-xs ml-auto">
               <Trash2 className="w-3.5 h-3.5 mr-1" />
               {bulkDeleting ? 'Deleting...' : `Delete ${selectedIds.size}`}
             </Button>
@@ -291,7 +291,7 @@ export default function MusicLibrary() {
         {/* Tracks Display */}
         {isLoading ? (
           <div className="text-center py-12">
-            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-12 h-12 border-4 border-[#7a1f30] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-slate-400">Loading your library...</p>
           </div>
         ) : filteredTracks.length === 0 ? (

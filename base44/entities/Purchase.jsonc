@@ -1,0 +1,35 @@
+{
+  "name": "Purchase",
+  "type": "object",
+  "properties": {
+    "track_id": {
+      "type": "string",
+      "description": "Reference to MusicTrack"
+    },
+    "stripe_session_id": {
+      "type": "string",
+      "description": "Square payment ID (or Stripe session ID for legacy)"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Customer email"
+    },
+    "amount_paid": {
+      "type": "number",
+      "description": "Amount paid in cents"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "refunded",
+        "disputed"
+      ],
+      "default": "completed"
+    }
+  },
+  "required": [
+    "track_id",
+    "stripe_session_id"
+  ]
+}

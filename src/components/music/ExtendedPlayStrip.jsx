@@ -29,15 +29,15 @@ export default function ExtendedPlayStrip() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-slate-950 to-[#0a0a0a] border-y border-amber-500/20 py-8 px-6">
+    <div className="bg-white border-y border-slate-200 py-8 px-6">
       {/* Header */}
       <div className="text-center mb-6">
         <div className="inline-flex items-center gap-3 mb-1">
-          <div className="h-px w-12 bg-amber-500/40" />
-          <span className="text-[0.6rem] tracking-[0.35em] uppercase text-amber-500/70 font-semibold">New Releases</span>
-          <div className="h-px w-12 bg-amber-500/40" />
+          <div className="h-px w-12 bg-[#7a1f30]/40" />
+          <span className="text-[0.6rem] tracking-[0.35em] uppercase font-semibold" style={{color: '#7a1f30'}}>New Releases</span>
+          <div className="h-px w-12 bg-[#7a1f30]/40" />
         </div>
-        <h2 className="text-xl font-black tracking-wider text-white">Extended Play Channel</h2>
+        <h2 className="text-xl font-black tracking-wider" style={{color: '#7a1f30'}}>Extended Play Channel</h2>
       </div>
 
       {/* Horizontal Scrollable Track Strip */}
@@ -50,7 +50,7 @@ export default function ExtendedPlayStrip() {
           return (
             <div key={track.id} className="flex-shrink-0 w-20 flex flex-col items-center gap-2 group">
               {/* Cover Art / Video */}
-              <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-amber-500/20 shadow-lg">
+              <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-slate-200 shadow-lg">
                 {isVideo ? (
                   <video
                     src={track.file_url}
@@ -63,7 +63,7 @@ export default function ExtendedPlayStrip() {
                 ) : track.cover_art_url ? (
                   <img src={track.cover_art_url} alt={track.title} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-red-950 to-amber-950 flex items-center justify-center">
+                  <div className="w-full h-full bg-[#7a1f30] flex items-center justify-center">
                     <span className="text-4xl">🎵</span>
                   </div>
                 )}
@@ -92,7 +92,7 @@ export default function ExtendedPlayStrip() {
                 {isActive && (
                   <div className="absolute bottom-1 left-0 right-0 flex justify-center gap-0.5">
                     {[1,2,3].map(i => (
-                      <div key={i} className={`w-0.5 bg-amber-400 rounded-full ${isPlaying ? 'animate-bounce' : ''}`}
+                      <div key={i} className={`w-0.5 rounded-full ${isPlaying ? 'animate-bounce' : ''}`} style={{backgroundColor: '#7a1f30'}}
                         style={{ height: '8px', animationDelay: `${i * 0.1}s` }} />
                     ))}
                   </div>
@@ -101,10 +101,10 @@ export default function ExtendedPlayStrip() {
 
               {/* Track Info */}
               <div className="text-center w-full px-1">
-                <p className={`text-xs font-semibold leading-tight line-clamp-2 ${isActive ? 'text-amber-400' : 'text-white'}`}>
+                <p className={`text-xs font-semibold leading-tight line-clamp-2 ${isActive ? 'text-[#7a1f30]' : 'text-slate-800'}`}>
                   {track.title}
                 </p>
-                <p className="text-[0.6rem] text-slate-500 mt-0.5 truncate">Prophet Gad</p>
+                <p className="text-[0.6rem] text-slate-600 mt-0.5 truncate">Prophet Gad</p>
               </div>
 
               {/* Buy Button */}
@@ -123,7 +123,7 @@ export default function ExtendedPlayStrip() {
                     if (res.data?.url) window.location.href = res.data.url;
                   } catch (e) { alert('Purchase failed'); }
                 }}
-                className="flex items-center gap-1 text-[0.5rem] tracking-[0.15em] uppercase bg-red-900/70 hover:bg-red-800 border border-red-700/50 text-red-300 px-2 py-0.5 rounded-full transition-colors"
+                className="flex items-center gap-1 text-[0.5rem] tracking-[0.15em] uppercase bg-[#7a1f30] hover:bg-[#6a1828] border border-[#6a1828] text-white px-2 py-0.5 rounded-full transition-colors"
               >
                 <ShoppingCart className="w-2.5 h-2.5" />
                 Buy Full Song

@@ -56,9 +56,8 @@ export default function ProphetHeroBanner() {
       <div className="relative bg-white overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage: 'radial-gradient(circle at 20% 50%, #7a1f30 0%, transparent 50%), radial-gradient(circle at 80% 50%, #a01828 0%, transparent 50%)'}} />
 
-        {/* Breastplate + Language Switcher - left side, under the ticker line, opposite the carousel */}
+        {/* Language Switcher - left side, in line with the carousel */}
         <div className="hidden md:flex absolute left-6 top-8 z-10 flex-col items-center gap-3">
-          <img src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/07220d847_Breastplateicon.png" alt="High Priest Breastplate" className="w-20 h-20 object-contain" />
           <Select value={lang} onValueChange={setLang}>
             <SelectTrigger className="w-[120px] h-8 text-xs border-[#7a1f30]/30 text-[#7a1f30] bg-white">
               <SelectValue />

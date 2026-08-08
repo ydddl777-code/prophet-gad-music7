@@ -39,8 +39,12 @@ function LayoutContent({ children, currentPageName }) {
                 </span>
               </div>
 
-              {/* Spacer - balances the lion on the left to keep the title centered */}
-              <div className="w-20 h-20 flex-shrink-0" />
+              {/* Breastplate Logo - Right (symmetrical with lion on left) */}
+              <img 
+                src="https://media.base44.com/images/public/698ae99a8f13115b248081e9/07220d847_Breastplateicon.png" 
+                alt="High Priest Breastplate" 
+                className="w-20 h-20 object-contain"
+              />
             </div>
 
 

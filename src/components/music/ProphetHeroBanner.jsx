@@ -14,14 +14,15 @@ const FEATURED_TRACKS = [
 
 
 const AVATARS = [
-  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/480b2a7d0_finalgad1ULR.PNG" },
-  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/4b9e78f19_Gadforulr.png" },
-  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/c6f7e7186_gadlookupULR.png" },
-  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/4befcf44e_Gemini_Generated_Image_kk8rs8kk8rs8kk8r.png" },
-  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/d0c3b4373_SuperstarAAE2.png" },
-  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/5ff6c6017_AAEinatuxedo.png" },
-  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/8cd8c38a4_Gadonanoutreachmissiontotherich1.png" },
-  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/f55557252_Screenshot2026-05-05025837.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/174f16dda_bestphoto-1784965279048.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/c6f7a995d_Gad45.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/72e7a27d4_Gadintuxedo.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/4acf0671b_gad999.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/b5fff0d12_Gemini_Generated_Image_5wff025wff025wff.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/2f569c454_bestphoto-1785255539300.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/2f758ffd3_ProphetessConcert7.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/183fe7d96_ProphetessGarden1.png" },
+  { url: "https://media.base44.com/images/public/698ae99a8f13115b248081e9/c22b8c106_ConcertGadandHuldah1.png" },
 ];
 
 
